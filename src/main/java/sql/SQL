@@ -1,0 +1,59 @@
+CREATE TYPE ruolo_enum AS ENUM ('UTENTE', 'AMMINISTRATORE');
+
+CREATE TABLE utente (
+    nomeUtente VARCHAR(50) PRIMARY KEY,
+    password VARCHAR(50) NOT NULL,
+    nome VARCHAR(20) NOT NULL,
+    cognome VARCHAR(20) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    ruolo ruolo_enum NOT NULL DEFAULT 'UTENTE'
+);
+
+
+CREATE OR REPLACE FUNCTION crea_utente(
+    p_nomeUtente VARCHAR,
+    p_password VARCHAR,
+    p_nome VARCHAR,
+    p_cognome VARCHAR,
+    p_email VARCHAR,
+    p_ruolo ruolo_enum
+)
+RETURNS TABLE(successo BOOLEAN, messaggio VARCHAR) AS $$
+BEGIN
+    INSERT INTO utente (nomeUtente, password, nome, cognome, email, ruolo)
+    VALUES (p_nomeUtente, p_password, p_nome, p_cognome, p_email, p_ruolo);
+
+    RETURN QUERY SELECT true::BOOLEAN, 'Utente creato con successo'::VARCHAR;
+
+EXCEPTION
+    WHEN unique_violation THEN
+        RETURN QUERY SELECT false::BOOLEAN, 'NomeUtente o Email già esistente'::VARCHAR;
+    WHEN others THEN
+        RETURN QUERY SELECT false::BOOLEAN, ('Errore: ' || SQLERRM)::VARCHAR;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION login(
+    p_nomeUtente VARCHAR,
+    p_password VARCHAR
+)
+RETURNS TABLE(successo BOOLEAN, messaggio VARCHAR, ruolo ruolo_enum) AS $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM utente WHERE nomeUtente = p_nomeUtente AND password = p_password) THEN
+        RETURN QUERY
+        SELECT
+            true::BOOLEAN,
+            'Login effettuato con successo'::VARCHAR,
+            u.ruolo
+        FROM utente u
+        WHERE u.nomeUtente = p_nomeUtente;
+    ELSE
+        RETURN QUERY
+        SELECT
+            false::BOOLEAN,
+            'NomeUtente o password errati'::VARCHAR,
+            NULL::ruolo_enum;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
