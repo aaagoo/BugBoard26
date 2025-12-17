@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.ModificaAccount">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="946" height="791"/>
+    </constraints>
+    <properties>
+      <background color="-7144784"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <grid id="ad22" binding="tablePanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="1200" height="300"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-7144784"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <grid id="b9bf" binding="utentiPanel" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="460" height="300"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-855068"/>
+            </properties>
+            <border type="line">
+              <color color="-5524801"/>
+            </border>
+            <children>
+              <component id="46763" class="javax.swing.JTable" binding="utentiTable">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="440" height="280"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-855068"/>
+                  <font name="Inter" size="13" style="0"/>
+                  <rowHeight value="25"/>
+                  <showVerticalLines value="false"/>
+                </properties>
+              </component>
+              <hspacer id="8a553">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <vspacer id="346e3">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+            </children>
+          </grid>
+          <grid id="2bf0b" binding="amministratoriPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="460" height="300"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-855068"/>
+            </properties>
+            <border type="line">
+              <color color="-5524801"/>
+            </border>
+            <children>
+              <component id="6fd1a" class="javax.swing.JTable" binding="amministratoriTable">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="440" height="280"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-855068"/>
+                  <font name="Inter" size="13" style="0"/>
+                  <rowHeight value="25"/>
+                  <showVerticalLines value="false"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="ac062" binding="operationsPanel" layout-manager="GridLayoutManager" row-count="14" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="700" height="300"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-3474724"/>
+        </properties>
+        <border type="line">
+          <color color="-5524801"/>
+        </border>
+        <children>
+          <component id="e9f50" class="javax.swing.JTextField" binding="nomeutenteField">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="650" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-855068"/>
+              <font name="Inter" size="14" style="0"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="f6968" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="10" fill="0" indent="2" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font name="Inter" size="14" style="0"/>
+              <text value="Nome Account"/>
+            </properties>
+          </component>
+          <component id="6bcb1" class="javax.swing.JTextField">
+            <constraints>
+              <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="650" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-855068"/>
+              <font name="Inter" size="14" style="0"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="ea956" class="javax.swing.JTextField">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="650" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-855068"/>
+              <font name="Inter" size="14" style="0"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="32eb3" class="javax.swing.JTextField">
+            <constraints>
+              <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="650" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-855068"/>
+              <font name="Inter" size="14" style="0"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="52c01" class="javax.swing.JTextField">
+            <constraints>
+              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="650" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-855068"/>
+              <font name="Inter" size="14" style="0"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="8dc1e" class="javax.swing.JTextField">
+            <constraints>
+              <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="650" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-855068"/>
+              <font name="Inter" size="14" style="0"/>
+              <text value=""/>
+            </properties>
+          </component>
+          <component id="3c025" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="10" fill="0" indent="2" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font name="Inter" size="14" style="0"/>
+              <text value="Password"/>
+            </properties>
+          </component>
+          <component id="a3cad" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="10" fill="0" indent="2" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font name="Inter" size="14" style="0"/>
+              <text value="Ripetere Password"/>
+            </properties>
+          </component>
+          <component id="fcfa7" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="10" fill="0" indent="2" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font name="Inter" size="14" style="0"/>
+              <text value="Nome"/>
+            </properties>
+          </component>
+          <component id="b72bd" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="10" fill="0" indent="2" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font name="Inter" size="14" style="0"/>
+              <text value="Cognome"/>
+            </properties>
+          </component>
+          <component id="5ef48" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="10" fill="0" indent="2" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font name="Inter" size="14" style="0"/>
+              <text value="Email"/>
+            </properties>
+          </component>
+          <component id="aa2e6" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="10" fill="0" indent="2" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font name="Inter" size="14" style="0"/>
+              <text value="Tipo Account"/>
+            </properties>
+          </component>
+          <component id="31c9a" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+            <constraints>
+              <grid row="13" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="650" height="30"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-855068"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="f5a85" binding="buttonsPanel" layout-manager="GridLayoutManager" row-count="1" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="700" height="70"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-3474724"/>
+        </properties>
+        <border type="line">
+          <color color="-5524801"/>
+        </border>
+        <children>
+          <component id="82bf6" class="javax.swing.JButton" binding="annullaButton" default-binding="true">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="310" height="40"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-13194090"/>
+              <font name="Inter" size="14" style="1"/>
+              <text value="Annulla"/>
+            </properties>
+          </component>
+          <component id="f4122" class="javax.swing.JButton" binding="eliminaButton">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="310" height="40"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-13194090"/>
+              <font name="Inter" size="14" style="1"/>
+              <text value="Modifica Account"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

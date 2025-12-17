@@ -4,41 +4,36 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class NuovaIssue extends JFrame {
-
+public class ModificaAccount extends JFrame {
 
     private JPanel mainPanel;
-    private JPanel topPanel;
-    private JPanel infoutentePanel;
-    private JLabel benvenuto;
-    private JLabel userpngLabel;
-    private JButton areaPersonaleButton;
-    private JPanel botPanel;
-    private JButton confermaButton;
+    private JPanel tablePanel;
+    private JPanel utentiPanel;
+    private JTable utentiTable;
+    private JPanel amministratoriPanel;
+    private JTable amministratoriTable;
+    private JPanel operationsPanel;
+    private JTextField nomeutenteField;
+    private JPanel buttonsPanel;
     private JButton annullaButton;
-    private JPanel midPanel;
-    private JCheckBox criticalCheckBox;
-    private JCheckBox lowCheckBox;
-    private JCheckBox highCheckBox;
-    private JCheckBox mediumCheckBox;
+    private JButton eliminaButton;
+    private JComboBox comboBox1;
 
-    public NuovaIssue() {
+    public ModificaAccount() {
         setContentPane(mainPanel);
-        setTitle("Creazione Issue");
+        setTitle("Home");
         setSize(1200,800);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
 
-
         annullaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeAmm();
+                new GestisciUtenti();
                 dispose();
             }
         });
     }
-
 }

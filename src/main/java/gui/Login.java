@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Controller;
+import gui.util.RoundedPanel;
 import modello.Utente;
 
 import java.awt.*;
@@ -25,17 +26,19 @@ public class Login extends JFrame {
     private JLabel text;
     private JPanel imagePanel;
     private JLabel imageLabel;
-    private JPanel mainpanel;
+    private JPanel mainPanel;
 
 
     public Login() {
-        setContentPane(mainpanel);
+        setContentPane(mainPanel);
         setTitle("Login");
         setSize(1000,500);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
+
+        credentialsPanel.setBorder(new RoundedPanel("pannello"));
 
         ImageIcon imageIcon = new ImageIcon(getClass().getClassLoader().getResource("images/img_login.jpeg"));
         Image image = imageIcon.getImage();
@@ -63,7 +66,7 @@ public class Login extends JFrame {
                     return;
                 }
 
-                new Home();
+                new HomeAmm();
                 dispose();
             }
         });
