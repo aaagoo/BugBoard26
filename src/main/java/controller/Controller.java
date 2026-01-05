@@ -4,11 +4,14 @@ import dao_implementazione.*;
 import dao_interfaccia.*;
 import modello.Ruolo;
 import modello.Utente;
+import gui.HomeAmm;
+import gui.HomeUtente;
 import java.util.List;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import sessione.SessioneManager;
 
 public class Controller {
     private static Controller instance;
@@ -78,4 +81,35 @@ public class Controller {
             return "Errore nell'eliminazione dell'account";
         }
     }
+
+    public void redirectByRole(Utente utente) {
+        Ruolo ruolo = utente.getRuolo();
+
+        if (ruolo == Ruolo.AMMINISTRATORE) {
+            new HomeAmm();
+        } else {
+            new HomeUtente();
+        }
+    }
+
+    public Utente getUtenteCorrente() {
+        return SessioneManager.getInstance().getUtenteCorrente();
+    }
+
+    public boolean modificaAccount(String nomeUtente, String password, String nome, String cognome, String email, String avatar) {
+        try {
+            String messaggio = DAO_Account.modificaAccount(nomeUtente, password, nome, cognome, email, avatar);
+
+            if (messaggio.contains("successo")) {
+                Utente utenteAggiornato = DAO_Account.getUtente(nomeUtente);
+                SessioneManager.getInstance().setUtenteCorrente(utenteAggiornato);
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

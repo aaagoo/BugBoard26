@@ -70,7 +70,7 @@ public class DAO_AccountI implements DAO_Account {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return new Utente(
+                Utente utente = new Utente(
                         rs.getString("nomeUtente"),
                         rs.getString("password"),
                         rs.getString("nome"),
@@ -78,12 +78,15 @@ public class DAO_AccountI implements DAO_Account {
                         rs.getString("email"),
                         Ruolo.valueOf(rs.getString("ruolo"))
                 );
+                utente.setAvatar(rs.getString("avatar"));
+                return utente;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
+
 
     @Override
     public List<Map<String, Object>> getAllAccounts() {
@@ -118,6 +121,26 @@ public class DAO_AccountI implements DAO_Account {
                 boolean successo = rs.getBoolean("successo");
                 String messaggio = rs.getString("messaggio");
                 return messaggio;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "Errore sconosciuto";
+    }
+
+    @Override
+    public String modificaAccount(String nomeUtente, String password, String nome, String cognome, String email, String avatar) {
+        try (CallableStatement cstmt = ConnessioneDatabase.getInstance().connection.prepareCall("{ call modifica_account(?, ?, ?, ?, ?, ?) }")) {
+            cstmt.setString(1, nomeUtente);
+            cstmt.setString(2, password.isEmpty() ? "" : password);
+            cstmt.setString(3, nome.isEmpty() ? "" : nome);
+            cstmt.setString(4, cognome.isEmpty() ? "" : cognome);
+            cstmt.setString(5, email.isEmpty() ? "" : email);
+            cstmt.setString(6, avatar.isEmpty() ? "" : avatar);
+
+            ResultSet rs = cstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("messaggio");
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -7,6 +7,7 @@ public class Utente {
     private String cognome;
     private String email;
     private Ruolo ruolo;
+    private String avatar;
 
     public Utente(String nomeUtente, String password, String nome, String cognome, String email, Ruolo ruolo) {
         this.nomeUtente = nomeUtente;
@@ -52,5 +53,11 @@ public class Utente {
     }
     public void setRuolo(Ruolo ruolo) {
         this.ruolo = ruolo;
+    }
+    public String getAvatar() {
+        return avatar;
+    }
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

@@ -13,4 +13,5 @@ public interface DAO_Account {
     Utente getUtente(String nomeUtente) throws java.sql.SQLException;
     List<Map<String, Object>> getAllAccounts() throws java.sql.SQLException;
     String eliminaAccount(String nomeUtente) throws java.sql.SQLException;
+    String modificaAccount(String nomeUtente, String password, String nome, String cognome, String email, String avatar) throws java.sql.SQLException;
 }

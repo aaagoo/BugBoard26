@@ -35,7 +35,7 @@ public class NuovaIssue extends JFrame {
         annullaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new HomeAmm();
+                new HomeUtente();
                 dispose();
             }
         });

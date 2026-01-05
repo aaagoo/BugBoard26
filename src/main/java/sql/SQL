@@ -7,6 +7,7 @@ CREATE TABLE account (
     cognome VARCHAR(20) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
     ruolo ruolo_enum NOT NULL DEFAULT 'UTENTE'
+    avatar VARCHAR(50) DEFAULT 'user.png'
 );
 
 
@@ -66,7 +67,8 @@ RETURNS TABLE(
     nome VARCHAR,
     cognome VARCHAR,
     email VARCHAR,
-    ruolo ruolo_enum
+    ruolo ruolo_enum,
+    avatar VARCHAR
 ) AS $$
 BEGIN
     RETURN QUERY
@@ -76,7 +78,8 @@ BEGIN
         a.nome,
         a.cognome,
         a.email,
-        a.ruolo
+        a.ruolo,
+        a.avatar
     FROM account a
     ORDER BY a.ruolo DESC, a.nomeUtente ASC;
 END;
@@ -97,6 +100,40 @@ BEGIN
     END IF;
 
 EXCEPTION
+    WHEN others THEN
+        RETURN QUERY SELECT false::BOOLEAN, ('Errore: ' || SQLERRM)::VARCHAR;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION modifica_account(
+    p_nomeUtente VARCHAR,
+    p_password VARCHAR,
+    p_nome VARCHAR,
+    p_cognome VARCHAR,
+    p_email VARCHAR,
+    p_avatar VARCHAR
+)
+RETURNS TABLE(successo BOOLEAN, messaggio VARCHAR) AS $$
+BEGIN
+    UPDATE account
+    SET
+        password = COALESCE(NULLIF(p_password, ''), password),
+        nome = COALESCE(NULLIF(p_nome, ''), nome),
+        cognome = COALESCE(NULLIF(p_cognome, ''), cognome),
+        email = COALESCE(NULLIF(p_email, ''), email),
+        avatar = COALESCE(NULLIF(p_avatar, ''), avatar)
+    WHERE nomeUtente = p_nomeUtente;
+
+    IF FOUND THEN
+        RETURN QUERY SELECT true::BOOLEAN, 'Account modificato con successo'::VARCHAR;
+    ELSE
+        RETURN QUERY SELECT false::BOOLEAN, 'Account non trovato'::VARCHAR;
+    END IF;
+
+EXCEPTION
+    WHEN unique_violation THEN
+        RETURN QUERY SELECT false::BOOLEAN, 'Email già esistente'::VARCHAR;
     WHEN others THEN
         RETURN QUERY SELECT false::BOOLEAN, ('Errore: ' || SQLERRM)::VARCHAR;
 END;

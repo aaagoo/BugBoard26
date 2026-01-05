@@ -66,7 +66,7 @@ public class Login extends JFrame {
                     return;
                 }
 
-                new HomeAmm();
+                Controller.getInstance().redirectByRole(utente);
                 dispose();
             }
         });

@@ -1,31 +1,29 @@
 package gui;
 
+import gui.util.RoundedPanel;
+import modello.Utente;
+import sessione.SessioneManager;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import gui.util.RoundedPanel;
-import sessione.SessioneManager;
-import modello.Utente;
-
 public class HomeAmm extends JFrame {
-    private JPanel mainPanel;
+
+    private JPanel topPanel;
     private JPanel infoutentePanel;
     private JLabel benvenutoLabel;
     private JLabel userpngLabel;
     private JButton areaPersonaleButton;
-    private JPanel operationsPanel;
-    private JButton gestisciIssueButton;
-    private JButton gestisciUtentiButton;
-    private JButton nuovaIssueButton;
-    private JButton dashboardButton;
-    private JTable dashboardTable;
-    private JButton disconnettitiButton;
-    private JPanel topPanel;
-    private JPanel midPanel;
-    private JPanel botPanel;
     private JLabel ruoloLabel;
+    private JPanel midPanel;
+    private JPanel operationsPanel;
+    private JButton gestisciUtentiButton;
     private JPanel dashboardPanel;
+    private JTable dashboardTable;
+    private JPanel botPanel;
+    private JButton disconnettitiButton;
+    private JPanel mainPanel;
 
     public HomeAmm() {
         setContentPane(mainPanel);
@@ -42,19 +40,12 @@ public class HomeAmm extends JFrame {
         operationsPanel.setBorder(new RoundedPanel("finestra"));
         dashboardPanel.setBorder(new RoundedPanel("finestra"));
 
+
         Utente utente = SessioneManager.getInstance().getUtenteCorrente();
         if (utente != null) {
             benvenutoLabel.setText(utente.getNome() + " " + utente.getCognome());
             ruoloLabel.setText(utente.getRuolo().toString());
         }
-
-        nuovaIssueButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new NuovaIssue();
-                dispose();
-            }
-        });
 
         disconnettitiButton.addActionListener(new ActionListener() {
             @Override
@@ -75,9 +66,10 @@ public class HomeAmm extends JFrame {
         areaPersonaleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new AreaPersonaleAmm();
+                new AreaPersonaleUtente();
                 dispose();
             }
         });
     }
+
 }

@@ -3,7 +3,7 @@ package gui;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import gui.util.TabellaUtility;
+import gui.util.Utility;
 import controller.Controller;
 
 public class EliminaAccount extends JFrame {
@@ -32,7 +32,7 @@ public class EliminaAccount extends JFrame {
         setResizable(false);
 
         controller = Controller.getInstance();
-        TabellaUtility.caricaDatiUtenti(utentiTable, amministratoriTable, controller);
+        Utility.caricaDatiUtenti(utentiTable, amministratoriTable, controller);
 
         annullaButton.addActionListener(new ActionListener() {
             @Override
@@ -56,7 +56,7 @@ public class EliminaAccount extends JFrame {
                 JOptionPane.showMessageDialog(null, risultato, "Risultato", JOptionPane.INFORMATION_MESSAGE);
 
                 nomeUtenteField.setText("");
-                TabellaUtility.caricaDatiUtenti(utentiTable, amministratoriTable, controller);
+                Utility.caricaDatiUtenti(utentiTable, amministratoriTable, controller);
             }
         });
     }

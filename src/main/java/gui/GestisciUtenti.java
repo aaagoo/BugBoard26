@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import controller.Controller;
-import gui.util.TabellaUtility;
+import gui.util.Utility;
 import gui.util.RoundedPanel;
 import javax.swing.table.TableColumn;
 
@@ -39,7 +39,7 @@ public class GestisciUtenti extends JFrame {
         operationsPanel.setBorder(new RoundedPanel("pannello"));
 
         controller = Controller.getInstance();
-        TabellaUtility.caricaDatiUtenti(utentiTable, amministratoriTable, controller);
+        Utility.caricaDatiUtenti(utentiTable, amministratoriTable, controller);
 
         TableColumn column1 = utentiTable.getColumnModel().getColumn(3);
         column1.setPreferredWidth(200);
