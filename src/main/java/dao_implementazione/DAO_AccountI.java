@@ -20,23 +20,24 @@ public class DAO_AccountI implements DAO_Account {
     }
 
     @Override
-    public String creaAccount(String nomeUtente, String password, String nome, String cognome, String email, Ruolo ruolo) {
-        try (CallableStatement cstmt = ConnessioneDatabase.getInstance().connection.prepareCall("{ call crea_account(?, ?, ?, ?, ?, ?::ruolo_enum) }")) {
+    public String creaAccount(String nomeUtente, String password, String nome, String cognome, String email, Ruolo ruolo, String avatar) {
+        try (CallableStatement cstmt = ConnessioneDatabase.getInstance().connection.prepareCall("{ call crea_account(?, ?, ?, ?, ?, ?::ruolo_enum, ?) }")) {
             cstmt.setString(1, nomeUtente);
             cstmt.setString(2, password);
             cstmt.setString(3, nome);
             cstmt.setString(4, cognome);
             cstmt.setString(5, email);
             cstmt.setString(6, ruolo.name());
+            cstmt.setString(7, avatar.isEmpty() ? "user.png" : avatar);
 
             ResultSet rs = cstmt.executeQuery();
             if (rs.next()) {
                 return rs.getString("messaggio");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            return "Errore: " + e.getMessage();
         }
-        return "Errore sconosciuto";
+        return "Errore: operazione non completata";
     }
 
     @Override
@@ -118,14 +119,12 @@ public class DAO_AccountI implements DAO_Account {
 
             ResultSet rs = cstmt.executeQuery();
             if (rs.next()) {
-                boolean successo = rs.getBoolean("successo");
-                String messaggio = rs.getString("messaggio");
-                return messaggio;
+                return rs.getString("messaggio");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            return "Errore: " + e.getMessage();
         }
-        return "Errore sconosciuto";
+        return "Errore: operazione non completata";
     }
 
     @Override
@@ -143,10 +142,8 @@ public class DAO_AccountI implements DAO_Account {
                 return rs.getString("messaggio");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            return "Errore: " + e.getMessage();
         }
-        return "Errore sconosciuto";
+        return "Errore: operazione non completata";
     }
-
-
 }

@@ -1,31 +1,32 @@
 package gui;
 
-import gui.util.RoundedPanel;
-import gui.util.Utility;
-import modello.Utente;
-import sessione.SessioneManager;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class HomeAmm extends JFrame {
+import gui.util.RoundedPanel;
+import modello.Utente;
+import controller.Controller;
+import gui.util.Utility;
 
-    private JPanel topPanel;
+public class HomeUtente extends JFrame {
+    private JPanel mainPanel;
     private JPanel infoutentePanel;
     private JLabel benvenutoLabel;
     private JLabel userpngLabel;
-    private JLabel ruoloLabel;
-    private JPanel midPanel;
+    private JButton areaPersonaleButton;
     private JPanel operationsPanel;
-    private JButton gestisciUtentiButton;
-    private JPanel dashboardPanel;
+    private JButton nuovaIssueButton;
+    private JButton dashboardButton;
     private JTable dashboardTable;
-    private JPanel botPanel;
     private JButton disconnettitiButton;
-    private JPanel mainPanel;
+    private JPanel topPanel;
+    private JPanel midPanel;
+    private JPanel botPanel;
+    private JLabel ruoloLabel;
+    private JPanel dashboardPanel;
 
-    public HomeAmm() {
+    public HomeUtente() {
         setContentPane(mainPanel);
         setTitle("Home");
         setSize(1200,800);
@@ -40,13 +41,20 @@ public class HomeAmm extends JFrame {
         operationsPanel.setBorder(new RoundedPanel("finestra"));
         dashboardPanel.setBorder(new RoundedPanel("finestra"));
 
-
-        Utente utente = SessioneManager.getInstance().getUtenteCorrente();
+        Utente utente = Controller.getInstance().getUtenteCorrente();
         if (utente != null) {
             benvenutoLabel.setText(utente.getNome() + " " + utente.getCognome());
             ruoloLabel.setText(utente.getRuolo().toString());
             Utility.caricaAvatar(userpngLabel, utente.getAvatar(), 80, 80);
         }
+
+        nuovaIssueButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new NuovaIssue();
+                dispose();
+            }
+        });
 
         disconnettitiButton.addActionListener(new ActionListener() {
             @Override
@@ -56,13 +64,20 @@ public class HomeAmm extends JFrame {
             }
         });
 
-        gestisciUtentiButton.addActionListener(new ActionListener() {
+        areaPersonaleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new GestisciUtenti();
+                new AreaPersonale();
+                dispose();
+            }
+        });
+
+        dashboardButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Dashboard();
                 dispose();
             }
         });
     }
-
 }

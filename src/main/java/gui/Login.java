@@ -1,7 +1,7 @@
 package gui;
 
 import controller.Controller;
-import gui.util.RoundedPanel;
+import gui.util.*;
 import modello.Utente;
 
 import java.awt.*;
@@ -66,15 +66,11 @@ public class Login extends JFrame {
                     return;
                 }
 
-                Controller.getInstance().redirectByRole(utente);
+                Utility.redirectByRole(utente);
                 dispose();
             }
         });
     }
-
-
-
-
 }
 
 

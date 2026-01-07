@@ -4,8 +4,6 @@ import dao_implementazione.*;
 import dao_interfaccia.*;
 import modello.Ruolo;
 import modello.Utente;
-import gui.HomeAmm;
-import gui.HomeUtente;
 import java.util.List;
 import java.sql.SQLException;
 import java.util.Map;
@@ -28,9 +26,9 @@ public class Controller {
         return instance;
     }
 
-    public String creaAccount(String nomeUtente, String password, String nome, String cognome, String email, Ruolo ruolo) {
+    public String creaAccount(String nomeUtente, String password, String nome, String cognome, String email, Ruolo ruolo, String avatar) {
         try {
-            return DAO_Account.creaAccount(nomeUtente, password, nome, cognome, email, ruolo);
+            return DAO_Account.creaAccount(nomeUtente, password, nome, cognome, email, ruolo, avatar);
         } catch (SQLException e) {
             e.printStackTrace();
             return "Errore nella creazione dell'account";
@@ -73,6 +71,16 @@ public class Controller {
                 .collect(Collectors.toList());
     }
 
+    public Utente getUtenteByNomeUtente(String nomeUtente) {
+        try {
+            return DAO_Account.getUtente(nomeUtente);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     public String eliminaAccount(String nomeUtente) {
         try {
             return DAO_Account.eliminaAccount(nomeUtente);
@@ -82,34 +90,28 @@ public class Controller {
         }
     }
 
-    public void redirectByRole(Utente utente) {
-        Ruolo ruolo = utente.getRuolo();
-
-        if (ruolo == Ruolo.AMMINISTRATORE) {
-            new HomeAmm();
-        } else {
-            new HomeUtente();
-        }
-    }
-
     public Utente getUtenteCorrente() {
         return SessioneManager.getInstance().getUtenteCorrente();
     }
 
-    public boolean modificaAccount(String nomeUtente, String password, String nome, String cognome, String email, String avatar) {
+    public String modificaAccount(String nomeUtente, String password, String nome, String cognome, String email, String avatar) {
         try {
             String messaggio = DAO_Account.modificaAccount(nomeUtente, password, nome, cognome, email, avatar);
 
             if (messaggio.contains("successo")) {
-                Utente utenteAggiornato = DAO_Account.getUtente(nomeUtente);
-                SessioneManager.getInstance().setUtenteCorrente(utenteAggiornato);
-                return true;
+                Utente utenteCorrente = SessioneManager.getInstance().getUtenteCorrente();
+                if (utenteCorrente != null && utenteCorrente.getNomeUtente().equals(nomeUtente)) {
+                    Utente utenteAggiornato = DAO_Account.getUtente(nomeUtente);
+                    SessioneManager.getInstance().setUtenteCorrente(utenteAggiornato);
+                }
             }
-            return false;
+            return messaggio;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return "Errore: " + e.getMessage();
         }
     }
+
+
 
 }

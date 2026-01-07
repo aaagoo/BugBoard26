@@ -24,18 +24,6 @@
           <color color="-5524801"/>
         </border>
         <children>
-          <component id="db50b" class="javax.swing.JButton" binding="modificaAccountButton" default-binding="true">
-            <constraints>
-              <grid row="1" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="400" height="45"/>
-              </grid>
-            </constraints>
-            <properties>
-              <background color="-13194090"/>
-              <font name="Inter" size="15" style="1"/>
-              <text value="Modifica Account"/>
-            </properties>
-          </component>
           <component id="8cd9e" class="javax.swing.JButton" binding="creaAccountButton" default-binding="true">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
@@ -48,7 +36,7 @@
               <text value="Crea Account"/>
             </properties>
           </component>
-          <component id="79a77" class="javax.swing.JButton" binding="eliminaButton">
+          <component id="db50b" class="javax.swing.JButton" binding="modificaAccountButton" default-binding="true">
             <constraints>
               <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="400" height="45"/>
@@ -57,10 +45,22 @@
             <properties>
               <background color="-13194090"/>
               <font name="Inter" size="15" style="1"/>
-              <text value="Elimina Account"/>
+              <text value="Modifica Account"/>
             </properties>
           </component>
           <component id="1b395" class="javax.swing.JButton" binding="indietroButton" default-binding="true">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="400" height="45"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-13194090"/>
+              <font name="Inter" size="15" style="1"/>
+              <text value="Indietro"/>
+            </properties>
+          </component>
+          <component id="79a77" class="javax.swing.JButton" binding="eliminaButton">
             <constraints>
               <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="400" height="45"/>
@@ -69,7 +69,7 @@
             <properties>
               <background color="-13194090"/>
               <font name="Inter" size="15" style="1"/>
-              <text value="Indietro"/>
+              <text value="Elimina Account"/>
             </properties>
           </component>
         </children>
@@ -108,6 +108,7 @@
                 </constraints>
                 <properties>
                   <background color="-855068"/>
+                  <enabled value="false"/>
                   <font name="Inter" size="13" style="0"/>
                   <preferredScrollableViewportSize width="450" height="400"/>
                   <rowHeight value="25"/>
@@ -138,6 +139,7 @@
                 </constraints>
                 <properties>
                   <background color="-855068"/>
+                  <enabled value="false"/>
                   <font name="Inter" size="13" style="0"/>
                   <rowHeight value="25"/>
                   <showVerticalLines value="false"/>

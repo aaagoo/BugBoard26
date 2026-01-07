@@ -1,12 +1,14 @@
 package gui;
 
-import gui.util.RoundedPanel;
+import gui.util.*;
+import sessione.SessioneManager;
+import modello.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AreaPersonaleUtente extends JFrame {
+public class AreaPersonale extends JFrame {
     private JPanel mainPanel;
     private JButton indietroButton;
     private JPanel utentePanel;
@@ -21,7 +23,7 @@ public class AreaPersonaleUtente extends JFrame {
     private JButton modificaButton;
 
 
-    public AreaPersonaleUtente() {
+    public AreaPersonale() {
         setContentPane(mainPanel);
         setTitle("Home");
         setSize(1200,800);
@@ -36,6 +38,17 @@ public class AreaPersonaleUtente extends JFrame {
         imagePanel.setBorder(new RoundedPanel("finestra"));
 
 
+        Utente utente = SessioneManager.getInstance().getUtenteCorrente();
+        if (utente != null) {
+            nomeLabel.setText(utente.getNome());
+            cognomeLabel.setText(utente.getCognome());
+            usernameLabel.setText(utente.getNomeUtente());
+            emailLabel.setText(utente.getEmail());
+
+            String avatarName = utente.getAvatar();
+            Utility.caricaAvatar(imageLabel, avatarName, 220, 220);
+        }
+
         indietroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -47,7 +60,7 @@ public class AreaPersonaleUtente extends JFrame {
         modificaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ModificaUtente();
+                new ModificaPersonale();
                 dispose();
             }
         });

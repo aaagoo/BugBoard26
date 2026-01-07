@@ -1,9 +1,10 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.table.TableColumn;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import gui.util.Utility;
+import gui.util.*;
 import controller.Controller;
 
 public class EliminaAccount extends JFrame {
@@ -31,8 +32,23 @@ public class EliminaAccount extends JFrame {
         setVisible(true);
         setResizable(false);
 
+        tablePanel.setBorder(new RoundedPanel("pannello"));
+        utentiPanel.setBorder(new RoundedPanel("finestra"));
+        amministratoriPanel.setBorder(new RoundedPanel("finestra"));
+        operationsPanel.setBorder(new RoundedPanel("pannello"));
+        buttonsPanel.setBorder(new RoundedPanel("pannello"));
+
         controller = Controller.getInstance();
         Utility.caricaDatiUtenti(utentiTable, amministratoriTable, controller);
+
+        Utility.caricaDatiUtenti(utentiTable, amministratoriTable, controller);
+        Utility.selezionaRigaTabella(utentiTable, nomeUtenteField, 0);
+        Utility.selezionaRigaTabella(amministratoriTable, nomeUtenteField, 0);
+
+        TableColumn column1 = utentiTable.getColumnModel().getColumn(3);
+        column1.setPreferredWidth(200);
+        TableColumn column2 = amministratoriTable.getColumnModel().getColumn(3);
+        column2.setPreferredWidth(200);
 
         annullaButton.addActionListener(new ActionListener() {
             @Override

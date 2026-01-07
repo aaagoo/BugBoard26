@@ -7,7 +7,7 @@ import sessione.SessioneManager;
 
 import javax.swing.*;
 
-public class ModificaUtente extends JFrame {
+public class ModificaPersonale extends JFrame {
     private JPanel utentePanel;
     private JPanel imagePanel;
     private JLabel imageLabel;
@@ -25,7 +25,7 @@ public class ModificaUtente extends JFrame {
     private JTextField repPasswordFIeld;
     private String avatarSelezionato;
 
-    public ModificaUtente() {
+    public ModificaPersonale() {
         setContentPane(mainPanel);
         setTitle("Home");
         setSize(1200,800);
@@ -51,7 +51,7 @@ public class ModificaUtente extends JFrame {
 
         modificaButton.addActionListener(e -> salvaModifiche());
         indietroButton.addActionListener(e -> {
-            new AreaPersonaleUtente();
+            new AreaPersonale();
             dispose();
         });
     }
@@ -83,12 +83,14 @@ public class ModificaUtente extends JFrame {
             return;
         }
 
-        if (Controller.getInstance().modificaAccount(nomeUtente, password, nome, cognome, email, avatarSelezionato)) {
-            JOptionPane.showMessageDialog(this, "Account modificato con successo");
-            new AreaPersonaleUtente();
+        String messaggio = Controller.getInstance().modificaAccount(nomeUtente, password, nome, cognome, email, avatarSelezionato);
+
+        if (messaggio.contains("successo")) {
+            JOptionPane.showMessageDialog(this, messaggio);
+            new AreaPersonale();
             dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "Errore nella modifica dell'account");
+            JOptionPane.showMessageDialog(this, messaggio);
         }
     }
 }

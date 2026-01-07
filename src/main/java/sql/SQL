@@ -6,8 +6,8 @@ CREATE TABLE account (
     nome VARCHAR(20) NOT NULL,
     cognome VARCHAR(20) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
-    ruolo ruolo_enum NOT NULL DEFAULT 'UTENTE'
-    avatar VARCHAR(50) DEFAULT 'user.png'
+    ruolo ruolo_enum NOT NULL DEFAULT 'UTENTE',
+    avatar VARCHAR(50) NOT NULL
 );
 
 
@@ -17,12 +17,13 @@ CREATE OR REPLACE FUNCTION crea_account(
     p_nome VARCHAR,
     p_cognome VARCHAR,
     p_email VARCHAR,
-    p_ruolo ruolo_enum
+    p_ruolo ruolo_enum,
+    p_avatar VARCHAR
 )
 RETURNS TABLE(successo BOOLEAN, messaggio VARCHAR) AS $$
 BEGIN
-    INSERT INTO account (nomeUtente, password, nome, cognome, email, ruolo)
-    VALUES (p_nomeUtente, p_password, p_nome, p_cognome, p_email, p_ruolo);
+    INSERT INTO account (nomeUtente, password, nome, cognome, email, ruolo, avatar)
+    VALUES (p_nomeUtente, p_password, p_nome, p_cognome, p_email, p_ruolo, p_avatar);
 
     RETURN QUERY SELECT true::BOOLEAN, 'Account creato con successo'::VARCHAR;
 
@@ -32,8 +33,6 @@ EXCEPTION
     WHEN others THEN
         RETURN QUERY SELECT false::BOOLEAN, ('Errore: ' || SQLERRM)::VARCHAR;
 END;
-$$ LANGUAGE plpgsql;
-
 
 CREATE OR REPLACE FUNCTION login(
     p_nomeUtente VARCHAR,

@@ -75,6 +75,7 @@
                 </constraints>
                 <properties>
                   <background color="-855068"/>
+                  <enabled value="false"/>
                   <font name="Inter" size="16" style="0"/>
                   <showVerticalLines value="false"/>
                 </properties>

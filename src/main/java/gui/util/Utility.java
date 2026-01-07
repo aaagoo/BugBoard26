@@ -9,7 +9,10 @@ import java.sql.SQLException;
 import javax.swing.*;
 import java.awt.Image;
 import java.io.File;
-
+import modello.*;
+import gui.HomeAmm;
+import gui.HomeUtente;
+import gui.ModificaAccount;
 
 public class Utility {
 
@@ -107,5 +110,54 @@ public class Utility {
         );
     }
 
+    public static void selezionaRigaTabella(JTable tabella, JTextField field, int colonnaIndice) {
+        tabella.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = tabella.rowAtPoint(evt.getPoint());
+                if (row >= 0) {
+                    Object valore = tabella.getValueAt(row, colonnaIndice);
+                    field.setText(valore != null ? valore.toString() : "");
+                }
+            }
+        });
+    }
 
+    public static void redirectByRole(Utente utente) {
+        Ruolo ruolo = utente.getRuolo();
+
+        if (ruolo == Ruolo.AMMINISTRATORE) {
+            new HomeAmm();
+        } else {
+            new HomeUtente();
+        }
+    }
+
+    public static void selezionaUtenteECaricaDati(JTable tabella, Controller controller,
+                                                  JTextField nomeUtenteField, JTextField nomeField,
+                                                  JTextField cognomeField, JTextField emailField,
+                                                  JTextField passwordField, JTextField ripPasswordField,
+                                                  JLabel avatarLabel, ModificaAccount modificaAccount) {
+        tabella.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = tabella.rowAtPoint(evt.getPoint());
+                if (row >= 0) {
+                    String nomeUtente = tabella.getValueAt(row, 0).toString();
+                    Utente utente = controller.getUtenteByNomeUtente(nomeUtente);
+
+                    if (utente != null) {
+                        nomeUtenteField.setText(utente.getNomeUtente());
+                        nomeField.setText(utente.getNome());
+                        cognomeField.setText(utente.getCognome());
+                        emailField.setText(utente.getEmail());
+                        passwordField.setText(utente.getPassword());
+                        ripPasswordField.setText(utente.getPassword());
+                        caricaAvatar(avatarLabel, utente.getAvatar(), 200, 200);
+                        modificaAccount.setAvatarSelezionato(utente.getAvatar());
+                    }
+                }
+            }
+        });
+    }
 }
