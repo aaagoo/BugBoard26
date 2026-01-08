@@ -1,6 +1,6 @@
 package dao_implementazione;
 
-import dao_interfaccia.DAO_Account;
+import dao_interfaccia.DAO_AccountInt;
 import connessione.ConnessioneDatabase;
 import modello.*;
 import java.sql.*;
@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
-public class DAO_AccountI implements DAO_Account {
-    private static DAO_AccountI instance;
+public class DAO_Account implements DAO_AccountInt {
+    private static DAO_Account instance;
 
-    public static DAO_AccountI getInstance() {
+    public static DAO_Account getInstance() {
         if (instance == null) {
-            instance = new DAO_AccountI();
+            instance = new DAO_Account();
         }
         return instance;
     }

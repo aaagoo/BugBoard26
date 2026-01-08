@@ -40,12 +40,7 @@ public class Login extends JFrame {
 
         credentialsPanel.setBorder(new RoundedPanel("pannello"));
 
-        ImageIcon imageIcon = new ImageIcon(getClass().getClassLoader().getResource("images/img_login.jpeg"));
-        Image image = imageIcon.getImage();
-        Image newimg = image.getScaledInstance(500, 500, Image.SCALE_SMOOTH);
-        imageIcon = new ImageIcon(newimg);
-        imageLabel.setIcon(imageIcon);
-
+        Utility.caricaImmagine(imageLabel, "images/img_login.jpeg", 500, 500);
 
         accediButton.addActionListener(new ActionListener() {
             @Override

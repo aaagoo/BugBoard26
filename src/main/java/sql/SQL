@@ -6,7 +6,7 @@ CREATE TABLE account (
     nome VARCHAR(20) NOT NULL,
     cognome VARCHAR(20) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
-    ruolo ruolo_enum NOT NULL DEFAULT 'UTENTE',
+    ruolo ruolo_enum NOT NULL,
     avatar VARCHAR(50) NOT NULL
 );
 

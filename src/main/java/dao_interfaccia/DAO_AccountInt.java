@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import modello.Ruolo;
 
-public interface DAO_Account {
+public interface DAO_AccountInt {
 
     String creaAccount(String nomeUtente, String password, String nome, String cognome, String email, Ruolo ruolo, String avatar) throws java.sql.SQLException;
     boolean login(String nomeUtente, String password) throws java.sql.SQLException;

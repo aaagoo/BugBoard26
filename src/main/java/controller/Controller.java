@@ -1,6 +1,5 @@
 package controller;
 
-import dao_implementazione.*;
 import dao_interfaccia.*;
 import modello.Ruolo;
 import modello.Utente;
@@ -13,10 +12,10 @@ import sessione.SessioneManager;
 
 public class Controller {
     private static Controller instance;
-    private final DAO_Account DAO_Account;
+    private final DAO_AccountInt DAO_Account;
 
     private Controller() {
-        this.DAO_Account = DAO_AccountI.getInstance();
+        this.DAO_Account = dao_implementazione.DAO_Account.getInstance();
     }
 
     public static Controller getInstance() {

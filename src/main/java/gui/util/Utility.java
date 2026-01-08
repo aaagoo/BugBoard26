@@ -160,4 +160,16 @@ public class Utility {
             }
         });
     }
+
+    public static void caricaImmagine(JLabel label, String resourcePath, int width, int height) {
+        try {
+            ImageIcon imageIcon = new ImageIcon(Utility.class.getClassLoader().getResource(resourcePath));
+            Image image = imageIcon.getImage();
+            Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            label.setIcon(new ImageIcon(scaledImage));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
