@@ -11,7 +11,7 @@ import javax.swing.SwingUtilities;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"backend", "modello"})
-@EntityScan(basePackages = "modello")
+@EntityScan(basePackages = "backend.entity")
 public class BackendApplication {
 
     public static void main(String[] args) {

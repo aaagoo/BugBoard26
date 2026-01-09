@@ -5,7 +5,6 @@ import modello.Utente;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.*;
 
 @RestController
@@ -20,21 +19,17 @@ public class AuthRestController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
-        try {
-            String username = body.get("username");
-            String password = body.get("password");
-            Utente utente = accountService.login(username, password);
+        String username = body.get("username");
+        String password = body.get("password");
+        Utente utente = accountService.login(username, password);
 
-            if (utente != null) {
-                String token = accountService.generateToken(utente);
-                Map<String, Object> response = new HashMap<>();
-                response.put("token", token);
-                response.put("utente", utente);
-                return ResponseEntity.ok(response);
-            }
-            return ResponseEntity.status(401).body(Map.of("messaggio", "Credenziali non valide"));
-        } catch (SQLException e) {
-            return ResponseEntity.status(500).body(Map.of("messaggio", "Errore: " + e.getMessage()));
+        if (utente != null) {
+            String token = accountService.generateToken(utente);
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("utente", utente);
+            return ResponseEntity.ok(response);
         }
+        return ResponseEntity.status(401).body(Map.of("messaggio", "Credenziali non valide"));
     }
 }

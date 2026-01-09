@@ -35,9 +35,9 @@ public class ApiClient {
                     utenteNode.path("nome").asText(),
                     utenteNode.path("cognome").asText(),
                     utenteNode.path("email").asText(),
-                    Ruolo.valueOf(utenteNode.path("ruolo").asText())
+                    Ruolo.valueOf(utenteNode.path("ruolo").asText()),
+                    utenteNode.path("avatar").asText()
             );
-            utente.setAvatar(utenteNode.path("avatar").asText(null));
 
             SessioneManager.getInstance().setToken(token);
             System.out.println("[ApiClient] Login remoto OK, token salvato");
@@ -57,7 +57,7 @@ public class ApiClient {
                     "cognome", cognome,
                     "email", email,
                     "ruolo", ruolo.name(),
-                    "avatar", avatar.isEmpty() ? "user.png" : avatar
+                    "avatar", avatar
             );
             String response = post("/api/accounts", body);
             JsonNode root = mapper.readTree(response);
@@ -87,9 +87,9 @@ public class ApiClient {
                     node.path("nome").asText(),
                     node.path("cognome").asText(),
                     node.path("email").asText(),
-                    Ruolo.valueOf(node.path("ruolo").asText())
+                    Ruolo.valueOf(node.path("ruolo").asText()),
+                    node.path("avatar").asText()
             );
-            utente.setAvatar(node.path("avatar").asText(null));
             return utente;
         } catch (Exception e) {
             System.out.println("[ApiClient] getUtente fallito: " + e.getMessage());

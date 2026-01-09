@@ -33,6 +33,7 @@ EXCEPTION
     WHEN others THEN
         RETURN QUERY SELECT false::BOOLEAN, ('Errore: ' || SQLERRM)::VARCHAR;
 END;
+$$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION login(
     p_nomeUtente VARCHAR,

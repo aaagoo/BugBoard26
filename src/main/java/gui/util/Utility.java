@@ -5,7 +5,6 @@ import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.Map;
 import controller.Controller;
-import java.sql.SQLException;
 import javax.swing.*;
 import java.awt.Image;
 import java.io.File;
@@ -47,30 +46,51 @@ public class Utility {
     }
 
     public static void caricaDatiUtenti(JTable utentiTable, JTable amministratoriTable, Controller controller) {
-        try {
-            popolaTabellaAccount(utentiTable, controller.getUtenti());
-            popolaTabellaAccount(amministratoriTable, controller.getAmministratori());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        popolaTabellaAccount(utentiTable, controller.getUtenti());
+        popolaTabellaAccount(amministratoriTable, controller.getAmministratori());
     }
+
 
     public static void caricaAvatar(JLabel label, String avatarName, int width, int height) {
-        try {
-            String resourcePath = "/images/profileIcons/" + avatarName;
-            ImageIcon imageIcon = new ImageIcon(Utility.class.getResource(resourcePath));
+        if (avatarName == null || avatarName.isEmpty()) {
+            avatarName = "user.png";
+        }
 
-            if (imageIcon.getImage() == null) {
-                System.err.println("Avatar non trovato: " + resourcePath);
-                return;
+        String resourcePath = "/images/profileIcons/" + avatarName;
+        var url = Utility.class.getResource(resourcePath);
+
+        // 🔍 DEBUG: Stampa il risultato
+        System.out.println("🔍 Cerco: " + resourcePath);
+        System.out.println("🔍 URL trovato: " + url);
+
+        if (url == null) {
+            // Prova a elencare tutte le risorse disponibili
+            try {
+                var baseUrl = Utility.class.getResource("/images/profileIcons/");
+                System.out.println("🔍 Cartella base: " + baseUrl);
+            } catch (Exception e) {
+                System.err.println("❌ Cartella /images/profileIcons/ NON ESISTE!");
             }
 
+            label.setIcon(null);
+            label.setText("No Img");
+            return;
+        }
+
+        try {
+            ImageIcon imageIcon = new ImageIcon(url);
             Image image = imageIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
             label.setIcon(new ImageIcon(image));
+            label.setText("");
         } catch (Exception e) {
+            System.err.println("❌ Errore caricamento avatar: " + e.getMessage());
             e.printStackTrace();
+            label.setIcon(null);
+            label.setText("Error");
         }
     }
+
+
 
     public static String[] getAvatarFiles() {
         try {

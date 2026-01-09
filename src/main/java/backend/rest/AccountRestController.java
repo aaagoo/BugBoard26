@@ -6,7 +6,6 @@ import modello.Utente;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.*;
 
 @RestController
@@ -21,65 +20,45 @@ public class AccountRestController {
 
     @PostMapping
     public ResponseEntity<?> creaAccount(@RequestBody Map<String, String> body) {
-        try {
-            String messaggio = accountService.creaAccount(
-                    body.get("nomeUtente"),
-                    body.get("password"),
-                    body.get("nome"),
-                    body.get("cognome"),
-                    body.get("email"),
-                    Ruolo.valueOf(body.get("ruolo")),
-                    body.getOrDefault("avatar", "user.png")
-            );
-            return ResponseEntity.ok(Map.of("messaggio", messaggio));
-        } catch (SQLException e) {
-            return ResponseEntity.status(500).body(Map.of("messaggio", "Errore: " + e.getMessage()));
-        }
+        String messaggio = accountService.creaAccount(
+                body.get("nomeUtente"),
+                body.get("password"),
+                body.get("nome"),
+                body.get("cognome"),
+                body.get("email"),
+                Ruolo.valueOf(body.get("ruolo")),
+                body.get("avatar")
+        );
+        return ResponseEntity.ok(Map.of("messaggio", messaggio));
     }
 
     @GetMapping
     public ResponseEntity<?> getAllAccounts() {
-        try {
-            return ResponseEntity.ok(accountService.getAllAccounts());
-        } catch (SQLException e) {
-            return ResponseEntity.status(500).body(Map.of("messaggio", "Errore: " + e.getMessage()));
-        }
+        return ResponseEntity.ok(accountService.getAllAccounts());
     }
 
     @GetMapping("/{username}")
     public ResponseEntity<?> getUtente(@PathVariable String username) {
-        try {
-            Utente utente = accountService.getUtente(username);
-            return utente != null ? ResponseEntity.ok(utente) : ResponseEntity.notFound().build();
-        } catch (SQLException e) {
-            return ResponseEntity.status(500).body(Map.of("messaggio", "Errore: " + e.getMessage()));
-        }
+        Utente utente = accountService.getUtente(username);
+        return utente != null ? ResponseEntity.ok(utente) : ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{username}")
     public ResponseEntity<?> modificaAccount(@PathVariable String username, @RequestBody Map<String, String> body) {
-        try {
-            String messaggio = accountService.modificaAccount(
-                    username,
-                    body.getOrDefault("password", ""),
-                    body.getOrDefault("nome", ""),
-                    body.getOrDefault("cognome", ""),
-                    body.getOrDefault("email", ""),
-                    body.getOrDefault("avatar", "")
-            );
-            return ResponseEntity.ok(Map.of("messaggio", messaggio));
-        } catch (SQLException e) {
-            return ResponseEntity.status(500).body(Map.of("messaggio", "Errore: " + e.getMessage()));
-        }
+        String messaggio = accountService.modificaAccount(
+                username,
+                body.getOrDefault("password", ""),
+                body.getOrDefault("nome", ""),
+                body.getOrDefault("cognome", ""),
+                body.getOrDefault("email", ""),
+                body.getOrDefault("avatar", "")
+        );
+        return ResponseEntity.ok(Map.of("messaggio", messaggio));
     }
 
     @DeleteMapping("/{username}")
     public ResponseEntity<?> eliminaAccount(@PathVariable String username) {
-        try {
-            String messaggio = accountService.eliminaAccount(username);
-            return ResponseEntity.ok(Map.of("messaggio", messaggio));
-        } catch (SQLException e) {
-            return ResponseEntity.status(500).body(Map.of("messaggio", "Errore: " + e.getMessage()));
-        }
+        String messaggio = accountService.eliminaAccount(username);
+        return ResponseEntity.ok(Map.of("messaggio", messaggio));
     }
 }
