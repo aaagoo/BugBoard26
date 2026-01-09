@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class ModificaAccount extends JFrame {
+public class ModificaAccount extends BaseFrame {
 
     private JPanel mainPanel;
     private JPanel datiPanel;
@@ -36,6 +36,7 @@ public class ModificaAccount extends JFrame {
     private Controller controller;
 
     public ModificaAccount() {
+        super();
         setContentPane(mainPanel);
         setTitle("Home");
         setSize(1200,800);

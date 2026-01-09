@@ -4,11 +4,12 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import controller.Controller;
+import gui.util.BaseFrame;
 import gui.util.Utility;
 import gui.util.RoundedPanel;
 import javax.swing.table.TableColumn;
 
-public class GestisciUtenti extends JFrame {
+public class GestisciUtenti extends BaseFrame {
 
     private JPanel mainPanel;
     private JPanel operationsPanel;
@@ -25,6 +26,7 @@ public class GestisciUtenti extends JFrame {
     private Controller controller;
 
     public GestisciUtenti() {
+        super();
         setContentPane(mainPanel);
         setTitle("Home");
         setSize(1200,800);

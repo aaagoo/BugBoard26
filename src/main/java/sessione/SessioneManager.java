@@ -5,6 +5,7 @@ import modello.Utente;
 public class SessioneManager {
     private static SessioneManager instance;
     private Utente utenteCorrente;
+    private String token;
 
     private SessioneManager() {
     }
@@ -26,9 +27,18 @@ public class SessioneManager {
 
     public void logout() {
         utenteCorrente = null;
+        token = null;
     }
 
     public boolean isLoggato() {
         return utenteCorrente != null;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getToken() {
+        return token;
     }
 }

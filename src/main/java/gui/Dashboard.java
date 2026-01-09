@@ -1,12 +1,13 @@
 package gui;
 
+import gui.util.BaseFrame;
 import gui.util.RoundedPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Dashboard extends JFrame {
+public class Dashboard extends BaseFrame {
     private JPanel botPanel;
     private JButton indietroButton;
     private JPanel midPanel;
@@ -20,6 +21,7 @@ public class Dashboard extends JFrame {
     private JPanel mainPanel;
 
     public Dashboard() {
+        super();
         setContentPane(mainPanel);
         setTitle("Dashboard");
         setSize(1200,800);

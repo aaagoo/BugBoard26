@@ -1,5 +1,6 @@
 package gui;
 
+import gui.util.BaseFrame;
 import gui.util.RoundedPanel;
 import gui.util.Utility;
 import modello.Utente;
@@ -9,7 +10,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class HomeAmm extends JFrame {
+public class HomeAmm extends BaseFrame {
 
     private JPanel topPanel;
     private JPanel infoutentePanel;
@@ -26,6 +27,7 @@ public class HomeAmm extends JFrame {
     private JPanel mainPanel;
 
     public HomeAmm() {
+        super();
         setContentPane(mainPanel);
         setTitle("Home");
         setSize(1200,800);

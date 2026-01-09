@@ -1,10 +1,12 @@
 package gui;
 
+import gui.util.BaseFrame;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class NuovaIssue extends JFrame {
+public class NuovaIssue extends BaseFrame {
 
 
     private JPanel mainPanel;
@@ -23,6 +25,7 @@ public class NuovaIssue extends JFrame {
     private JCheckBox mediumCheckBox;
 
     public NuovaIssue() {
+        super();
         setContentPane(mainPanel);
         setTitle("Creazione Issue");
         setSize(1200,800);

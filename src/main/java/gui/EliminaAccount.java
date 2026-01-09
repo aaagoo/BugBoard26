@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import gui.util.*;
 import controller.Controller;
 
-public class EliminaAccount extends JFrame {
+public class EliminaAccount extends BaseFrame {
 
     private JPanel tablePanel;
     private JPanel utentiPanel;
@@ -24,6 +24,7 @@ public class EliminaAccount extends JFrame {
     private Controller controller;
 
     public EliminaAccount() {
+        super();
         setContentPane(mainPanel);
         setTitle("Home");
         setSize(1200,800);

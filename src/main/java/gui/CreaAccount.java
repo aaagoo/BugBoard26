@@ -8,7 +8,7 @@ import gui.util.*;
 import modello.*;
 
 
-public class CreaAccount extends JFrame {
+public class CreaAccount extends BaseFrame {
 
     private JPanel mainPanel;
     private JTextField nomeUtenteField;
@@ -29,6 +29,7 @@ public class CreaAccount extends JFrame {
     private String avatarSelezionato;
 
     public CreaAccount() {
+        super();
         setContentPane(mainPanel);
         setTitle("Home");
         setSize(1200,800);

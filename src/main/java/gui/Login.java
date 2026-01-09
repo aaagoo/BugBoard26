@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class Login extends JFrame {
+public class Login extends BaseFrame {
     private JPanel textPanel;
     private JLabel title1;
     private JPanel credentialsPanel;
@@ -30,6 +30,7 @@ public class Login extends JFrame {
 
 
     public Login() {
+        super();
         setContentPane(mainPanel);
         setTitle("Login");
         setSize(1000,500);
@@ -65,6 +66,16 @@ public class Login extends JFrame {
                 dispose();
             }
         });
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                System.exit(0);
+            }
+        });
+
     }
 }
 

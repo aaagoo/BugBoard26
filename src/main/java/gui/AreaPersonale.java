@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AreaPersonale extends JFrame {
+public class AreaPersonale extends BaseFrame {
     private JPanel mainPanel;
     private JButton indietroButton;
     private JPanel utentePanel;
@@ -24,6 +24,7 @@ public class AreaPersonale extends JFrame {
 
 
     public AreaPersonale() {
+        super();
         setContentPane(mainPanel);
         setTitle("Home");
         setSize(1200,800);

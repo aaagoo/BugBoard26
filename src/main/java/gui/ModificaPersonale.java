@@ -7,7 +7,7 @@ import sessione.SessioneManager;
 
 import javax.swing.*;
 
-public class ModificaPersonale extends JFrame {
+public class ModificaPersonale extends BaseFrame {
     private JPanel utentePanel;
     private JPanel imagePanel;
     private JLabel imageLabel;
@@ -26,6 +26,7 @@ public class ModificaPersonale extends JFrame {
     private String avatarSelezionato;
 
     public ModificaPersonale() {
+        super();
         setContentPane(mainPanel);
         setTitle("Home");
         setSize(1200,800);

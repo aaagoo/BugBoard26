@@ -4,12 +4,13 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import gui.util.BaseFrame;
 import gui.util.RoundedPanel;
 import modello.Utente;
 import controller.Controller;
 import gui.util.Utility;
 
-public class HomeUtente extends JFrame {
+public class HomeUtente extends BaseFrame {
     private JPanel mainPanel;
     private JPanel infoutentePanel;
     private JLabel benvenutoLabel;
@@ -27,6 +28,7 @@ public class HomeUtente extends JFrame {
     private JPanel dashboardPanel;
 
     public HomeUtente() {
+        super();
         setContentPane(mainPanel);
         setTitle("Home");
         setSize(1200,800);
