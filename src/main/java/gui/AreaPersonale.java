@@ -39,7 +39,7 @@ public class AreaPersonale extends BaseFrame {
         imagePanel.setBorder(new RoundedPanel("finestra"));
 
 
-        Utente utente = SessioneManager.getInstance().getUtenteCorrente();
+        Account utente = SessioneManager.getInstance().getUtenteCorrente();
         if (utente != null) {
             nomeLabel.setText(utente.getNome());
             cognomeLabel.setText(utente.getCognome());

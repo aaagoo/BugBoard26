@@ -3,7 +3,7 @@ package gui;
 import gui.util.BaseFrame;
 import gui.util.RoundedPanel;
 import gui.util.Utility;
-import modello.Utente;
+import modello.Account;
 import sessione.SessioneManager;
 
 import javax.swing.*;
@@ -43,7 +43,7 @@ public class HomeAmm extends BaseFrame {
         dashboardPanel.setBorder(new RoundedPanel("finestra"));
 
 
-        Utente utente = SessioneManager.getInstance().getUtenteCorrente();
+        Account utente = SessioneManager.getInstance().getUtenteCorrente();
         if (utente != null) {
             benvenutoLabel.setText(utente.getNome() + " " + utente.getCognome());
             ruoloLabel.setText(utente.getRuolo().toString());

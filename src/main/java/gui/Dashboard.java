@@ -1,7 +1,10 @@
 package gui;
 
+import controller.Controller;
 import gui.util.BaseFrame;
 import gui.util.RoundedPanel;
+import gui.util.Utility;
+import modello.Account;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -15,13 +18,18 @@ public class Dashboard extends BaseFrame {
     private JTable dashboardTable;
     private JPanel topPanel;
     private JPanel infoutentePanel;
-    private JLabel benvenutoLabel;
+    private JPanel mainPanel;
     private JLabel userpngLabel;
     private JLabel ruoloLabel;
-    private JPanel mainPanel;
+    private JLabel benvenutoLabel;
+    private JButton eliminaButton;
+
+    private Controller controller;
 
     public Dashboard() {
         super();
+        controller = Controller.getInstance();
+
         setContentPane(mainPanel);
         setTitle("Dashboard");
         setSize(1200,800);
@@ -35,10 +43,37 @@ public class Dashboard extends BaseFrame {
         botPanel.setBorder(new RoundedPanel("pannello"));
         dashboardPanel.setBorder(new RoundedPanel("finestra"));
 
+        Account utente = Controller.getInstance().getUtenteCorrente();
+        if (utente != null) {
+            benvenutoLabel.setText(utente.getNome() + " " + utente.getCognome());
+            ruoloLabel.setText(utente.getRuolo().toString());
+            Utility.caricaAvatar(userpngLabel, utente.getAvatar(), 80, 80);
+        }
+
+        Utility.caricaDatiIssue(dashboardTable, controller);
+        Utility.impostaColorazioneRisolto(dashboardTable);
+
+        dashboardTable.getTableHeader().setReorderingAllowed(false);
+        dashboardTable.getTableHeader().setResizingAllowed(false);
+
+        JScrollPane scrollPane = (JScrollPane) dashboardTable.getParent().getParent();
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getViewport().setBorder(null);
+
+        Utility.impostaLarghezzeColonne(dashboardTable, 15, 100, 20, 40, 60, 60, 60, 20);
+
         indietroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new HomeUtente();
+                dispose();
+            }
+        });
+
+        eliminaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new EliminaIssueUtente();
                 dispose();
             }
         });

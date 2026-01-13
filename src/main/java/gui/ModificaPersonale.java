@@ -2,7 +2,7 @@ package gui;
 
 import controller.Controller;
 import gui.util.*;
-import modello.Utente;
+import modello.Account;
 import sessione.SessioneManager;
 
 import javax.swing.*;
@@ -58,7 +58,7 @@ public class ModificaPersonale extends BaseFrame {
     }
 
     private void caricaDatiUtente() {
-        Utente utente = SessioneManager.getInstance().getUtenteCorrente();
+        Account utente = SessioneManager.getInstance().getUtenteCorrente();
         if (utente != null) {
             usernameField.setText(utente.getNomeUtente());
             passwordField.setText(utente.getPassword());

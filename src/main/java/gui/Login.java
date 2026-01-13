@@ -2,9 +2,8 @@ package gui;
 
 import controller.Controller;
 import gui.util.*;
-import modello.Utente;
+import modello.Account;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -52,7 +51,7 @@ public class Login extends BaseFrame {
                 if (nomeUtente.isEmpty() || password.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Per favore, compila tutti i campi.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
-                Utente utente = Controller.getInstance().login(nomeUtente, password);
+                Account utente = Controller.getInstance().login(nomeUtente, password);
 
                 if (utente == null) {
                     JOptionPane.showMessageDialog(Login.this,

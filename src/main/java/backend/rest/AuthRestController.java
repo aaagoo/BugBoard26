@@ -1,7 +1,7 @@
 package backend.rest;
 
 import backend.service.AccountService;
-import modello.Utente;
+import modello.Account;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +21,7 @@ public class AuthRestController {
     public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
         String username = body.get("username");
         String password = body.get("password");
-        Utente utente = accountService.login(username, password);
+        Account utente = accountService.login(username, password);
 
         if (utente != null) {
             String token = accountService.generateToken(utente);

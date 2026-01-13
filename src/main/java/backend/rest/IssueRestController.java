@@ -1,0 +1,102 @@
+package backend.rest;
+
+import backend.service.IssueService;
+import modello.Priorita;
+import modello.Tipo;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/issues")
+@CrossOrigin(origins = "*")
+public class IssueRestController {
+    private final IssueService issueService;
+
+    public IssueRestController(IssueService issueService) {
+        this.issueService = issueService;
+    }
+
+    @PostMapping
+    public ResponseEntity<?> creaIssue(@RequestBody Map<String, String> body) {
+        try {
+            Priorita priorita = Priorita.valueOf(body.get("priorita").toUpperCase());
+            Tipo tipo = Tipo.valueOf(body.get("tipo").toUpperCase());
+
+            String messaggio = issueService.creaIssue(
+                    body.get("titolo"),
+                    body.get("descrizione"),
+                    priorita,
+                    tipo,
+                    body.get("creatoreUsername"),
+                    body.getOrDefault("immagineUrl", null)
+            );
+            return ResponseEntity.ok(Map.of("messaggio", messaggio));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("messaggio", "Errore: Priorità o tipo non validi"));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("messaggio", "Errore nella creazione dell'issue: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Map<String, Object>>> getAllIssues() {
+        try {
+            List<Map<String, Object>> issues = issueService.getAllIssues();
+            return ResponseEntity.ok(issues);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @GetMapping("/assegnatario/{nomeUtente}")
+    public ResponseEntity<List<Map<String, Object>>> getIssueByAssegnatario(@PathVariable String nomeUtente) {
+        try {
+            List<Map<String, Object>> issues = issueService.getIssueByAssegnatario(nomeUtente);
+            return ResponseEntity.ok(issues);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> getIssueById(@PathVariable Long id) {
+        try {
+            Map<String, Object> issue = issueService.getIssueById(id);
+            return ResponseEntity.ok(issue);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(Map.of("messaggio", "Issue non trovata"));
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminaIssue(@PathVariable Long id, @RequestParam String nomeUtente) {
+        try {
+            String messaggio = issueService.eliminaIssue(id, nomeUtente);
+            if (messaggio.contains("successo")) {
+                return ResponseEntity.ok(Map.of("messaggio", messaggio));
+            } else {
+                return ResponseEntity.status(403).body(Map.of("messaggio", messaggio));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("messaggio", "Errore: " + e.getMessage()));
+        }
+    }
+
+    @PutMapping("/{id}/risolvi")
+    public ResponseEntity<?> risolviIssue(@PathVariable Long id) {
+        try {
+            String messaggio = issueService.risolviIssue(id);
+            if (messaggio.contains("successo")) {
+                return ResponseEntity.ok(Map.of("messaggio", messaggio));
+            } else {
+                return ResponseEntity.badRequest().body(Map.of("messaggio", messaggio));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("messaggio", "Errore: " + e.getMessage()));
+        }
+    }
+
+}

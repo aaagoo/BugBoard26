@@ -1,7 +1,7 @@
 package controller;
 
 import modello.Ruolo;
-import modello.Utente;
+import modello.Account;
 import sessione.SessioneManager;
 import remote.ApiClient;
 import java.util.stream.Collectors;
@@ -23,9 +23,9 @@ public class Controller {
         return instance;
     }
 
-    public Utente login(String nomeUtente, String password) {
+    public Account login(String nomeUtente, String password) {
         try {
-            Utente utente = apiClient.login(nomeUtente, password);
+            Account utente = apiClient.login(nomeUtente, password);
             if (utente != null) {
                 SessioneManager.getInstance().setUtenteCorrente(utente);
                 return utente;
@@ -53,7 +53,7 @@ public class Controller {
         }
     }
 
-    public Utente getUtenteByNomeUtente(String nomeUtente) {
+    public Account getUtenteByNomeUtente(String nomeUtente) {
         try {
             return apiClient.getUtente(nomeUtente);
         } catch (Exception e) {
@@ -65,9 +65,9 @@ public class Controller {
     public String modificaAccount(String nomeUtente, String password, String nome, String cognome, String email, String avatar) {
         try {
             String messaggio = apiClient.modificaAccount(nomeUtente, password, nome, cognome, email, avatar);
-            Utente utenteCorrente = SessioneManager.getInstance().getUtenteCorrente();
+            Account utenteCorrente = SessioneManager.getInstance().getUtenteCorrente();
             if (utenteCorrente != null && utenteCorrente.getNomeUtente().equals(nomeUtente)) {
-                Utente aggiornato = apiClient.getUtente(nomeUtente);
+                Account aggiornato = apiClient.getUtente(nomeUtente);
                 SessioneManager.getInstance().setUtenteCorrente(aggiornato);
             }
             return messaggio;
@@ -96,7 +96,67 @@ public class Controller {
                 .collect(Collectors.toList());
     }
 
-    public Utente getUtenteCorrente() {
+    public Account getUtenteCorrente() {
         return SessioneManager.getInstance().getUtenteCorrente();
     }
+
+    public String creaIssue(String titolo, String descrizione, String priorita, String tipo, String assegnatarioUsername, String immagineUrl) {
+        try {
+            Account utente = getUtenteCorrente();
+            if (utente == null) {
+                return "Errore: Utente non loggato";
+            }
+            return apiClient.creaIssue(titolo, descrizione, priorita, tipo, utente.getNomeUtente(), assegnatarioUsername, immagineUrl);
+        } catch (Exception e) {
+            return "Errore: " + e.getMessage();
+        }
+    }
+
+    public List<Map<String, Object>> getAllIssues() {
+        try {
+            return apiClient.getAllIssues();
+        } catch (Exception e) {
+            System.out.println("[Controller] Errore getAllIssues: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Map<String, Object>> getIssueAssegnate(String nomeUtente) {
+        try {
+            return apiClient.getIssueByAssegnatario(nomeUtente);
+        } catch (Exception e) {
+            System.out.println("[Controller] Errore getIssueAssegnate: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    public Map<String, Object> getIssueById(Long id) {
+        try {
+            return apiClient.getIssueById(id);
+        } catch (Exception e) {
+            System.out.println("[Controller] Errore getIssueById: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public String eliminaIssue(Long issueId) {
+        try {
+            Account utente = getUtenteCorrente();
+            if (utente == null) {
+                return "Errore: Utente non loggato";
+            }
+            return apiClient.eliminaIssue(issueId, utente.getNomeUtente());
+        } catch (Exception e) {
+            return "Errore: " + e.getMessage();
+        }
+    }
+
+    public String risolviIssue(Long issueId) {
+        try {
+            return apiClient.risolviIssue(issueId);
+        } catch (Exception e) {
+            return "Errore: " + e.getMessage();
+        }
+    }
+
 }

@@ -1,10 +1,10 @@
 package sessione;
 
-import modello.Utente;
+import modello.Account;
 
 public class SessioneManager {
     private static SessioneManager instance;
-    private Utente utenteCorrente;
+    private Account utenteCorrente;
     private String token;
 
     private SessioneManager() {
@@ -17,11 +17,11 @@ public class SessioneManager {
         return instance;
     }
 
-    public void setUtenteCorrente(Utente utente) {
+    public void setUtenteCorrente(Account utente) {
         this.utenteCorrente = utente;
     }
 
-    public Utente getUtenteCorrente() {
+    public Account getUtenteCorrente() {
         return utenteCorrente;
     }
 

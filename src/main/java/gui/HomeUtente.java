@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 import gui.util.BaseFrame;
 import gui.util.RoundedPanel;
-import modello.Utente;
+import modello.Account;
 import controller.Controller;
 import gui.util.Utility;
 
@@ -43,12 +43,35 @@ public class HomeUtente extends BaseFrame {
         operationsPanel.setBorder(new RoundedPanel("finestra"));
         dashboardPanel.setBorder(new RoundedPanel("finestra"));
 
-        Utente utente = Controller.getInstance().getUtenteCorrente();
+        Account utente = Controller.getInstance().getUtenteCorrente();
         if (utente != null) {
             benvenutoLabel.setText(utente.getNome() + " " + utente.getCognome());
             ruoloLabel.setText(utente.getRuolo().toString());
             Utility.caricaAvatar(userpngLabel, utente.getAvatar(), 80, 80);
+            Utility.caricaIssueAssegnate(dashboardTable, utente.getNomeUtente(), Controller.getInstance());
         }
+
+        dashboardTable.getTableHeader().setReorderingAllowed(false);
+        dashboardTable.getTableHeader().setResizingAllowed(false);
+
+        JScrollPane scrollPane = (JScrollPane) dashboardTable.getParent().getParent();
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getViewport().setBorder(null);
+
+        Utility.impostaLarghezzeColonne(dashboardTable, 17, 70, 20, 50, 40, 20);
+
+        dashboardTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = dashboardTable.getSelectedRow();
+                if (row != -1) {
+                    Object idObj = dashboardTable.getModel().getValueAt(row, 0);
+                    Long issueId = Long.parseLong(idObj.toString());
+                    new VIsualizzaIssue(issueId);
+                    dispose();
+                }
+            }
+        });
 
         nuovaIssueButton.addActionListener(new ActionListener() {
             @Override

@@ -2,7 +2,7 @@ package backend.rest;
 
 import backend.service.AccountService;
 import modello.Ruolo;
-import modello.Utente;
+import modello.Account;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +39,7 @@ public class AccountRestController {
 
     @GetMapping("/{username}")
     public ResponseEntity<?> getUtente(@PathVariable String username) {
-        Utente utente = accountService.getUtente(username);
+        Account utente = accountService.getUtente(username);
         return utente != null ? ResponseEntity.ok(utente) : ResponseEntity.notFound().build();
     }
 

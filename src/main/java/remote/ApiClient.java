@@ -3,7 +3,7 @@ package remote;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import modello.Ruolo;
-import modello.Utente;
+import modello.Account;
 import sessione.SessioneManager;
 
 import java.io.*;
@@ -20,7 +20,7 @@ public class ApiClient {
         this.baseUrl = baseUrl;
     }
 
-    public Utente login(String username, String password) {
+    public Account login(String username, String password) {
         try {
             Map<String, String> body = Map.of("username", username, "password", password);
             String response = post("/api/auth/login", body);
@@ -29,14 +29,15 @@ public class ApiClient {
             String token = root.path("token").asText();
             JsonNode utenteNode = root.path("utente");
 
-            Utente utente = new Utente(
+            Account utente = new Account(
                     utenteNode.path("nomeUtente").asText(),
                     utenteNode.path("password").asText(),
                     utenteNode.path("nome").asText(),
                     utenteNode.path("cognome").asText(),
                     utenteNode.path("email").asText(),
                     Ruolo.valueOf(utenteNode.path("ruolo").asText()),
-                    utenteNode.path("avatar").asText()
+                    utenteNode.path("avatar").asText(),
+                    utenteNode.path("issueAssegnate").asInt()
             );
 
             SessioneManager.getInstance().setToken(token);
@@ -77,18 +78,19 @@ public class ApiClient {
         }
     }
 
-    public Utente getUtente(String nomeUtente) {
+    public Account getUtente(String nomeUtente) {
         try {
             String response = get("/api/accounts/" + nomeUtente);
             JsonNode node = mapper.readTree(response);
-            Utente utente = new Utente(
+            Account utente = new Account(
                     node.path("nomeUtente").asText(),
                     node.path("password").asText(),
                     node.path("nome").asText(),
                     node.path("cognome").asText(),
                     node.path("email").asText(),
                     Ruolo.valueOf(node.path("ruolo").asText()),
-                    node.path("avatar").asText()
+                    node.path("avatar").asText(),
+                    node.path("issueAssegnate").asInt()
             );
             return utente;
         } catch (Exception e) {
@@ -175,5 +177,67 @@ public class ApiClient {
         }
         return sb.toString();
     }
+
+    public String creaIssue(String titolo, String descrizione, String priorita, String tipo, String creatoreUsername, String assegnatarioUsername, String immagineUrl) {
+        try {
+            Map<String, Object> body = new HashMap<>();
+            body.put("titolo", titolo);
+            body.put("descrizione", descrizione);
+            body.put("priorita", priorita);
+            body.put("tipo", tipo);
+            body.put("creatoreUsername", creatoreUsername);
+            body.put("assegnatarioUsername", assegnatarioUsername);
+            if (immagineUrl != null && !immagineUrl.isEmpty()) {
+                body.put("immagineUrl", immagineUrl);
+            }
+
+            String response = post("/api/issues", body);
+            JsonNode root = mapper.readTree(response);
+            return root.path("messaggio").asText("Issue creata");
+        } catch (Exception e) {
+            return "Errore: " + e.getMessage();
+        }
+    }
+
+    public List<Map<String, Object>> getAllIssues() {
+        try {
+            String response = get("/api/issues");
+            return mapper.readValue(response, List.class);
+        } catch (Exception e) {
+            System.out.println("[ApiClient] getAllIssues fallito: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Map<String, Object>> getIssueByAssegnatario(String nomeUtente) throws Exception {
+        String response = get("/api/issues/assegnatario/" + nomeUtente);
+        return mapper.readValue(response, List.class);
+    }
+
+    public Map<String, Object> getIssueById(Long id) throws Exception {
+        String response = get("/api/issues/" + id);
+        return mapper.readValue(response, Map.class);
+    }
+
+    public String eliminaIssue(Long issueId, String nomeUtente) {
+        try {
+            String response = delete("/api/issues/" + issueId + "?nomeUtente=" + nomeUtente);
+            JsonNode root = mapper.readTree(response);
+            return root.path("messaggio").asText("Issue eliminata");
+        } catch (Exception e) {
+            return "Errore: " + e.getMessage();
+        }
+    }
+
+    public String risolviIssue(Long issueId) {
+        try {
+            String response = put("/api/issues/" + issueId + "/risolvi", null);
+            JsonNode root = mapper.readTree(response);
+            return root.path("messaggio").asText("Issue risolta");
+        } catch (Exception e) {
+            return "Errore: " + e.getMessage();
+        }
+    }
+
 }
 

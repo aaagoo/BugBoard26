@@ -12,6 +12,11 @@ import modello.*;
 import gui.HomeAmm;
 import gui.HomeUtente;
 import gui.ModificaAccount;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import javax.swing.table.TableColumn;
+
+
 
 public class Utility {
 
@@ -30,12 +35,12 @@ public class Utility {
     }
 
     public static void popolaTabellaAccount(JTable tabella, List<Map<String, Object>> dati) {
-        String[] colonne = {"nomeUtente", "nome", "cognome", "email"};
+        String[] colonne = {"nomeutente", "nome", "cognome", "email"};
         DefaultTableModel model = new DefaultTableModel(colonne, 0);
 
         for (Map<String, Object> riga : dati) {
             model.addRow(new Object[]{
-                    riga.get("nomeUtente"),
+                    riga.get("nomeutente"),
                     riga.get("nome"),
                     riga.get("cognome"),
                     riga.get("email")
@@ -91,7 +96,6 @@ public class Utility {
     }
 
 
-
     public static String[] getAvatarFiles() {
         try {
             File avatarDir = new File(Utility.class.getResource("/images/profileIcons/").toURI());
@@ -143,7 +147,7 @@ public class Utility {
         });
     }
 
-    public static void redirectByRole(Utente utente) {
+    public static void redirectByRole(Account utente) {
         Ruolo ruolo = utente.getRuolo();
 
         if (ruolo == Ruolo.AMMINISTRATORE) {
@@ -164,7 +168,7 @@ public class Utility {
                 int row = tabella.rowAtPoint(evt.getPoint());
                 if (row >= 0) {
                     String nomeUtente = tabella.getValueAt(row, 0).toString();
-                    Utente utente = controller.getUtenteByNomeUtente(nomeUtente);
+                    Account utente = controller.getUtenteByNomeUtente(nomeUtente);
 
                     if (utente != null) {
                         nomeUtenteField.setText(utente.getNomeUtente());
@@ -192,4 +196,143 @@ public class Utility {
         }
     }
 
+    public static void caricaDatiIssue(JTable dashboardTable, Controller controller) {
+        List<Map<String, Object>> dati = controller.getAllIssues();
+        String[] colonne = {"ID", "Titolo", "Priorità", "Tipo", "Creatore", "Assegnatario", "Data Creazione", "Risolto"};
+        DefaultTableModel model = new DefaultTableModel(colonne, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        for (Map<String, Object> riga : dati) {
+            model.addRow(new Object[]{
+                    riga.get("id"),
+                    riga.get("titolo"),
+                    riga.get("priorita"),
+                    riga.get("tipo"),
+                    riga.get("creatoreusername"),
+                    riga.get("assegnatariousername"),
+                    formattaData(riga.get("datacreazione")),
+                    (Boolean) riga.get("risolto") ? "Sì" : "No"
+            });
+        }
+        dashboardTable.setModel(model);
+    }
+
+    public static void impostaLarghezzeColonne(JTable table, int... larghezze) {
+        if (larghezze == null || larghezze.length == 0) {
+            return;
+        }
+
+        for (int i = 0; i < larghezze.length && i < table.getColumnCount(); i++) {
+            TableColumn column = table.getColumnModel().getColumn(i);
+            column.setPreferredWidth(larghezze[i]);
+        }
+    }
+
+    public static void caricaIssueAssegnate(JTable dashboardTable, String nomeUtente, Controller controller) {
+        List<Map<String, Object>> dati = controller.getIssueAssegnate(nomeUtente);
+        String[] colonne = {"ID", "Titolo", "Priorità", "Tipo", "Creatore", "Data Creazione"};
+        DefaultTableModel model = new DefaultTableModel(colonne, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        for (Map<String, Object> riga : dati) {
+            model.addRow(new Object[]{
+                    riga.get("id"),
+                    riga.get("titolo"),
+                    riga.get("priorita"),
+                    riga.get("tipo"),
+                    riga.get("creatoreusername"),
+                    formattaData(riga.get("datacreazione"))
+            });
+        }
+        dashboardTable.setModel(model);
+    }
+
+    public static void caricaDatiIssueById(Long issueId, JLabel idLabel, JTextField titoloField,
+                                           JTextArea descrizioneArea, JLabel prioritaLabel,
+                                           JLabel tipoLabel, JLabel risoltoLabel, JLabel creatoreLabel,
+                                           JLabel dataCreazioneLabel, JLabel dataRisoluzioneLabel,
+                                           JFrame parent) {
+        try {
+            Map<String, Object> issue = Controller.getInstance().getIssueById(issueId);
+
+            idLabel.setText("ID: " + issue.get("id"));
+            titoloField.setText((String) issue.get("titolo"));
+            descrizioneArea.setText((String) issue.get("descrizione"));
+            prioritaLabel.setText("Priorità: " + issue.get("priorita"));
+            tipoLabel.setText("Tipo: " + issue.get("tipo"));
+            risoltoLabel.setText("Risolto: " + ((Boolean) issue.get("risolto") ? "Sì" : "No"));
+            creatoreLabel.setText("Creatore: " + issue.get("creatoreusername"));
+
+            dataCreazioneLabel.setText("Data Creazione: " + formattaData(issue.get("datacreazione")));
+            dataRisoluzioneLabel.setText("Data Risoluzione: " + formattaData(issue.get("datarisoluzione")));
+
+            titoloField.setEditable(false);
+            descrizioneArea.setEditable(false);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(parent, "Errore nel caricamento dell'issue: " + e.getMessage());
+        }
+    }
+
+
+    public static void impostaColorazioneRisolto(JTable table) {
+        int colonnaRisolto = -1;
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            if (table.getColumnName(i).equalsIgnoreCase("Risolto")) {
+                colonnaRisolto = i;
+                break;
+            }
+        }
+
+        if (colonnaRisolto == -1) return;
+
+        final int colonna = colonnaRisolto;
+
+        table.getColumnModel().getColumn(colonna).setCellRenderer(new javax.swing.table.DefaultTableCellRenderer() {
+            @Override
+            public java.awt.Component getTableCellRendererComponent(JTable table, Object value,
+                                                                    boolean isSelected, boolean hasFocus,
+                                                                    int row, int column) {
+                java.awt.Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                if (value != null) {
+                    String valoreTesto = value.toString();
+                    if (valoreTesto.equalsIgnoreCase("Sì")) {
+                        c.setForeground(new java.awt.Color(0, 150, 0));
+                    } else if (valoreTesto.equalsIgnoreCase("No")) {
+                        c.setForeground(java.awt.Color.RED);
+                    }
+                }
+
+                return c;
+            }
+        });
+    }
+
+    private static String formattaData(Object dataObj) {
+        if (dataObj == null) {
+            return "N/A";
+        }
+
+        try {
+            String dataStr = dataObj.toString();
+            if (dataStr.contains(".")) {
+                dataStr = dataStr.substring(0, dataStr.indexOf('.'));
+            }
+            LocalDateTime dateTime = LocalDateTime.parse(dataStr);
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+            return dateTime.format(outputFormatter);
+        } catch (Exception e) {
+            return dataObj.toString();
+        }
+    }
 }
