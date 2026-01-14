@@ -45,51 +45,68 @@ public class Login extends BaseFrame {
         accediButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String nomeUtente = userField.getText();
-                String password = new String(pswField.getPassword());
-
-                if (nomeUtente.isEmpty() || password.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Per favore, compila tutti i campi.", "Errore", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                showLoading();
-
-                SwingWorker<Account, Void> worker = new SwingWorker<Account, Void>() {
-                    @Override
-                    protected Account doInBackground() throws Exception {
-
-                        return Controller.getInstance().login(nomeUtente, password);
-                    }
-
-                    @Override
-                    protected void done() {
-
-                        hideLoading();
-                        
-                        try {
-                            Account utente = get();
-                            
-                            if (utente == null) {
-                                JOptionPane.showMessageDialog(Login.this,
-                                        "Credenziali non valide",
-                                        "Errore",
-                                        JOptionPane.ERROR_MESSAGE);
-                            } else {
-                                Utility.redirectByRole(utente);
-                                dispose();
-                            }
-                        } catch (InterruptedException | ExecutionException ex) {
-                            JOptionPane.showMessageDialog(Login.this, 
-                                    "Errore di connessione: " + ex.getMessage(), 
-                                    "Errore", 
-                                    JOptionPane.ERROR_MESSAGE);
-                            ex.printStackTrace();
-                        }
-                    }
-                };
-                worker.execute();
+                eseguiLogin();
             }
         });
+
+        userField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eseguiLogin();
+            }
+        });
+
+        pswField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eseguiLogin();
+            }
+        });
+        SwingUtilities.invokeLater(() -> userField.requestFocusInWindow());
+    }
+
+    private void eseguiLogin() {
+        String nomeUtente = userField.getText();
+        String password = new String(pswField.getPassword());
+
+        if (nomeUtente.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Per favore, compila tutti i campi.", "Errore", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        showLoading();
+
+        SwingWorker<Account, Void> worker = new SwingWorker<Account, Void>() {
+            @Override
+            protected Account doInBackground() throws Exception {
+                return Controller.getInstance().login(nomeUtente, password);
+            }
+
+            @Override
+            protected void done() {
+                hideLoading();
+                
+                try {
+                    Account utente = get();
+                    
+                    if (utente == null) {
+                        JOptionPane.showMessageDialog(Login.this,
+                                "Credenziali non valide",
+                                "Errore",
+                                JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        Utility.redirectByRole(utente);
+                        dispose();
+                    }
+                } catch (InterruptedException | ExecutionException ex) {
+                    JOptionPane.showMessageDialog(Login.this, 
+                            "Errore di connessione: " + ex.getMessage(), 
+                            "Errore", 
+                            JOptionPane.ERROR_MESSAGE);
+                    ex.printStackTrace();
+                }
+            }
+        };
+        worker.execute();
     }
 }

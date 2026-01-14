@@ -29,20 +29,23 @@ public class SplashScreen extends JWindow {
                 g2.setColor(BACKGROUND_COLOR);
                 g2.fillRect(0, 0, getWidth(), getHeight());
 
-                java.net.URL imgUrl = getClass().getResource("/images/logo_bugboard.png");
-                if (imgUrl != null) {
-                    ImageIcon logoIcon = new ImageIcon(imgUrl);
-                    Image img = logoIcon.getImage();
-
-                    int targetWidth = 120;
-                    int targetHeight = (targetWidth * logoIcon.getIconHeight()) / logoIcon.getIconWidth();
-
-                    g2.drawImage(img, (getWidth() - targetWidth) / 2, 40, targetWidth, targetHeight, null);
+                try {
+                    java.net.URL imgUrl = getClass().getResource("/images/logo_bugboard.png");
+                    if (imgUrl != null) {
+                        ImageIcon logoIcon = new ImageIcon(imgUrl);
+                        Image img = logoIcon.getImage();
+                        
+                        int targetWidth = 120;
+                        int targetHeight = (targetWidth * logoIcon.getIconHeight()) / logoIcon.getIconWidth(); 
+                        
+                        g2.drawImage(img, (getWidth() - targetWidth) / 2, 30, targetWidth, targetHeight, null);
+                    }
+                } catch (Exception e) {
                 }
 
                 int size = 40;
                 int x = (getWidth() - size) / 2;
-                int y = 170; 
+                int y = 190;
                 int strokeWidth = 5;
 
                 g2.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
