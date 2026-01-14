@@ -40,7 +40,7 @@ public class Login extends BaseFrame {
 
         credentialsPanel.setBorder(new RoundedPanel("pannello"));
 
-        Utility.caricaImmagine(imageLabel, "images/img_login.jpeg", 500, 500);
+        Utility.caricaImmagine(imageLabel, "images/img_login.png", 500, 500);
 
         accediButton.addActionListener(new ActionListener() {
             @Override

@@ -1,0 +1,4 @@
+filtrare e ordinare i risultati in base a criteri come tipologia, stato, priorità o altri parametri
+quando un bug viene risolto, il sistema notifica l'utente che lo ha segnalato
+è necessaria una funzione di ricerca che consenta di trovare bug in base a parole chiave
+il sistema può gestire automaticamente l'assegnazione di bug, o può farlo manualmente l'utente
