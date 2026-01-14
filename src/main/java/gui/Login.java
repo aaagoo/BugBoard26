@@ -32,9 +32,8 @@ public class Login extends BaseFrame {
     public Login() {
         super();
         setContentPane(mainPanel);
-        setTitle("Login");
+        setTitle("BugBoard26");
         setSize(1000,500);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
@@ -54,25 +53,22 @@ public class Login extends BaseFrame {
                     return;
                 }
 
-                // Mostra il caricamento
                 showLoading();
 
-                // Esegui il login in background
                 SwingWorker<Account, Void> worker = new SwingWorker<Account, Void>() {
                     @Override
                     protected Account doInBackground() throws Exception {
-                        // Simula un piccolo ritardo se il server è troppo veloce (opzionale, per vedere l'animazione)
-                        // Thread.sleep(500); 
+
                         return Controller.getInstance().login(nomeUtente, password);
                     }
 
                     @Override
                     protected void done() {
-                        // Nascondi il caricamento
+
                         hideLoading();
                         
                         try {
-                            Account utente = get(); // Ottieni il risultato
+                            Account utente = get();
                             
                             if (utente == null) {
                                 JOptionPane.showMessageDialog(Login.this,
@@ -92,19 +88,8 @@ public class Login extends BaseFrame {
                         }
                     }
                 };
-
                 worker.execute();
             }
         });
-
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Rimuovo il listener duplicato che c'era prima, BaseFrame gestisce già la chiusura
-        // Ma per il Login spesso si vuole EXIT_ON_CLOSE diretto senza conferma
-        // Se vuoi mantenere la conferma di BaseFrame, rimuovi questa riga sotto.
-        // Se vuoi che Login si chiuda subito, lasciala.
-        // Per coerenza con BaseFrame, rimuovo il listener manuale e lascio fare a BaseFrame
-        // o sovrascrivo il comportamento se necessario.
-        // Dato che nel codice originale c'era System.exit(0), presumo tu voglia chiudere tutto.
     }
 }

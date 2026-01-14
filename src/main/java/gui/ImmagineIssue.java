@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import gui.util.RoundedPanel;
+import gui.util.Utility;
 
 public class ImmagineIssue extends JFrame {
     private JPanel mainPanel;
@@ -23,6 +24,11 @@ public class ImmagineIssue extends JFrame {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(true);
+
+        Image icon = Utility.getIconaApplicazione();
+        if (icon != null) {
+            setIconImage(icon);
+        }
 
         imagePanel.setBorder(new RoundedPanel("pannello"));
         botPanel.setBorder(new RoundedPanel("pannello"));
@@ -45,7 +51,6 @@ public class ImmagineIssue extends JFrame {
                 return;
             }
 
-            // Carica immagine da URL
             URL url = new URL(immagineUrl);
             Image image = ImageIO.read(url);
 
@@ -57,16 +62,13 @@ public class ImmagineIssue extends JFrame {
             int originalWidth = image.getWidth(null);
             int originalHeight = image.getHeight(null);
 
-            // Dimensioni massime
             int maxWidth = 900;
             int maxHeight = 550;
 
-            // Calcola le nuove dimensioni mantenendo le proporzioni
             double widthRatio = (double) maxWidth / originalWidth;
             double heightRatio = (double) maxHeight / originalHeight;
             double ratio = Math.min(widthRatio, heightRatio);
 
-            // Se l'immagine è più piccola del contenitore, non ingrandirla (ratio > 1)
             if (ratio > 1) {
                 ratio = 1;
             }

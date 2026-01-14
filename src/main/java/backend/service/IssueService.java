@@ -33,7 +33,6 @@ public class IssueService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    // Lista dei tipi MIME consentiti
     private static final List<String> ALLOWED_MIME_TYPES = Arrays.asList("image/jpeg", "image/png");
 
     @Transactional
@@ -55,13 +54,11 @@ public class IssueService {
 
     public String uploadImmagine(MultipartFile file) {
         try {
-            // Controllo MIME Type
             String contentType = file.getContentType();
             if (contentType == null || !ALLOWED_MIME_TYPES.contains(contentType.toLowerCase())) {
                 throw new IllegalArgumentException("Formato file non supportato. Sono ammessi solo JPG e PNG.");
             }
 
-            // Sanifica il nome del file per evitare caratteri non validi negli URL
             String originalFileName = file.getOriginalFilename() != null ? file.getOriginalFilename() : "file";
             String sanitizedFileName = originalFileName.replaceAll("\\s+", "_").replaceAll("[^a-zA-Z0-9._-]", "");
             String fileName = UUID.randomUUID().toString() + "_" + sanitizedFileName;
@@ -81,7 +78,6 @@ public class IssueService {
 
             int responseCode = conn.getResponseCode();
             if (responseCode == 200 || responseCode == 201) {
-                // Ritorna l'URL pubblico
                 return supabaseUrl + "/storage/v1/object/public/" + bucketName + "/" + fileName;
             } else {
                 try (java.io.InputStream errorStream = conn.getErrorStream()) {
@@ -91,7 +87,7 @@ public class IssueService {
                 }
             }
         } catch (IllegalArgumentException e) {
-            throw e; // Rilancia l'errore di validazione così com'è
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException("Errore durante l'upload dell'immagine: " + e.getMessage());
         }
@@ -99,7 +95,6 @@ public class IssueService {
 
     public byte[] downloadImmagine(String urlImmagine) {
         try {
-            // Verifica che l'URL appartenga al nostro bucket Supabase per sicurezza
             if (!urlImmagine.startsWith(supabaseUrl)) {
                 throw new IllegalArgumentException("URL non valido o esterno non consentito");
             }

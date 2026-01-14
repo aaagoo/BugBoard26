@@ -30,9 +30,8 @@ public class EliminaIssueUtente extends BaseFrame {
         controller = Controller.getInstance();
 
         setContentPane(mainPanel);
-        setTitle("Dashboard");
+        setTitle("BugBoard26");
         setSize(1200,800);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
@@ -80,7 +79,6 @@ public class EliminaIssueUtente extends BaseFrame {
 
                         Account utenteCorrente = controller.getUtenteCorrente();
 
-                        // Verifica che l'utente corrente sia il creatore
                         if (!utenteCorrente.getNomeUtente().equals(creatoreUsername)) {
                             JOptionPane.showMessageDialog(
                                     EliminaIssueUtente.this,

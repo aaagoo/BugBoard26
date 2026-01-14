@@ -7,7 +7,11 @@ import java.util.Map;
 import controller.Controller;
 import javax.swing.*;
 import java.awt.Image;
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import modello.*;
 import gui.HomeAmm;
 import gui.HomeUtente;
@@ -19,6 +23,18 @@ import javax.swing.table.TableColumn;
 
 
 public class Utility {
+
+    public static Image getIconaApplicazione() {
+        try {
+            java.net.URL url = Utility.class.getResource("/images/icona_bugboard.png");
+            if (url != null) {
+                return new ImageIcon(url).getImage();
+            }
+        } catch (Exception e) {
+            System.err.println("Impossibile caricare l'icona dell'applicazione: " + e.getMessage());
+        }
+        return null;
+    }
 
     public static void popolaTabella(JTable tabella, List<Map<String, Object>> dati, String[] colonne) {
         DefaultTableModel model = new DefaultTableModel(colonne, 0);
@@ -64,19 +80,7 @@ public class Utility {
         String resourcePath = "/images/profileIcons/" + avatarName;
         var url = Utility.class.getResource(resourcePath);
 
-        // 🔍 DEBUG: Stampa il risultato
-        System.out.println("🔍 Cerco: " + resourcePath);
-        System.out.println("🔍 URL trovato: " + url);
-
         if (url == null) {
-            // Prova a elencare tutte le risorse disponibili
-            try {
-                var baseUrl = Utility.class.getResource("/images/profileIcons/");
-                System.out.println("🔍 Cartella base: " + baseUrl);
-            } catch (Exception e) {
-                System.err.println("❌ Cartella /images/profileIcons/ NON ESISTE!");
-            }
-
             label.setIcon(null);
             label.setText("No Img");
             return;
@@ -97,21 +101,24 @@ public class Utility {
 
 
     public static String[] getAvatarFiles() {
-        try {
-            File avatarDir = new File(Utility.class.getResource("/images/profileIcons/").toURI());
-            File[] files = avatarDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".png"));
-
-            if (files != null) {
-                String[] names = new String[files.length];
-                for (int i = 0; i < files.length; i++) {
-                    names[i] = files[i].getName();
+        List<String> avatarNames = new ArrayList<>();
+        String resourcePath = "/images/profileIcons/avatars.list";
+        
+        try (InputStream is = Utility.class.getResourceAsStream(resourcePath);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+            
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (!line.trim().isEmpty()) {
+                    avatarNames.add(line.trim());
                 }
-                return names;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Errore lettura avatars.list: " + e.getMessage());
+            return new String[]{"user.png"}; 
         }
-        return new String[0];
+        
+        return avatarNames.toArray(new String[0]);
     }
 
 

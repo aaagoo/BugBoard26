@@ -45,9 +45,8 @@ public class NuovaIssue extends BaseFrame {
     public NuovaIssue() {
         super();
         setContentPane(mainPanel);
-        setTitle("Creazione Issue");
+        setTitle("BugBoard26");
         setSize(1200,800);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
@@ -136,16 +135,13 @@ public class NuovaIssue extends BaseFrame {
                     return;
                 }
 
-                // Avvia il caricamento
                 showLoading();
 
-                // Esegui l'operazione in background
                 SwingWorker<String, Void> worker = new SwingWorker<String, Void>() {
                     @Override
                     protected String doInBackground() throws Exception {
                         String immagineUrl = null;
                         if (fileSelezionato != null) {
-                            // Upload dell'immagine tramite Backend
                             immagineUrl = Controller.getInstance().uploadImmagine(fileSelezionato);
                             if (immagineUrl == null) {
                                 throw new Exception("Errore durante l'upload dell'immagine.");
@@ -157,10 +153,9 @@ public class NuovaIssue extends BaseFrame {
 
                     @Override
                     protected void done() {
-                        // Nascondi il caricamento
                         hideLoading();
                         try {
-                            String messaggio = get(); // Ottieni il risultato o l'eccezione
+                            String messaggio = get();
                             JOptionPane.showMessageDialog(NuovaIssue.this, messaggio);
 
                             if (messaggio.contains("successo")) {
@@ -173,11 +168,8 @@ public class NuovaIssue extends BaseFrame {
                         }
                     }
                 };
-
                 worker.execute();
             }
         });
-
     }
-
 }

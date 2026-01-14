@@ -9,6 +9,7 @@ import sessione.SessioneManager;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;
@@ -225,6 +226,10 @@ public class ApiClient {
 
         JsonNode root = mapper.readTree(sb.toString());
         return root.path("url").asText();
+    }
+
+    public String getProxyUrl(String originalUrl) {
+        return baseUrl + "/api/issues/proxy-immagine?url=" + URLEncoder.encode(originalUrl, StandardCharsets.UTF_8);
     }
 
     public String creaIssue(String titolo, String descrizione, String priorita, String tipo, String creatoreUsername, String assegnatarioUsername, String immagineUrl) {

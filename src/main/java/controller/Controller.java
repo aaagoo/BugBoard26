@@ -110,6 +110,10 @@ public class Controller {
         }
     }
 
+    public String getProxyImageUrl(String originalUrl) {
+        return apiClient.getProxyUrl(originalUrl);
+    }
+
     public String creaIssue(String titolo, String descrizione, String priorita, String tipo, String assegnatarioUsername, String immagineUrl) {
         try {
             Account utente = getUtenteCorrente();
@@ -168,5 +172,4 @@ public class Controller {
             return "Errore: " + e.getMessage();
         }
     }
-
 }

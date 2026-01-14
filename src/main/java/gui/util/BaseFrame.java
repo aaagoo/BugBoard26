@@ -1,6 +1,7 @@
 package gui.util;
 
 import javax.swing.*;
+import java.awt.Image;
 
 public abstract class BaseFrame extends JFrame {
 
@@ -9,7 +10,11 @@ public abstract class BaseFrame extends JFrame {
     public BaseFrame() {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-        // Inizializza il GlassPane per il caricamento
+        Image icon = Utility.getIconaApplicazione();
+        if (icon != null) {
+            setIconImage(icon);
+        }
+
         loadingPane = new LoadingGlassPane();
         setGlassPane(loadingPane);
 

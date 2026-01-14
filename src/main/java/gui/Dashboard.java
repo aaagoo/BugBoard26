@@ -34,9 +34,8 @@ public class Dashboard extends BaseFrame {
         controller = Controller.getInstance();
 
         setContentPane(mainPanel);
-        setTitle("Dashboard");
+        setTitle("BugBoard26");
         setSize(1200,800);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
@@ -53,14 +52,12 @@ public class Dashboard extends BaseFrame {
             Utility.caricaAvatar(userpngLabel, utente.getAvatar(), 80, 80);
         }
 
-        // Configurazione iniziale tabella (senza dati)
         dashboardTable.getTableHeader().setReorderingAllowed(false);
         dashboardTable.getTableHeader().setResizingAllowed(false);
         JScrollPane scrollPane = (JScrollPane) dashboardTable.getParent().getParent();
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.getViewport().setBorder(null);
 
-        // Avvia il caricamento asincrono dei dati
         caricaDatiAsincrono();
 
         indietroButton.addActionListener(new ActionListener() {
@@ -86,7 +83,6 @@ public class Dashboard extends BaseFrame {
         SwingWorker<List<Map<String, Object>>, Void> worker = new SwingWorker<List<Map<String, Object>>, Void>() {
             @Override
             protected List<Map<String, Object>> doInBackground() throws Exception {
-                // Scarica i dati dal server (operazione lenta)
                 return controller.getAllIssues();
             }
 
@@ -95,8 +91,7 @@ public class Dashboard extends BaseFrame {
                 hideLoading();
                 try {
                     List<Map<String, Object>> dati = get();
-                    
-                    // Aggiorna la GUI con i dati scaricati
+
                     Utility.popolaTabellaIssue(dashboardTable, dati);
                     Utility.impostaColorazioneRisolto(dashboardTable);
                     Utility.impostaLarghezzeColonne(dashboardTable, 15, 100, 20, 40, 60, 60, 60, 20);
@@ -110,7 +105,6 @@ public class Dashboard extends BaseFrame {
                 }
             }
         };
-
         worker.execute();
     }
 }

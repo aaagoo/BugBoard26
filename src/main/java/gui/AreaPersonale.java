@@ -26,9 +26,8 @@ public class AreaPersonale extends BaseFrame {
     public AreaPersonale() {
         super();
         setContentPane(mainPanel);
-        setTitle("Home");
+        setTitle("BugBoard26");
         setSize(1200,800);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);

@@ -38,9 +38,8 @@ public class ModificaAccount extends BaseFrame {
     public ModificaAccount() {
         super();
         setContentPane(mainPanel);
-        setTitle("Home");
+        setTitle("BugBoard26");
         setSize(1200,800);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
@@ -93,13 +92,11 @@ public class ModificaAccount extends BaseFrame {
                 String cognome = cognomeFIeld.getText().trim();
                 String email = emailField.getText().trim();
 
-                // Validazione campi vuoti
                 if (nomeUtente.isEmpty() || nome.isEmpty() || cognome.isEmpty() || email.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Compila tutti i campi obbligatori", "Errore", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                // Validazione password
                 if (!password.isEmpty() && !password.equals(repPassword)) {
                     JOptionPane.showMessageDialog(null, "Le password non corrispondono", "Errore", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -123,9 +120,7 @@ public class ModificaAccount extends BaseFrame {
             }
         });
     }
-
     public void setAvatarSelezionato(String avatar) {
         this.avatarSelezionato = avatar;
     }
-
 }

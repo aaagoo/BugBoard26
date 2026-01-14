@@ -31,9 +31,8 @@ public class CreaAccount extends BaseFrame {
     public CreaAccount() {
         super();
         setContentPane(mainPanel);
-        setTitle("Home");
+        setTitle("BugBoard26");
         setSize(1200,800);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
@@ -110,6 +109,5 @@ public class CreaAccount extends BaseFrame {
                 }
             }
         });
-
     }
 }
