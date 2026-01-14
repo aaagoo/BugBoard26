@@ -9,6 +9,9 @@ import modello.Account;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class Dashboard extends BaseFrame {
     private JPanel botPanel;
@@ -50,17 +53,15 @@ public class Dashboard extends BaseFrame {
             Utility.caricaAvatar(userpngLabel, utente.getAvatar(), 80, 80);
         }
 
-        Utility.caricaDatiIssue(dashboardTable, controller);
-        Utility.impostaColorazioneRisolto(dashboardTable);
-
+        // Configurazione iniziale tabella (senza dati)
         dashboardTable.getTableHeader().setReorderingAllowed(false);
         dashboardTable.getTableHeader().setResizingAllowed(false);
-
         JScrollPane scrollPane = (JScrollPane) dashboardTable.getParent().getParent();
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.getViewport().setBorder(null);
 
-        Utility.impostaLarghezzeColonne(dashboardTable, 15, 100, 20, 40, 60, 60, 60, 20);
+        // Avvia il caricamento asincrono dei dati
+        caricaDatiAsincrono();
 
         indietroButton.addActionListener(new ActionListener() {
             @Override
@@ -77,5 +78,39 @@ public class Dashboard extends BaseFrame {
                 dispose();
             }
         });
+    }
+
+    private void caricaDatiAsincrono() {
+        showLoading();
+
+        SwingWorker<List<Map<String, Object>>, Void> worker = new SwingWorker<List<Map<String, Object>>, Void>() {
+            @Override
+            protected List<Map<String, Object>> doInBackground() throws Exception {
+                // Scarica i dati dal server (operazione lenta)
+                return controller.getAllIssues();
+            }
+
+            @Override
+            protected void done() {
+                hideLoading();
+                try {
+                    List<Map<String, Object>> dati = get();
+                    
+                    // Aggiorna la GUI con i dati scaricati
+                    Utility.popolaTabellaIssue(dashboardTable, dati);
+                    Utility.impostaColorazioneRisolto(dashboardTable);
+                    Utility.impostaLarghezzeColonne(dashboardTable, 15, 100, 20, 40, 60, 60, 60, 20);
+                    
+                } catch (InterruptedException | ExecutionException ex) {
+                    JOptionPane.showMessageDialog(Dashboard.this, 
+                            "Errore nel caricamento dei dati: " + ex.getMessage(), 
+                            "Errore", 
+                            JOptionPane.ERROR_MESSAGE);
+                    ex.printStackTrace();
+                }
+            }
+        };
+
+        worker.execute();
     }
 }

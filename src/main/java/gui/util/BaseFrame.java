@@ -4,8 +4,14 @@ import javax.swing.*;
 
 public abstract class BaseFrame extends JFrame {
 
+    private LoadingGlassPane loadingPane;
+
     public BaseFrame() {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        // Inizializza il GlassPane per il caricamento
+        loadingPane = new LoadingGlassPane();
+        setGlassPane(loadingPane);
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -13,6 +19,14 @@ public abstract class BaseFrame extends JFrame {
                 chiudiApplicazione();
             }
         });
+    }
+
+    public void showLoading() {
+        SwingUtilities.invokeLater(() -> loadingPane.start());
+    }
+
+    public void hideLoading() {
+        SwingUtilities.invokeLater(() -> loadingPane.stop());
     }
 
     private void chiudiApplicazione() {

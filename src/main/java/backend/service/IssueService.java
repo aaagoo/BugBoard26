@@ -3,18 +3,38 @@ package backend.service;
 import modello.Priorita;
 import modello.Tipo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.Arrays;
 
 @Service
 public class IssueService {
 
+    @Value("${supabase.url}")
+    private String supabaseUrl;
+
+    @Value("${supabase.key}")
+    private String supabaseKey;
+
+    @Value("${supabase.bucket}")
+    private String bucketName;
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    // Lista dei tipi MIME consentiti
+    private static final List<String> ALLOWED_MIME_TYPES = Arrays.asList("image/jpeg", "image/png");
 
     @Transactional
     public String creaIssue(String titolo, String descrizione, Priorita priorita, Tipo tipo,
@@ -31,6 +51,66 @@ public class IssueService {
         );
 
         return result.get("messaggio") + " e assegnata a " + assegnatarioUsername;
+    }
+
+    public String uploadImmagine(MultipartFile file) {
+        try {
+            // Controllo MIME Type
+            String contentType = file.getContentType();
+            if (contentType == null || !ALLOWED_MIME_TYPES.contains(contentType.toLowerCase())) {
+                throw new IllegalArgumentException("Formato file non supportato. Sono ammessi solo JPG e PNG.");
+            }
+
+            // Sanifica il nome del file per evitare caratteri non validi negli URL
+            String originalFileName = file.getOriginalFilename() != null ? file.getOriginalFilename() : "file";
+            String sanitizedFileName = originalFileName.replaceAll("\\s+", "_").replaceAll("[^a-zA-Z0-9._-]", "");
+            String fileName = UUID.randomUUID().toString() + "_" + sanitizedFileName;
+
+            String urlString = supabaseUrl + "/storage/v1/object/" + bucketName + "/" + fileName;
+
+            URL url = new URL(urlString);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Bearer " + supabaseKey);
+            conn.setRequestProperty("Content-Type", contentType);
+            conn.setDoOutput(true);
+
+            try (OutputStream os = conn.getOutputStream()) {
+                os.write(file.getBytes());
+            }
+
+            int responseCode = conn.getResponseCode();
+            if (responseCode == 200 || responseCode == 201) {
+                // Ritorna l'URL pubblico
+                return supabaseUrl + "/storage/v1/object/public/" + bucketName + "/" + fileName;
+            } else {
+                try (java.io.InputStream errorStream = conn.getErrorStream()) {
+                    String errorBody = new String(errorStream.readAllBytes());
+                    System.err.println("Errore Supabase: " + responseCode + ", Body: " + errorBody);
+                    throw new RuntimeException("Errore upload Supabase: " + responseCode + " - " + errorBody);
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            throw e; // Rilancia l'errore di validazione così com'è
+        } catch (Exception e) {
+            throw new RuntimeException("Errore durante l'upload dell'immagine: " + e.getMessage());
+        }
+    }
+
+    public byte[] downloadImmagine(String urlImmagine) {
+        try {
+            // Verifica che l'URL appartenga al nostro bucket Supabase per sicurezza
+            if (!urlImmagine.startsWith(supabaseUrl)) {
+                throw new IllegalArgumentException("URL non valido o esterno non consentito");
+            }
+
+            URL url = new URL(urlImmagine);
+            try (InputStream in = url.openStream()) {
+                return in.readAllBytes();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Errore download immagine: " + e.getMessage());
+        }
     }
 
     public List<Map<String, Object>> getAllIssues() {

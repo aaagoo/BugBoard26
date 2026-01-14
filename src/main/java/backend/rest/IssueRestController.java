@@ -3,8 +3,10 @@ package backend.rest;
 import backend.service.IssueService;
 import modello.Priorita;
 import modello.Tipo;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 import java.util.List;
@@ -17,6 +19,36 @@ public class IssueRestController {
 
     public IssueRestController(IssueService issueService) {
         this.issueService = issueService;
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<?> uploadImmagine(@RequestParam("file") MultipartFile file) {
+        try {
+            String url = issueService.uploadImmagine(file);
+            return ResponseEntity.ok(Map.of("url", url));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("messaggio", "Errore upload: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping("/proxy-immagine")
+    public ResponseEntity<byte[]> getImmagineProxy(@RequestParam String url) {
+        try {
+            byte[] imageBytes = issueService.downloadImmagine(url);
+
+            MediaType mediaType = MediaType.IMAGE_PNG;
+            if (url.toLowerCase().endsWith(".jpg") || url.toLowerCase().endsWith(".jpeg")) {
+                mediaType = MediaType.IMAGE_JPEG;
+            } else if (url.toLowerCase().endsWith(".gif")) {
+                mediaType = MediaType.IMAGE_GIF;
+            }
+
+            return ResponseEntity.ok()
+                    .contentType(mediaType)
+                    .body(imageBytes);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).build();
+        }
     }
 
     @PostMapping

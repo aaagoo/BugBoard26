@@ -198,6 +198,10 @@ public class Utility {
 
     public static void caricaDatiIssue(JTable dashboardTable, Controller controller) {
         List<Map<String, Object>> dati = controller.getAllIssues();
+        popolaTabellaIssue(dashboardTable, dati);
+    }
+
+    public static void popolaTabellaIssue(JTable dashboardTable, List<Map<String, Object>> dati) {
         String[] colonne = {"ID", "Titolo", "Priorità", "Tipo", "Creatore", "Assegnatario", "Data Creazione", "Risolto"};
         DefaultTableModel model = new DefaultTableModel(colonne, 0) {
             @Override

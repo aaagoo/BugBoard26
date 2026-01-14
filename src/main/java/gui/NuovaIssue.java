@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.concurrent.ExecutionException;
 
 public class NuovaIssue extends BaseFrame {
 
@@ -39,7 +40,7 @@ public class NuovaIssue extends BaseFrame {
     private JCheckBox bugCheckBox;
     private JCheckBox documentationCheckBox;
     private JCheckBox featureCheckBox;
-    private String immagineBase64 = null;
+    private File fileSelezionato = null;
 
     public NuovaIssue() {
         super();
@@ -90,18 +91,12 @@ public class NuovaIssue extends BaseFrame {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
-                        "Immagini", "jpg", "jpeg", "png", "gif"));
+                        "Immagini (JPG, PNG)", "jpg", "jpeg", "png"));
 
                 int result = fileChooser.showOpenDialog(NuovaIssue.this);
                 if (result == JFileChooser.APPROVE_OPTION) {
-                    try {
-                        File file = fileChooser.getSelectedFile();
-                        byte[] fileContent = java.nio.file.Files.readAllBytes(file.toPath());
-                        immagineBase64 = java.util.Base64.getEncoder().encodeToString(fileContent);
-                        JOptionPane.showMessageDialog(null, "Immagine allegata: " + file.getName());
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "Errore nell'allegare l'immagine: " + ex.getMessage());
-                    }
+                    fileSelezionato = fileChooser.getSelectedFile();
+                    JOptionPane.showMessageDialog(null, "Immagine selezionata: " + fileSelezionato.getName());
                 }
             }
         });
@@ -117,17 +112,19 @@ public class NuovaIssue extends BaseFrame {
                     return;
                 }
 
-                String priorita = null;
-                if (lowCheckBox.isSelected()) priorita = "LOW";
-                else if (mediumCheckBox.isSelected()) priorita = "MEDIUM";
-                else if (highCheckBox.isSelected()) priorita = "HIGH";
-                else if (criticalCheckBox.isSelected()) priorita = "CRITICAL";
+                String prioritaTemp = null;
+                if (lowCheckBox.isSelected()) prioritaTemp = "LOW";
+                else if (mediumCheckBox.isSelected()) prioritaTemp = "MEDIUM";
+                else if (highCheckBox.isSelected()) prioritaTemp = "HIGH";
+                else if (criticalCheckBox.isSelected()) prioritaTemp = "CRITICAL";
+                final String priorita = prioritaTemp;
 
-                String tipo = null;
-                if (questionCheckBox.isSelected()) tipo = "QUESTION";
-                else if (bugCheckBox.isSelected()) tipo = "BUG";
-                else if (documentationCheckBox.isSelected()) tipo = "DOCUMENTATION";
-                else if (featureCheckBox.isSelected()) tipo = "FEATURE";
+                String tipoTemp = null;
+                if (questionCheckBox.isSelected()) tipoTemp = "QUESTION";
+                else if (bugCheckBox.isSelected()) tipoTemp = "BUG";
+                else if (documentationCheckBox.isSelected()) tipoTemp = "DOCUMENTATION";
+                else if (featureCheckBox.isSelected()) tipoTemp = "FEATURE";
+                final String tipo = tipoTemp;
 
                 if (tipo == null) {
                     JOptionPane.showMessageDialog(null, "Seleziona un tipo");
@@ -139,13 +136,45 @@ public class NuovaIssue extends BaseFrame {
                     return;
                 }
 
-                String messaggio = Controller.getInstance().creaIssue(titolo, descrizione, priorita, tipo, null, immagineBase64);
-                JOptionPane.showMessageDialog(null, messaggio);
+                // Avvia il caricamento
+                showLoading();
 
-                if (messaggio.contains("successo")) {
-                    new HomeUtente();
-                    dispose();
-                }
+                // Esegui l'operazione in background
+                SwingWorker<String, Void> worker = new SwingWorker<String, Void>() {
+                    @Override
+                    protected String doInBackground() throws Exception {
+                        String immagineUrl = null;
+                        if (fileSelezionato != null) {
+                            // Upload dell'immagine tramite Backend
+                            immagineUrl = Controller.getInstance().uploadImmagine(fileSelezionato);
+                            if (immagineUrl == null) {
+                                throw new Exception("Errore durante l'upload dell'immagine.");
+                            }
+                        }
+
+                        return Controller.getInstance().creaIssue(titolo, descrizione, priorita, tipo, null, immagineUrl);
+                    }
+
+                    @Override
+                    protected void done() {
+                        // Nascondi il caricamento
+                        hideLoading();
+                        try {
+                            String messaggio = get(); // Ottieni il risultato o l'eccezione
+                            JOptionPane.showMessageDialog(NuovaIssue.this, messaggio);
+
+                            if (messaggio.contains("successo")) {
+                                new HomeUtente();
+                                dispose();
+                            }
+                        } catch (InterruptedException | ExecutionException ex) {
+                            JOptionPane.showMessageDialog(NuovaIssue.this, "Errore: " + ex.getMessage());
+                            ex.printStackTrace();
+                        }
+                    }
+                };
+
+                worker.execute();
             }
         });
 

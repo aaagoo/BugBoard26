@@ -5,6 +5,7 @@ import modello.Account;
 import sessione.SessioneManager;
 import remote.ApiClient;
 import java.util.stream.Collectors;
+import java.io.File;
 
 import java.util.*;
 
@@ -98,6 +99,15 @@ public class Controller {
 
     public Account getUtenteCorrente() {
         return SessioneManager.getInstance().getUtenteCorrente();
+    }
+
+    public String uploadImmagine(File file) {
+        try {
+            return apiClient.uploadImage(file);
+        } catch (Exception e) {
+            System.out.println("[Controller] Errore upload immagine: " + e.getMessage());
+            return null;
+        }
     }
 
     public String creaIssue(String titolo, String descrizione, String priorita, String tipo, String assegnatarioUsername, String immagineUrl) {

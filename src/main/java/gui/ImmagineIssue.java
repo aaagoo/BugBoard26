@@ -4,7 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Base64;
+import java.net.URL;
+import javax.imageio.ImageIO;
 import gui.util.RoundedPanel;
 
 public class ImmagineIssue extends JFrame {
@@ -37,25 +38,22 @@ public class ImmagineIssue extends JFrame {
         });
     }
 
-    private void caricaImmagine(String immagineBase64) {
+    private void caricaImmagine(String immagineUrl) {
         try {
-            if (immagineBase64 == null || immagineBase64.isEmpty()) {
+            if (immagineUrl == null || immagineUrl.isEmpty()) {
                 immagineLabel.setText("Nessuna immagine disponibile");
                 return;
             }
 
-            // Rimuovi il prefisso "data:image/...;base64," se presente
-            String base64Data = immagineBase64;
-            if (immagineBase64.contains(",")) {
-                base64Data = immagineBase64.split(",")[1];
+            // Carica immagine da URL
+            URL url = new URL(immagineUrl);
+            Image image = ImageIO.read(url);
+
+            if (image == null) {
+                immagineLabel.setText("Impossibile leggere l'immagine dall'URL");
+                return;
             }
 
-            // Decodifica Base64
-            byte[] imageBytes = Base64.getDecoder().decode(base64Data);
-            ImageIcon imageIcon = new ImageIcon(imageBytes);
-
-            // Scala l'immagine mantenendo le proporzioni
-            Image image = imageIcon.getImage();
             int originalWidth = image.getWidth(null);
             int originalHeight = image.getHeight(null);
 
@@ -68,6 +66,11 @@ public class ImmagineIssue extends JFrame {
             double heightRatio = (double) maxHeight / originalHeight;
             double ratio = Math.min(widthRatio, heightRatio);
 
+            // Se l'immagine è più piccola del contenitore, non ingrandirla (ratio > 1)
+            if (ratio > 1) {
+                ratio = 1;
+            }
+
             int newWidth = (int) (originalWidth * ratio);
             int newHeight = (int) (originalHeight * ratio);
 
@@ -76,7 +79,7 @@ public class ImmagineIssue extends JFrame {
             immagineLabel.setIcon(new ImageIcon(scaledImage));
             immagineLabel.setText("");
         } catch (Exception e) {
-            immagineLabel.setText("Impossibile caricare l'immagine: " + e.getMessage());
+            immagineLabel.setText("Errore caricamento: " + e.getMessage());
             e.printStackTrace();
         }
     }
