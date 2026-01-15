@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 
 public class HomeAmm extends BaseFrame {
 
-    private JPanel topPanel;
     private JPanel infoutentePanel;
     private JLabel benvenutoLabel;
     private JLabel userpngLabel;
@@ -25,6 +24,7 @@ public class HomeAmm extends BaseFrame {
     private JPanel botPanel;
     private JButton disconnettitiButton;
     private JPanel mainPanel;
+    private JPanel topPanel;
 
     public HomeAmm() {
         super();

@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class NuovaIssue extends BaseFrame {
@@ -40,6 +42,12 @@ public class NuovaIssue extends BaseFrame {
     private JCheckBox bugCheckBox;
     private JCheckBox documentationCheckBox;
     private JCheckBox featureCheckBox;
+    private JPanel assegnaPanel;
+    private JCheckBox automaticoCheckBox;
+    private JCheckBox manualeCheckBox;
+    private JComboBox<String> assigneeComboBox;
+    private JButton rimuoviAllegatoButton;
+    private JLabel statoImmagineLabel;
     private File fileSelezionato = null;
 
     public NuovaIssue() {
@@ -57,6 +65,7 @@ public class NuovaIssue extends BaseFrame {
         imagePanel.setBorder(new RoundedPanel("finestra"));
         checkPanel.setBorder(new RoundedPanel("finestra"));
         infoPanel.setBorder(new RoundedPanel("finestra"));
+        assegnaPanel.setBorder(new RoundedPanel("finestra"));
 
         Account utente = Controller.getInstance().getUtenteCorrente();
         if (utente != null) {
@@ -77,6 +86,22 @@ public class NuovaIssue extends BaseFrame {
         tipoGroup.add(documentationCheckBox);
         tipoGroup.add(featureCheckBox);
 
+        ButtonGroup assegnazioneGroup = new ButtonGroup();
+        assegnazioneGroup.add(automaticoCheckBox);
+        assegnazioneGroup.add(manualeCheckBox);
+        automaticoCheckBox.setSelected(true);
+        assigneeComboBox.setEnabled(false);
+
+        popolaComboBoxUtenti();
+
+        ActionListener assegnazioneListener = e -> {
+            assigneeComboBox.setEnabled(manualeCheckBox.isSelected());
+        };
+        automaticoCheckBox.addActionListener(assegnazioneListener);
+        manualeCheckBox.addActionListener(assegnazioneListener);
+
+        aggiornaStatoImmagine();
+
         annullaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -95,10 +120,19 @@ public class NuovaIssue extends BaseFrame {
                 int result = fileChooser.showOpenDialog(NuovaIssue.this);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     fileSelezionato = fileChooser.getSelectedFile();
+                    aggiornaStatoImmagine();
                     JOptionPane.showMessageDialog(null, "Immagine selezionata: " + fileSelezionato.getName());
                 }
             }
         });
+
+        if (rimuoviAllegatoButton != null) {
+            rimuoviAllegatoButton.addActionListener(e -> {
+                fileSelezionato = null;
+                aggiornaStatoImmagine();
+                JOptionPane.showMessageDialog(null, "Allegato rimosso.");
+            });
+        }
 
         confermaButton.addActionListener(new ActionListener() {
             @Override
@@ -135,6 +169,16 @@ public class NuovaIssue extends BaseFrame {
                     return;
                 }
 
+                String assegnatarioTemp = null;
+                if (manualeCheckBox.isSelected()) {
+                    assegnatarioTemp = (String) assigneeComboBox.getSelectedItem();
+                    if (assegnatarioTemp == null || assegnatarioTemp.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Seleziona un utente per l'assegnazione manuale");
+                        return;
+                    }
+                }
+                final String assegnatario = assegnatarioTemp;
+
                 showLoading();
 
                 SwingWorker<String, Void> worker = new SwingWorker<String, Void>() {
@@ -148,7 +192,7 @@ public class NuovaIssue extends BaseFrame {
                             }
                         }
 
-                        return Controller.getInstance().creaIssue(titolo, descrizione, priorita, tipo, null, immagineUrl);
+                        return Controller.getInstance().creaIssue(titolo, descrizione, priorita, tipo, assegnatario, immagineUrl);
                     }
 
                     @Override
@@ -171,5 +215,42 @@ public class NuovaIssue extends BaseFrame {
                 worker.execute();
             }
         });
+    }
+
+    private void aggiornaStatoImmagine() {
+        if (fileSelezionato != null) {
+            statoImmagineLabel.setText("Stato: Allegata");
+            if (rimuoviAllegatoButton != null) {
+                rimuoviAllegatoButton.setEnabled(true);
+            }
+        } else {
+            statoImmagineLabel.setText("Stato: Non Allegata");
+            if (rimuoviAllegatoButton != null) {
+                rimuoviAllegatoButton.setEnabled(false);
+            }
+        }
+    }
+
+    private void popolaComboBoxUtenti() {
+        SwingWorker<List<Map<String, Object>>, Void> worker = new SwingWorker<>() {
+            @Override
+            protected List<Map<String, Object>> doInBackground() throws Exception {
+                return Controller.getInstance().getUtenti();
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    List<Map<String, Object>> utenti = get();
+                    assigneeComboBox.removeAllItems();
+                    for (Map<String, Object> utente : utenti) {
+                        assigneeComboBox.addItem((String) utente.get("nomeutente"));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        worker.execute();
     }
 }

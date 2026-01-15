@@ -171,7 +171,7 @@
                 </properties>
                 <border type="none"/>
                 <children>
-                  <grid id="fcb6c" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="fcb6c" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
@@ -183,36 +183,45 @@
                     </properties>
                     <border type="none"/>
                     <children>
-                      <component id="f84c6" class="javax.swing.JLabel" binding="prioritaLabel">
-                        <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <font name="Inter" size="14" style="1"/>
-                          <text value="Priorità"/>
-                        </properties>
-                      </component>
                       <component id="a6838" class="javax.swing.JLabel" binding="tipoLabel">
                         <constraints>
-                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <font name="Inter" size="14" style="1"/>
                           <text value="Tipo di Issue"/>
                         </properties>
                       </component>
-                      <component id="89b55" class="javax.swing.JLabel" binding="risoltoLabel">
+                      <component id="c0c41" class="javax.swing.JLabel" binding="idLabel">
                         <constraints>
-                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <font name="Inter" size="14" style="1"/>
-                          <text value="Risolto"/>
+                          <text value="ID"/>
+                        </properties>
+                      </component>
+                      <component id="3e44c" class="javax.swing.JLabel" binding="creatoreLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Inter" size="14" style="1"/>
+                          <text value="Creatore"/>
+                        </properties>
+                      </component>
+                      <component id="f84c6" class="javax.swing.JLabel" binding="prioritaLabel">
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Inter" size="14" style="1"/>
+                          <text value="Priorità"/>
                         </properties>
                       </component>
                     </children>
                   </grid>
-                  <grid id="b2c34" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="b2c34" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
@@ -224,51 +233,51 @@
                     </properties>
                     <border type="none"/>
                     <children>
-                      <component id="3e44c" class="javax.swing.JLabel" binding="creatoreLabel">
-                        <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <font name="Inter" size="14" style="1"/>
-                          <text value="Creatore"/>
-                        </properties>
-                      </component>
-                      <component id="44579" class="javax.swing.JLabel" binding="dataCreazioneLabel">
-                        <constraints>
-                          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <font name="Inter" size="14" style="1"/>
-                          <text value="Data Creazione"/>
-                        </properties>
-                      </component>
                       <component id="e1296" class="javax.swing.JLabel" binding="dataRisoluzioneLabel">
                         <constraints>
-                          <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <font name="Inter" size="14" style="1"/>
                           <text value="Data Risoluzione"/>
                         </properties>
                       </component>
+                      <component id="33b82" class="javax.swing.JLabel" binding="assegnataALabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Inter" size="14" style="1"/>
+                          <text value="Assegnata a"/>
+                        </properties>
+                      </component>
+                      <component id="44579" class="javax.swing.JLabel" binding="dataCreazioneLabel">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Inter" size="14" style="1"/>
+                          <text value="Data Creazione"/>
+                        </properties>
+                      </component>
+                      <component id="cd5ac" class="javax.swing.JLabel" binding="risoltoLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Inter" size="14" style="1"/>
+                          <text value="Risolto"/>
+                        </properties>
+                      </component>
                     </children>
                   </grid>
-                  <component id="c0c41" class="javax.swing.JLabel" binding="idLabel">
-                    <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                    <properties>
-                      <font name="Inter" size="14" style="1"/>
-                      <text value="ID"/>
-                    </properties>
-                  </component>
                 </children>
               </grid>
-              <grid id="98e1c" binding="imagePanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="98e1c" binding="imagePanel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="430" height="210"/>
+                    <preferred-size width="430" height="220"/>
                   </grid>
                 </constraints>
                 <properties>
@@ -278,7 +287,7 @@
                 <children>
                   <component id="197d8" class="javax.swing.JButton" binding="immagineButton">
                     <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
                         <preferred-size width="250" height="40"/>
                       </grid>
                     </constraints>
@@ -300,7 +309,7 @@
                   </component>
                   <component id="14a61" class="javax.swing.JButton" binding="salvaImmagineButton">
                     <constraints>
-                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
                         <preferred-size width="250" height="40"/>
                       </grid>
                     </constraints>
@@ -309,6 +318,15 @@
                       <font name="Inter" size="12" style="1"/>
                       <horizontalTextPosition value="0"/>
                       <text value="Salva Immagine"/>
+                    </properties>
+                  </component>
+                  <component id="97185" class="javax.swing.JLabel" binding="statoImmagineLabel">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Inter" size="14" style="0"/>
+                      <text value=""/>
                     </properties>
                   </component>
                 </children>

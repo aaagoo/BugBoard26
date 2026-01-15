@@ -37,19 +37,27 @@ public class IssueService {
 
     @Transactional
     public String creaIssue(String titolo, String descrizione, Priorita priorita, Tipo tipo,
-                            String creatoreUsername, String immagineUrl) {
-        String assegnatarioUsername = jdbcTemplate.queryForObject(
-                "SELECT * FROM trova_utente_libero()",
-                String.class
-        );
+                            String creatoreUsername, String assegnatarioManuale, String immagineUrl) {
+        
+        String assegnatarioFinale;
+        
+        if (assegnatarioManuale != null && !assegnatarioManuale.trim().isEmpty()) {
+            assegnatarioFinale = assegnatarioManuale;
+        } else {
+            assegnatarioFinale = jdbcTemplate.queryForObject(
+                    "SELECT * FROM trova_utente_libero(?)",
+                    String.class,
+                    creatoreUsername
+            );
+        }
 
         Map<String, Object> result = jdbcTemplate.queryForMap(
                 "SELECT * FROM crea_issue(?, ?, ?::priorita_enum, ?::tipo_enum, ?, ?, ?)",
                 titolo, descrizione, priorita.name(), tipo.name(),
-                creatoreUsername, assegnatarioUsername, immagineUrl
+                creatoreUsername, assegnatarioFinale, immagineUrl
         );
 
-        return result.get("messaggio") + " e assegnata a " + assegnatarioUsername;
+        return result.get("messaggio") + " e assegnata a " + assegnatarioFinale;
     }
 
     public String uploadImmagine(MultipartFile file) {

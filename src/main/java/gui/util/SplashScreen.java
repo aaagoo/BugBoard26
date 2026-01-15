@@ -8,7 +8,7 @@ public class SplashScreen extends JWindow {
 
     private Timer timer;
     private int angle = 0;
-    private final int ROTATION_SPEED = 10;
+    private final int ROTATION_SPEED = 3;
     private final Color BACKGROUND_COLOR = new Color(54, 172, 150); 
     private final Color SPINNER_COLOR = Color.WHITE;
     private final Color TEXT_COLOR = Color.WHITE;
@@ -25,6 +25,7 @@ public class SplashScreen extends JWindow {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
                 g2.setColor(BACKGROUND_COLOR);
                 g2.fillRect(0, 0, getWidth(), getHeight());
@@ -45,8 +46,8 @@ public class SplashScreen extends JWindow {
 
                 int size = 40;
                 int x = (getWidth() - size) / 2;
-                int y = 190;
-                int strokeWidth = 5;
+                int y = 190; 
+                int strokeWidth = 4;
 
                 g2.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
                 g2.setColor(SPINNER_COLOR);
@@ -71,7 +72,7 @@ public class SplashScreen extends JWindow {
         setLocationRelativeTo(null);
         setContentPane(contentPanel);
 
-        timer = new Timer(20, e -> {
+        timer = new Timer(10, e -> {
             angle = (angle + ROTATION_SPEED) % 360;
             repaint();
         });

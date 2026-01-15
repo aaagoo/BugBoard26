@@ -121,21 +121,6 @@
         </properties>
         <border type="none"/>
         <children>
-          <grid id="d36b0" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <grid row="0" column="2" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="250" height="80"/>
-              </grid>
-            </constraints>
-            <properties>
-              <background color="-7144784"/>
-            </properties>
-            <border type="none">
-              <color color="-5524801"/>
-            </border>
-            <children/>
-          </grid>
           <component id="2e5d9" class="javax.swing.JLabel">
             <constraints>
               <grid row="0" column="1" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
@@ -148,10 +133,25 @@
               <text value="Dashboard"/>
             </properties>
           </component>
-          <grid id="9647a" binding="infoutentePanel" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+          <grid id="d36b0" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+              <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="250" height="80"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-7144784"/>
+            </properties>
+            <border type="none">
+              <color color="-5524801"/>
+            </border>
+            <children/>
+          </grid>
+          <grid id="82243" binding="infoutentePanel" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="2" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="250" height="100"/>
               </grid>
             </constraints>
@@ -162,31 +162,31 @@
               <color color="-5524801"/>
             </border>
             <children>
-              <component id="1dafc" class="javax.swing.JLabel" binding="userpngLabel">
+              <component id="24354" class="javax.swing.JLabel" binding="ruoloLabel">
                 <constraints>
-                  <grid row="0" column="0" row-span="3" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Inter" size="14" style="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="39504" class="javax.swing.JLabel" binding="benvenutoLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Inter" size="14" style="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="892e0" class="javax.swing.JLabel" binding="userpngLabel">
+                <constraints>
+                  <grid row="0" column="1" row-span="3" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="80" height="80"/>
                   </grid>
                 </constraints>
                 <properties>
-                  <text value=""/>
-                </properties>
-              </component>
-              <component id="eb0ef" class="javax.swing.JLabel" binding="ruoloLabel">
-                <constraints>
-                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <font name="Inter" size="14" style="0"/>
-                  <text value=""/>
-                </properties>
-              </component>
-              <component id="c57bd" class="javax.swing.JLabel" binding="benvenutoLabel">
-                <constraints>
-                  <grid row="0" column="1" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <font name="Inter" size="14" style="0"/>
                   <text value=""/>
                 </properties>
               </component>

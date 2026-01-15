@@ -12,9 +12,9 @@ public class LoadingGlassPane extends JComponent {
 
     private Timer timer;
     private int angle = 0;
-    private final int ROTATION_SPEED = 10;
-    private final Color BACKGROUND_COLOR = new Color(0, 0, 0, 100);
-    private final Color SPINNER_COLOR = new Color(255, 255, 255);
+    private final int ROTATION_SPEED = 3;
+    private final Color BACKGROUND_COLOR = new Color(0, 0, 0, 150); 
+    private final Color SPINNER_COLOR = new Color(255, 255, 255); 
 
     public LoadingGlassPane() {
         MouseAdapter mouseAdapter = new MouseAdapter() {
@@ -35,7 +35,7 @@ public class LoadingGlassPane extends JComponent {
         
         setFocusTraversalKeysEnabled(false);
 
-        timer = new Timer(20, e -> {
+        timer = new Timer(10, e -> {
             angle = (angle + ROTATION_SPEED) % 360;
             repaint();
         });
@@ -43,7 +43,7 @@ public class LoadingGlassPane extends JComponent {
 
     public void start() {
         setVisible(true);
-        requestFocusInWindow();
+        requestFocusInWindow(); 
         timer.start();
     }
 
@@ -56,6 +56,7 @@ public class LoadingGlassPane extends JComponent {
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
         g2.setColor(BACKGROUND_COLOR);
         g2.fillRect(0, 0, getWidth(), getHeight());
@@ -63,7 +64,7 @@ public class LoadingGlassPane extends JComponent {
         int size = 60;
         int x = (getWidth() - size) / 2;
         int y = (getHeight() - size) / 2;
-        int strokeWidth = 6;
+        int strokeWidth = 5;
 
         g2.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         g2.setColor(SPINNER_COLOR);

@@ -36,6 +36,8 @@ public class VIsualizzaIssue extends BaseFrame {
     private JPanel topPanel;
     private JLabel idLabel;
     private JButton salvaImmagineButton;
+    private JLabel statoImmagineLabel;
+    private JLabel assegnataALabel;
     private Long issueId;
 
     public VIsualizzaIssue(Long issueId) {
@@ -154,5 +156,30 @@ public class VIsualizzaIssue extends BaseFrame {
         Utility.caricaDatiIssueById(issueId, idLabel, titoloField, descrizioneArea,
                 prioritaLabel, tipoLabel, risoltoLabel, creatoreLabel,
                 dataCreazioneLabel, dataRisoluzioneLabel, this);
+
+        try {
+            Map<String, Object> issue = Controller.getInstance().getIssueById(issueId);
+
+            String immagineUrl = (String) issue.get("immagineurl");
+            if (immagineUrl != null && !immagineUrl.isEmpty()) {
+                statoImmagineLabel.setText("Stato: Allegata");
+                immagineButton.setEnabled(true);
+                salvaImmagineButton.setEnabled(true);
+            } else {
+                statoImmagineLabel.setText("Stato: Non Allegata");
+                immagineButton.setEnabled(false);
+                salvaImmagineButton.setEnabled(false);
+            }
+
+            String assegnatario = (String) issue.get("assegnatariousername");
+            if (assegnatario != null && !assegnatario.isEmpty()) {
+                assegnataALabel.setText("Assegnata a: " + assegnatario);
+            } else {
+                assegnataALabel.setText("Assegnata a: Nessuno");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

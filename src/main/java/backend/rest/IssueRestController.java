@@ -63,6 +63,7 @@ public class IssueRestController {
                     priorita,
                     tipo,
                     body.get("creatoreUsername"),
+                    body.getOrDefault("assegnatarioUsername", null), // Legge l'assegnatario opzionale
                     body.getOrDefault("immagineUrl", null)
             );
             return ResponseEntity.ok(Map.of("messaggio", messaggio));

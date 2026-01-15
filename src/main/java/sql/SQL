@@ -407,11 +407,24 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION trova_utente_libero()
+CREATE OR REPLACE FUNCTION trova_utente_libero(
+    p_creatore_escluso VARCHAR(50)
+)
 RETURNS VARCHAR(50) AS $$
 DECLARE
     v_utente VARCHAR(50);
 BEGIN
+    SELECT nomeUtente INTO v_utente
+    FROM account
+    WHERE ruolo = 'UTENTE'::ruolo_enum
+      AND nomeUtente != p_creatore_escluso
+    ORDER BY issueAssegnate ASC
+    LIMIT 1;
+
+    IF FOUND THEN
+        RETURN v_utente;
+    END IF;
+
     SELECT nomeUtente INTO v_utente
     FROM account
     WHERE ruolo = 'UTENTE'::ruolo_enum
@@ -425,4 +438,3 @@ BEGIN
     RETURN v_utente;
 END;
 $$ LANGUAGE plpgsql;
-
