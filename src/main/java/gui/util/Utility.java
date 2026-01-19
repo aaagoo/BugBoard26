@@ -6,12 +6,13 @@ import java.util.List;
 import java.util.Map;
 import controller.Controller;
 import javax.swing.*;
-import java.awt.Image;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import javax.swing.table.JTableHeader;
 import modello.*;
 import gui.HomeAmm;
 import gui.HomeUtente;
@@ -329,7 +330,7 @@ public class Utility {
         });
     }
 
-    private static String formattaData(Object dataObj) {
+    public static String formattaData(Object dataObj) {
         if (dataObj == null) {
             return "N/A";
         }

@@ -3,6 +3,7 @@ package gui;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.ExecutionException;
 import controller.Controller;
 import gui.util.*;
 import modello.*;
@@ -88,25 +89,42 @@ public class CreaAccount extends BaseFrame {
                     return;
                 }
 
-                Controller controller = Controller.getInstance();
-                Ruolo ruolo = Ruolo.valueOf(ruoloSelezionato);
+                showLoading();
 
-                String messaggio = controller.creaAccount(nomeUtente, password, nome, cognome, email, ruolo, avatarSelezionato);
+                SwingWorker<String, Void> worker = new SwingWorker<String, Void>() {
+                    @Override
+                    protected String doInBackground() throws Exception {
+                        Controller controller = Controller.getInstance();
+                        Ruolo ruolo = Ruolo.valueOf(ruoloSelezionato);
+                        return controller.creaAccount(nomeUtente, password, nome, cognome, email, ruolo, avatarSelezionato);
+                    }
 
-                if (messaggio.contains("successo")) {
-                    JOptionPane.showMessageDialog(null, messaggio, "Successo", JOptionPane.INFORMATION_MESSAGE);
-                    nomeUtenteField.setText("");
-                    passwordField.setText("");
-                    ripPasswordField.setText("");
-                    nomeField.setText("");
-                    cognomeField.setText("");
-                    emailField.setText("");
-                    ruoloComboBox.setSelectedIndex(0);
-                    avatarSelezionato = "user.png";
-                    Utility.caricaAvatar(imageLabel, "user.png", 220, 220);
-                } else {
-                    JOptionPane.showMessageDialog(null, messaggio, "Errore", JOptionPane.ERROR_MESSAGE);
-                }
+                    @Override
+                    protected void done() {
+                        hideLoading();
+                        try {
+                            String messaggio = get();
+                            if (messaggio.contains("successo")) {
+                                JOptionPane.showMessageDialog(CreaAccount.this, messaggio, "Successo", JOptionPane.INFORMATION_MESSAGE);
+                                nomeUtenteField.setText("");
+                                passwordField.setText("");
+                                ripPasswordField.setText("");
+                                nomeField.setText("");
+                                cognomeField.setText("");
+                                emailField.setText("");
+                                ruoloComboBox.setSelectedIndex(0);
+                                avatarSelezionato = "user.png";
+                                Utility.caricaAvatar(imageLabel, "user.png", 220, 220);
+                            } else {
+                                JOptionPane.showMessageDialog(CreaAccount.this, messaggio, "Errore", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } catch (InterruptedException | ExecutionException ex) {
+                            JOptionPane.showMessageDialog(CreaAccount.this, "Errore: " + ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                            ex.printStackTrace();
+                        }
+                    }
+                };
+                worker.execute();
             }
         });
     }

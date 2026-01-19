@@ -4,7 +4,11 @@ import gui.util.BaseFrame;
 import gui.util.RoundedPanel;
 import gui.util.Utility;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import controller.Controller;
+import modello.Account;
+import modello.Ruolo;
+import sessione.SessioneManager;
 
 import javax.swing.*;
 import java.net.URL;
@@ -14,6 +18,11 @@ import java.nio.file.StandardCopyOption;
 
 
 public class VIsualizzaIssue extends BaseFrame {
+
+    public enum Provenienza {
+        HOME,
+        DASHBOARD
+    }
 
     private JPanel midPanel;
     private JPanel infoPanel;
@@ -39,10 +48,16 @@ public class VIsualizzaIssue extends BaseFrame {
     private JLabel statoImmagineLabel;
     private JLabel assegnataALabel;
     private Long issueId;
+    private Provenienza provenienza;
 
     public VIsualizzaIssue(Long issueId) {
+        this(issueId, Provenienza.HOME);
+    }
+
+    public VIsualizzaIssue(Long issueId, Provenienza provenienza) {
         super();
         this.issueId = issueId;
+        this.provenienza = provenienza;
         setContentPane(mainPanel);
         setTitle("BugBoard26");
         setSize(1200, 800);
@@ -50,7 +65,7 @@ public class VIsualizzaIssue extends BaseFrame {
         setVisible(true);
         setResizable(false);
 
-        caricaIssue();
+        caricaIssueAsincrono();
 
         botPanel.setBorder(new RoundedPanel("pannello"));
         midPanel.setBorder(new RoundedPanel("pannello"));
@@ -59,65 +74,25 @@ public class VIsualizzaIssue extends BaseFrame {
         infoPanel.setBorder(new RoundedPanel("finestra"));
 
         indietroButton.addActionListener(e -> {
-            new HomeUtente();
+            if (this.provenienza == Provenienza.DASHBOARD) {
+                new Dashboard();
+            } else {
+                Account utente = SessioneManager.getInstance().getUtenteCorrente();
+                if (utente != null && utente.getRuolo() == Ruolo.AMMINISTRATORE) {
+                    new HomeAmm();
+                } else {
+                    new HomeUtente();
+                }
+            }
             dispose();
         });
 
         immagineButton.addActionListener(e -> {
-            try {
-                Map<String, Object> issue = Controller.getInstance().getIssueById(issueId);
-                String immagineUrl = (String) issue.get("immagineurl");
-
-                if (immagineUrl != null && !immagineUrl.isEmpty()) {
-                    String proxyUrl = Controller.getInstance().getProxyImageUrl(immagineUrl);
-                    new ImmagineIssue(proxyUrl);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Nessuna immagine disponibile per questa issue.");
-                }
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Errore nel caricamento dell'immagine: " + ex.getMessage());
-            }
+            apriImmagineAsincrono();
         });
 
         salvaImmagineButton.addActionListener(e -> {
-            try {
-                Map<String, Object> issue = Controller.getInstance().getIssueById(issueId);
-                String immagineUrl = (String) issue.get("immagineurl");
-
-                if (immagineUrl == null || immagineUrl.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Nessuna immagine disponibile per questa issue.");
-                    return;
-                }
-
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setDialogTitle("Salva Immagine");
-                fileChooser.setSelectedFile(new java.io.File("issue_" + issueId + ".png"));
-
-                javax.swing.filechooser.FileNameExtensionFilter filter =
-                        new javax.swing.filechooser.FileNameExtensionFilter("Immagini (*.png, *.jpg)", "png", "jpg", "jpeg");
-                fileChooser.setFileFilter(filter);
-
-                int userSelection = fileChooser.showSaveDialog(this);
-
-                if (userSelection == JFileChooser.APPROVE_OPTION) {
-                    java.io.File fileToSave = fileChooser.getSelectedFile();
-
-                    if (!fileToSave.getName().contains(".")) {
-                        fileToSave = new java.io.File(fileToSave.getAbsolutePath() + ".png");
-                    }
-
-                    String downloadUrl = Controller.getInstance().getProxyImageUrl(immagineUrl);
-                    
-                    try (InputStream in = new URL(downloadUrl).openStream()) {
-                        Files.copy(in, fileToSave.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                    }
-
-                    JOptionPane.showMessageDialog(this, "Immagine salvata con successo in:\n" + fileToSave.getAbsolutePath());
-                }
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Errore nel salvataggio dell'immagine: " + ex.getMessage());
-                ex.printStackTrace();
-            }
+            salvaImmagineAsincrono();
         });
 
         modificaButton.addActionListener(e -> {
@@ -130,56 +105,193 @@ public class VIsualizzaIssue extends BaseFrame {
             );
 
             if (conferma == JOptionPane.YES_OPTION) {
-                String risultato = Controller.getInstance().risolviIssue(issueId);
-
-                if (risultato.contains("successo")) {
-                    JOptionPane.showMessageDialog(
-                            this,
-                            risultato,
-                            "Successo",
-                            JOptionPane.INFORMATION_MESSAGE
-                    );
-                    caricaIssue();
-                } else {
-                    JOptionPane.showMessageDialog(
-                            this,
-                            risultato,
-                            "Errore",
-                            JOptionPane.ERROR_MESSAGE
-                    );
-                }
+                risolviIssueAsincrono();
             }
         });
     }
 
-    private void caricaIssue() {
-        Utility.caricaDatiIssueById(issueId, idLabel, titoloField, descrizioneArea,
-                prioritaLabel, tipoLabel, risoltoLabel, creatoreLabel,
-                dataCreazioneLabel, dataRisoluzioneLabel, this);
+    private void apriImmagineAsincrono() {
+        showLoading();
+        SwingWorker<String, Void> worker = new SwingWorker<>() {
+            @Override
+            protected String doInBackground() throws Exception {
+                Map<String, Object> issue = Controller.getInstance().getIssueById(issueId);
+                String immagineUrl = (String) issue.get("immagineurl");
 
-        try {
-            Map<String, Object> issue = Controller.getInstance().getIssueById(issueId);
-
-            String immagineUrl = (String) issue.get("immagineurl");
-            if (immagineUrl != null && !immagineUrl.isEmpty()) {
-                statoImmagineLabel.setText("Stato: Allegata");
-                immagineButton.setEnabled(true);
-                salvaImmagineButton.setEnabled(true);
-            } else {
-                statoImmagineLabel.setText("Stato: Non Allegata");
-                immagineButton.setEnabled(false);
-                salvaImmagineButton.setEnabled(false);
+                if (immagineUrl != null && !immagineUrl.isEmpty()) {
+                    return Controller.getInstance().getProxyImageUrl(immagineUrl);
+                }
+                return null;
             }
 
-            String assegnatario = (String) issue.get("assegnatariousername");
-            if (assegnatario != null && !assegnatario.isEmpty()) {
-                assegnataALabel.setText("Assegnata a: " + assegnatario);
-            } else {
-                assegnataALabel.setText("Assegnata a: Nessuno");
+            @Override
+            protected void done() {
+                hideLoading();
+                try {
+                    String proxyUrl = get();
+                    if (proxyUrl != null) {
+                        new ImmagineIssue(proxyUrl);
+                    } else {
+                        JOptionPane.showMessageDialog(VIsualizzaIssue.this, "Nessuna immagine disponibile per questa issue.");
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(VIsualizzaIssue.this, "Errore nel caricamento dell'immagine: " + ex.getMessage());
+                }
+            }
+        };
+        worker.execute();
+    }
+
+    private void salvaImmagineAsincrono() {
+        // Prima chiediamo dove salvare (deve essere fatto nell'EDT)
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Salva Immagine");
+        fileChooser.setSelectedFile(new java.io.File("issue_" + issueId + ".png"));
+        javax.swing.filechooser.FileNameExtensionFilter filter =
+                new javax.swing.filechooser.FileNameExtensionFilter("Immagini (*.png, *.jpg)", "png", "jpg", "jpeg");
+        fileChooser.setFileFilter(filter);
+
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+
+        java.io.File fileToSave = fileChooser.getSelectedFile();
+        if (!fileToSave.getName().contains(".")) {
+            fileToSave = new java.io.File(fileToSave.getAbsolutePath() + ".png");
+        }
+        final java.io.File finalFile = fileToSave;
+
+        showLoading();
+        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                Map<String, Object> issue = Controller.getInstance().getIssueById(issueId);
+                String immagineUrl = (String) issue.get("immagineurl");
+
+                if (immagineUrl == null || immagineUrl.isEmpty()) {
+                    throw new Exception("Nessuna immagine disponibile.");
+                }
+
+                String downloadUrl = Controller.getInstance().getProxyImageUrl(immagineUrl);
+                try (InputStream in = new URL(downloadUrl).openStream()) {
+                    Files.copy(in, finalFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                }
+                return null;
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            @Override
+            protected void done() {
+                hideLoading();
+                try {
+                    get(); // Controlla eccezioni
+                    JOptionPane.showMessageDialog(VIsualizzaIssue.this, "Immagine salvata con successo in:\n" + finalFile.getAbsolutePath());
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(VIsualizzaIssue.this, "Errore nel salvataggio: " + ex.getMessage());
+                }
+            }
+        };
+        worker.execute();
+    }
+
+    private void caricaIssueAsincrono() {
+        showLoading();
+        SwingWorker<Map<String, Object>, Void> worker = new SwingWorker<>() {
+            @Override
+            protected Map<String, Object> doInBackground() throws Exception {
+                return Controller.getInstance().getIssueById(issueId);
+            }
+
+            @Override
+            protected void done() {
+                hideLoading();
+                try {
+                    Map<String, Object> issue = get();
+                    aggiornaUI(issue);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(VIsualizzaIssue.this, "Errore caricamento issue: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        };
+        worker.execute();
+    }
+
+    private void risolviIssueAsincrono() {
+        showLoading();
+        SwingWorker<String, Void> worker = new SwingWorker<>() {
+            @Override
+            protected String doInBackground() throws Exception {
+                return Controller.getInstance().risolviIssue(issueId);
+            }
+
+            @Override
+            protected void done() {
+                hideLoading();
+                try {
+                    String risultato = get();
+                    if (risultato.contains("successo")) {
+                        JOptionPane.showMessageDialog(VIsualizzaIssue.this, risultato, "Successo", JOptionPane.INFORMATION_MESSAGE);
+                        caricaIssueAsincrono(); // Ricarica i dati
+                    } else {
+                        JOptionPane.showMessageDialog(VIsualizzaIssue.this, risultato, "Errore", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(VIsualizzaIssue.this, "Errore risoluzione: " + e.getMessage());
+                }
+            }
+        };
+        worker.execute();
+    }
+
+    private void aggiornaUI(Map<String, Object> issue) {
+        idLabel.setText("ID: " + issue.get("id"));
+        titoloField.setText((String) issue.get("titolo"));
+        descrizioneArea.setText((String) issue.get("descrizione"));
+        prioritaLabel.setText("Priorità: " + issue.get("priorita"));
+        tipoLabel.setText("Tipo: " + issue.get("tipo"));
+        risoltoLabel.setText("Risolto: " + ((Boolean) issue.get("risolto") ? "Sì" : "No"));
+        creatoreLabel.setText("Creatore: " + issue.get("creatoreusername"));
+
+        dataCreazioneLabel.setText("Data Creazione: " + issue.get("datacreazione"));
+        dataRisoluzioneLabel.setText("Data Risoluzione: " + issue.get("datarisoluzione"));
+
+        titoloField.setEditable(false);
+        descrizioneArea.setEditable(false);
+
+        String immagineUrl = (String) issue.get("immagineurl");
+        if (immagineUrl != null && !immagineUrl.isEmpty()) {
+            statoImmagineLabel.setText("Stato: Allegata");
+            immagineButton.setEnabled(true);
+            salvaImmagineButton.setEnabled(true);
+        } else {
+            statoImmagineLabel.setText("Stato: Non Allegata");
+            immagineButton.setEnabled(false);
+            salvaImmagineButton.setEnabled(false);
+        }
+
+        String assegnatario = (String) issue.get("assegnatariousername");
+        if (assegnatario != null && !assegnatario.isEmpty()) {
+            assegnataALabel.setText("Assegnata a: " + assegnatario);
+        } else {
+            assegnataALabel.setText("Assegnata a: Nessuno");
+        }
+
+        Account utenteCorrente = SessioneManager.getInstance().getUtenteCorrente();
+        if (utenteCorrente != null && assegnatario != null && 
+            utenteCorrente.getNomeUtente().equals(assegnatario)) {
+            modificaButton.setEnabled(true);
+            modificaButton.setToolTipText("Segna come risolta");
+        } else {
+            modificaButton.setEnabled(false);
+            modificaButton.setToolTipText("Solo l'assegnatario può modificare lo stato");
+        }
+
+        Boolean risolto = (Boolean) issue.get("risolto");
+        if (Boolean.TRUE.equals(risolto)) {
+            modificaButton.setEnabled(false);
+            modificaButton.setText("Già Risolta");
         }
     }
 }

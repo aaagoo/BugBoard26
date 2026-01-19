@@ -126,6 +126,18 @@ public class Controller {
         }
     }
 
+    public String modificaIssue(Long issueId, String titolo, String descrizione, String priorita, String tipo, String assegnatarioUsername, String immagineUrl) {
+        try {
+            Account utente = getUtenteCorrente();
+            if (utente == null) {
+                return "Errore: Utente non loggato";
+            }
+            return apiClient.modificaIssue(issueId, titolo, descrizione, priorita, tipo, assegnatarioUsername, immagineUrl, utente.getNomeUtente());
+        } catch (Exception e) {
+            return "Errore: " + e.getMessage();
+        }
+    }
+
     public List<Map<String, Object>> getAllIssues() {
         try {
             return apiClient.getAllIssues();
@@ -171,6 +183,22 @@ public class Controller {
         } catch (Exception e) {
             return "Errore: " + e.getMessage();
         }
+    }
+
+    public List<Map<String, Object>> getNotifiche() {
+        Account utente = getUtenteCorrente();
+        if (utente == null) return new ArrayList<>();
+        return apiClient.getNotifiche(utente.getNomeUtente());
+    }
+
+    public void segnaNotificaLetta(Long id) {
+        apiClient.segnaNotificaLetta(id);
+    }
+
+    public int contaNotificheNonLette() {
+        Account utente = getUtenteCorrente();
+        if (utente == null) return 0;
+        return apiClient.contaNotificheNonLette(utente.getNomeUtente());
     }
 
 }

@@ -253,6 +253,27 @@ public class ApiClient {
         }
     }
 
+    public String modificaIssue(Long issueId, String titolo, String descrizione, String priorita, String tipo, String assegnatarioUsername, String immagineUrl, String richiedente) {
+        try {
+            Map<String, Object> body = new HashMap<>();
+            body.put("titolo", titolo);
+            body.put("descrizione", descrizione);
+            body.put("priorita", priorita);
+            body.put("tipo", tipo);
+            body.put("assegnatarioUsername", assegnatarioUsername);
+            body.put("richiedente", richiedente);
+            if (immagineUrl != null && !immagineUrl.isEmpty()) {
+                body.put("immagineUrl", immagineUrl);
+            }
+
+            String response = put("/api/issues/" + issueId, body);
+            JsonNode root = mapper.readTree(response);
+            return root.path("messaggio").asText("Issue modificata");
+        } catch (Exception e) {
+            return "Errore: " + e.getMessage();
+        }
+    }
+
     public List<Map<String, Object>> getAllIssues() {
         try {
             String response = get("/api/issues");
@@ -290,6 +311,34 @@ public class ApiClient {
             return root.path("messaggio").asText("Issue risolta");
         } catch (Exception e) {
             return "Errore: " + e.getMessage();
+        }
+    }
+
+    // Metodi Notifiche
+    public List<Map<String, Object>> getNotifiche(String username) {
+        try {
+            String response = get("/api/notifiche/" + username);
+            return mapper.readValue(response, List.class);
+        } catch (Exception e) {
+            System.out.println("[ApiClient] getNotifiche fallito: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    public void segnaNotificaLetta(Long id) {
+        try {
+            put("/api/notifiche/" + id + "/letta", null);
+        } catch (Exception e) {
+            System.out.println("[ApiClient] segnaNotificaLetta fallito: " + e.getMessage());
+        }
+    }
+
+    public int contaNotificheNonLette(String username) {
+        try {
+            String response = get("/api/notifiche/" + username + "/count");
+            return Integer.parseInt(response);
+        } catch (Exception e) {
+            return 0;
         }
     }
 

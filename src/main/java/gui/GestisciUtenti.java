@@ -3,6 +3,7 @@ package gui;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.ExecutionException;
 import controller.Controller;
 import gui.util.BaseFrame;
 import gui.util.Utility;
@@ -40,12 +41,8 @@ public class GestisciUtenti extends BaseFrame {
         operationsPanel.setBorder(new RoundedPanel("pannello"));
 
         controller = Controller.getInstance();
-        Utility.caricaDatiUtenti(utentiTable, amministratoriTable, controller);
-
-        TableColumn column1 = utentiTable.getColumnModel().getColumn(3);
-        column1.setPreferredWidth(200);
-        TableColumn column2 = amministratoriTable.getColumnModel().getColumn(3);
-        column2.setPreferredWidth(200);
+        
+        caricaDatiAsincrono();
 
         indietroButton.addActionListener(new ActionListener() {
             @Override
@@ -78,5 +75,32 @@ public class GestisciUtenti extends BaseFrame {
                 dispose();
             }
         });
+    }
+
+    private void caricaDatiAsincrono() {
+        showLoading();
+        new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                java.util.List<java.util.Map<String, Object>> utenti = controller.getUtenti();
+                java.util.List<java.util.Map<String, Object>> admin = controller.getAmministratori();
+                
+                SwingUtilities.invokeLater(() -> {
+                    Utility.popolaTabellaAccount(utentiTable, utenti);
+                    Utility.popolaTabellaAccount(amministratoriTable, admin);
+                    
+                    TableColumn column1 = utentiTable.getColumnModel().getColumn(3);
+                    column1.setPreferredWidth(200);
+                    TableColumn column2 = amministratoriTable.getColumnModel().getColumn(3);
+                    column2.setPreferredWidth(200);
+                });
+                return null;
+            }
+            
+            @Override
+            protected void done() {
+                hideLoading();
+            }
+        }.execute();
     }
 }

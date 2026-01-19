@@ -129,7 +129,7 @@
               </grid>
             </constraints>
             <properties>
-              <background color="-5486795"/>
+              <background color="-13194090"/>
               <font name="Inter" size="15" style="1"/>
               <horizontalTextPosition value="0"/>
               <text value="Annulla"/>
@@ -475,7 +475,7 @@
                   </component>
                 </children>
               </grid>
-              <grid id="ce57c" binding="imagePanel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="ce57c" binding="imagePanel" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
@@ -509,7 +509,16 @@
                       <text value="Allega"/>
                     </properties>
                   </component>
-                  <component id="31ed4" class="javax.swing.JButton" binding="rimuoviAllegatoButton">
+                  <component id="26912" class="javax.swing.JLabel" binding="statoImmagineLabel">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Inter" size="14" style="0"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                  <component id="2f5d6" class="javax.swing.JButton" binding="visualizzaButton">
                     <constraints>
                       <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
                         <preferred-size width="250" height="30"/>
@@ -519,16 +528,20 @@
                       <background color="-13194090"/>
                       <font name="Inter" size="12" style="1"/>
                       <horizontalTextPosition value="0"/>
-                      <text value="Rimuovi Allegato"/>
+                      <text value="Visualizza Immagine"/>
                     </properties>
                   </component>
-                  <component id="26912" class="javax.swing.JLabel" binding="statoImmagineLabel">
+                  <component id="c4dac" class="javax.swing.JButton" binding="rimuoviAllegatoButton">
                     <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="250" height="30"/>
+                      </grid>
                     </constraints>
                     <properties>
-                      <font name="Inter" size="14" style="0"/>
-                      <text value=""/>
+                      <background color="-13194090"/>
+                      <font name="Inter" size="12" style="1"/>
+                      <horizontalTextPosition value="0"/>
+                      <text value="Rimuovi Allegato"/>
                     </properties>
                   </component>
                 </children>

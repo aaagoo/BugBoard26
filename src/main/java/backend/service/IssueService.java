@@ -60,6 +60,19 @@ public class IssueService {
         return result.get("messaggio") + " e assegnata a " + assegnatarioFinale;
     }
 
+    @Transactional
+    public String modificaIssue(Long issueId, String titolo, String descrizione, Priorita priorita, Tipo tipo,
+                                String assegnatario, String immagineUrl, String richiedente) {
+        
+        Map<String, Object> result = jdbcTemplate.queryForMap(
+                "SELECT * FROM modifica_issue(?, ?, ?, ?::priorita_enum, ?::tipo_enum, ?, ?, ?)",
+                issueId, titolo, descrizione, priorita.name(), tipo.name(),
+                assegnatario, immagineUrl, richiedente
+        );
+
+        return (String) result.get("messaggio");
+    }
+
     public String uploadImmagine(MultipartFile file) {
         try {
             String contentType = file.getContentType();
@@ -140,23 +153,10 @@ public class IssueService {
 
     @Transactional
     public String eliminaIssue(Long issueId, String nomeUtente) {
-        List<String> results = jdbcTemplate.queryForList(
-                "SELECT creatoreUsername FROM issue WHERE id = ?",
-                String.class,
-                issueId
-        );
-
-        if (results.isEmpty()) {
-            return "Issue non trovata";
-        }
-
-        if (!results.get(0).equals(nomeUtente)) {
-            return "Non sei autorizzato a eliminare questa issue";
-        }
-
         Map<String, Object> result = jdbcTemplate.queryForMap(
-                "SELECT * FROM elimina_issue(?)",
-                issueId
+                "SELECT * FROM elimina_issue(?, ?)",
+                issueId,
+                nomeUtente
         );
         return (String) result.get("messaggio");
     }

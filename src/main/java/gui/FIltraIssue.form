@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.FIltraIssue">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="721" height="756"/>
+    </constraints>
+    <properties>
+      <background color="-7144784"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <grid id="92420" binding="filtraPanel" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="500" height="610"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-3474724"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <grid id="21f41" binding="innerPanel" layout-manager="GridLayoutManager" row-count="14" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="1" column="0" row-span="2" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="460" height="560"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-855068"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="da756" class="javax.swing.JComboBox" binding="risoltoComboBox">
+                <constraints>
+                  <grid row="13" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="200" height="40"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-3474724"/>
+                  <font name="Inter" size="14" style="0"/>
+                </properties>
+              </component>
+              <component id="5161c" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Inter" size="14" style="1"/>
+                  <text value="aaa"/>
+                </properties>
+              </component>
+              <component id="2d127" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Inter" size="14" style="1"/>
+                  <text value="Data Creazione"/>
+                </properties>
+              </component>
+              <component id="2806c" class="javax.swing.JComboBox" binding="dataCreazioneComboBox">
+                <constraints>
+                  <grid row="13" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="200" height="40"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-3474724"/>
+                  <font name="Inter" size="14" style="0"/>
+                </properties>
+              </component>
+              <component id="ee905" class="javax.swing.JComboBox" binding="tipoComboBox">
+                <constraints>
+                  <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="200" height="40"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-3474724"/>
+                  <font name="Inter" size="14" style="0"/>
+                </properties>
+              </component>
+              <component id="7ede8" class="javax.swing.JComboBox" binding="assegnatarioComboBox">
+                <constraints>
+                  <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="200" height="40"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-3474724"/>
+                  <font name="Inter" size="14" style="0"/>
+                </properties>
+              </component>
+              <component id="27103" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Inter" size="14" style="1"/>
+                  <text value="Tipo"/>
+                </properties>
+              </component>
+              <component id="9d354" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Inter" size="14" style="1"/>
+                  <text value="Assegnatario"/>
+                </properties>
+              </component>
+              <component id="6e257" class="javax.swing.JComboBox" binding="prioritaComboBox">
+                <constraints>
+                  <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="200" height="40"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-3474724"/>
+                  <font name="Inter" size="14" style="0"/>
+                </properties>
+              </component>
+              <component id="72213" class="javax.swing.JComboBox" binding="creatoreComboBox">
+                <constraints>
+                  <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="200" height="40"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-3474724"/>
+                  <font name="Inter" size="14" style="0"/>
+                </properties>
+              </component>
+              <component id="1a399" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="7" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Inter" size="14" style="1"/>
+                  <text value="Priorità"/>
+                </properties>
+              </component>
+              <component id="be6c1" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="7" column="1" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Inter" size="14" style="1"/>
+                  <text value="Creatore"/>
+                </properties>
+              </component>
+              <component id="c2f6e" class="javax.swing.JTextField" binding="paroleChiaveFIeld">
+                <constraints>
+                  <grid row="6" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="420" height="40"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-3474724"/>
+                  <font name="Inter" size="14" style="0"/>
+                </properties>
+              </component>
+              <component id="2dfad" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="4" column="0" row-span="2" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Inter" size="14" style="1"/>
+                  <text value="Parole Chiave"/>
+                </properties>
+              </component>
+              <component id="a5b4a" class="javax.swing.JTextField" binding="idField">
+                <constraints>
+                  <grid row="2" column="0" row-span="2" col-span="2" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="420" height="40"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-3474724"/>
+                  <font name="Inter" size="14" style="0"/>
+                </properties>
+              </component>
+              <component id="b4c2b" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Inter" size="14" style="1"/>
+                  <text value="ID"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <component id="5c271" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <font name="Inter" size="16" style="1"/>
+              <foreground color="-14144460"/>
+              <text value="Inserire i Filtri da applicare"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="12f70" binding="botPanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="500" height="80"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-3474724"/>
+        </properties>
+        <border type="line">
+          <color color="-5524801"/>
+        </border>
+        <children>
+          <component id="111f4" class="javax.swing.JButton" binding="indietroButton" default-binding="true">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="200" height="45"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-13194090"/>
+              <font name="Inter" size="15" style="1"/>
+              <horizontalTextPosition value="0"/>
+              <text value="Indietro"/>
+            </properties>
+          </component>
+          <component id="fbe9d" class="javax.swing.JButton" binding="filtraButton">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="200" height="45"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-13194090"/>
+              <font name="Inter" size="15" style="1"/>
+              <horizontalTextPosition value="0"/>
+              <text value="Applica FIltro"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

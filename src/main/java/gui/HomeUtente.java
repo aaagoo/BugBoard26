@@ -1,11 +1,13 @@
 package gui;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import gui.util.BaseFrame;
 import gui.util.RoundedPanel;
+import gui.util.StyleManager;
 import modello.Account;
 import controller.Controller;
 import gui.util.Utility;
@@ -26,6 +28,8 @@ public class HomeUtente extends BaseFrame {
     private JPanel botPanel;
     private JLabel ruoloLabel;
     private JPanel dashboardPanel;
+    private JScrollPane dashboardScroll;
+    private JButton notificheButton;
 
     public HomeUtente() {
         super();
@@ -50,24 +54,21 @@ public class HomeUtente extends BaseFrame {
             Utility.caricaIssueAssegnate(dashboardTable, utente.getNomeUtente(), Controller.getInstance());
         }
 
-        dashboardTable.getTableHeader().setReorderingAllowed(false);
-        dashboardTable.getTableHeader().setResizingAllowed(false);
-
-        JScrollPane scrollPane = (JScrollPane) dashboardTable.getParent().getParent();
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.getViewport().setBorder(null);
+        StyleManager.styleTable(dashboardTable, dashboardScroll);
 
         Utility.impostaLarghezzeColonne(dashboardTable, 17, 70, 20, 50, 40, 20);
 
         dashboardTable.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                int row = dashboardTable.getSelectedRow();
-                if (row != -1) {
-                    Object idObj = dashboardTable.getModel().getValueAt(row, 0);
-                    Long issueId = Long.parseLong(idObj.toString());
-                    new VIsualizzaIssue(issueId);
-                    dispose();
+                if (evt.getClickCount() == 1) {
+                    int row = dashboardTable.getSelectedRow();
+                    if (row != -1) {
+                        Object idObj = dashboardTable.getModel().getValueAt(row, 0);
+                        Long issueId = Long.parseLong(idObj.toString());
+                        new VIsualizzaIssue(issueId);
+                        dispose();
+                    }
                 }
             }
         });
@@ -103,5 +104,50 @@ public class HomeUtente extends BaseFrame {
                 dispose();
             }
         });
+
+        if (notificheButton != null) {
+            notificheButton.addActionListener(e -> {
+                new Notifiche();
+                dispose();
+            });
+        }
+
+        controllaNotifiche();
+    }
+
+    private void controllaNotifiche() {
+        SwingWorker<Integer, Void> worker = new SwingWorker<>() {
+            @Override
+            protected Integer doInBackground() throws Exception {
+                return Controller.getInstance().contaNotificheNonLette();
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    int count = get();
+                    if (count > 0) {
+                        if (notificheButton != null) {
+                            notificheButton.setText("Notifiche (" + count + ")");
+                            notificheButton.setBackground(new Color(172, 71, 53)); // Rosso richiesto
+                        }
+                        
+                        JOptionPane.showMessageDialog(HomeUtente.this, 
+                                "Hai " + count + " nuove notifiche.", 
+                                "Nuove Notifiche", 
+                                JOptionPane.INFORMATION_MESSAGE);
+                        
+                    } else {
+                        if (notificheButton != null) {
+                            notificheButton.setText("Notifiche");
+                            notificheButton.setBackground(new Color(54, 172, 150)); // Verde scuro default
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        worker.execute();
     }
 }

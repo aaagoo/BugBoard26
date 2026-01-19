@@ -3,12 +3,19 @@ package gui;
 import controller.Controller;
 import gui.util.BaseFrame;
 import gui.util.RoundedPanel;
+import gui.util.StyleManager;
 import gui.util.Utility;
 import modello.Account;
 
 import javax.swing.*;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableRowSorter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -26,8 +33,14 @@ public class Dashboard extends BaseFrame {
     private JLabel ruoloLabel;
     private JLabel benvenutoLabel;
     private JButton eliminaButton;
+    private JButton modificaButton;
+    private JButton filtraButton;
+    private JPanel filtroPanel;
+    private JButton resetButton;
+    private JScrollPane dashboardScroll;
 
     private Controller controller;
+    private TableRowSorter<javax.swing.table.TableModel> sorter;
 
     public Dashboard() {
         super();
@@ -44,6 +57,7 @@ public class Dashboard extends BaseFrame {
         infoutentePanel.setBorder(new RoundedPanel("pannello"));
         botPanel.setBorder(new RoundedPanel("pannello"));
         dashboardPanel.setBorder(new RoundedPanel("finestra"));
+        filtroPanel.setBorder(new RoundedPanel("pannello"));
 
         Account utente = Controller.getInstance().getUtenteCorrente();
         if (utente != null) {
@@ -52,11 +66,30 @@ public class Dashboard extends BaseFrame {
             Utility.caricaAvatar(userpngLabel, utente.getAvatar(), 80, 80);
         }
 
-        dashboardTable.getTableHeader().setReorderingAllowed(false);
-        dashboardTable.getTableHeader().setResizingAllowed(false);
-        JScrollPane scrollPane = (JScrollPane) dashboardTable.getParent().getParent();
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.getViewport().setBorder(null);
+        StyleManager.styleTable(dashboardTable, dashboardScroll);
+
+        dashboardTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 1) {
+                    int row = dashboardTable.getSelectedRow();
+                    if (row != -1) {
+                        int modelRow = dashboardTable.convertRowIndexToModel(row);
+                        Object idObj = dashboardTable.getModel().getValueAt(modelRow, 0);
+                        
+                        Long issueId = null;
+                        if (idObj instanceof Number) {
+                            issueId = ((Number) idObj).longValue();
+                        }
+                        
+                        if (issueId != null) {
+                            new VIsualizzaIssue(issueId, VIsualizzaIssue.Provenienza.DASHBOARD);
+                            dispose();
+                        }
+                    }
+                }
+            }
+        });
 
         caricaDatiAsincrono();
 
@@ -71,10 +104,40 @@ public class Dashboard extends BaseFrame {
         eliminaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new EliminaIssueUtente();
+                new EliminaIssue(EliminaIssue.Provenienza.DASHBOARD);
                 dispose();
             }
         });
+
+        if (modificaButton != null) {
+            modificaButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new ModificaIssueSeleziona(ModificaIssueSeleziona.Provenienza.DASHBOARD);
+                    dispose();
+                }
+            });
+        }
+
+        if (filtraButton != null) {
+            filtraButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    new FIltraIssue(Dashboard.this, filtri -> applicaFiltriTabella(filtri));
+                }
+            });
+        }
+
+        if (resetButton != null) {
+            resetButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (sorter != null) {
+                        sorter.setRowFilter(null);
+                    }
+                }
+            });
+        }
     }
 
     private void caricaDatiAsincrono() {
@@ -96,6 +159,9 @@ public class Dashboard extends BaseFrame {
                     Utility.impostaColorazioneRisolto(dashboardTable);
                     Utility.impostaLarghezzeColonne(dashboardTable, 15, 100, 20, 40, 60, 60, 60, 20);
                     
+                    sorter = new TableRowSorter<>(dashboardTable.getModel());
+                    dashboardTable.setRowSorter(sorter);
+                    
                 } catch (InterruptedException | ExecutionException ex) {
                     JOptionPane.showMessageDialog(Dashboard.this, 
                             "Errore nel caricamento dei dati: " + ex.getMessage(), 
@@ -106,5 +172,43 @@ public class Dashboard extends BaseFrame {
             }
         };
         worker.execute();
+    }
+
+    private void applicaFiltriTabella(Map<String, Object> filtri) {
+        if (sorter == null) return;
+
+        List<RowFilter<Object, Object>> filters = new ArrayList<>();
+
+        if (filtri.containsKey("id")) {
+            filters.add(RowFilter.regexFilter("^" + filtri.get("id") + "$", 0));
+        }
+        if (filtri.containsKey("parole")) {
+            filters.add(RowFilter.regexFilter("(?i)" + filtri.get("parole"), 1)); 
+        }
+        if (filtri.containsKey("priorita")) {
+            filters.add(RowFilter.regexFilter(filtri.get("priorita").toString(), 2));
+        }
+        if (filtri.containsKey("tipo")) {
+            filters.add(RowFilter.regexFilter(filtri.get("tipo").toString(), 3));
+        }
+        if (filtri.containsKey("creatore")) {
+            filters.add(RowFilter.regexFilter(filtri.get("creatore").toString(), 4));
+        }
+        if (filtri.containsKey("assegnatario")) {
+            filters.add(RowFilter.regexFilter(filtri.get("assegnatario").toString(), 5));
+        }
+        if (filtri.containsKey("data")) {
+            filters.add(RowFilter.regexFilter(filtri.get("data").toString(), 6));
+        }
+        if (filtri.containsKey("risolto")) {
+            String val = filtri.get("risolto").toString();
+            filters.add(RowFilter.regexFilter("^" + val + "$", 7));
+        }
+
+        if (filters.isEmpty()) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.andFilter(filters));
+        }
     }
 }

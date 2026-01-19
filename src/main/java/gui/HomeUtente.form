@@ -121,7 +121,7 @@
           <color color="-5524801"/>
         </border>
         <children>
-          <grid id="d33a" binding="operationsPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+          <grid id="d33a" binding="operationsPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
@@ -159,6 +159,18 @@
                   <text value="Dashboard"/>
                 </properties>
               </component>
+              <component id="36379" class="javax.swing.JButton" binding="notificheButton">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="200" height="45"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-13194090"/>
+                  <font name="Inter" size="15" style="1"/>
+                  <text value="Notifiche"/>
+                </properties>
+              </component>
             </children>
           </grid>
           <grid id="6b707" binding="dashboardPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -175,7 +187,7 @@
               <title-color color="-5524801"/>
             </border>
             <children>
-              <scrollpane id="ee8">
+              <scrollpane id="ee8" binding="dashboardScroll">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="750" height="420"/>

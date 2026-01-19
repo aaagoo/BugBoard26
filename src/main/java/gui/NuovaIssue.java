@@ -3,6 +3,7 @@ package gui;
 import controller.Controller;
 import gui.util.BaseFrame;
 import gui.util.RoundedPanel;
+import gui.util.StyleManager;
 import gui.util.Utility;
 import modello.Account;
 
@@ -48,6 +49,7 @@ public class NuovaIssue extends BaseFrame {
     private JComboBox<String> assigneeComboBox;
     private JButton rimuoviAllegatoButton;
     private JLabel statoImmagineLabel;
+    private JButton visualizzaButton;
     private File fileSelezionato = null;
 
     public NuovaIssue() {
@@ -94,6 +96,17 @@ public class NuovaIssue extends BaseFrame {
 
         popolaComboBoxUtenti();
 
+        StyleManager.styleCheckBox(automaticoCheckBox);
+        StyleManager.styleCheckBox(manualeCheckBox);
+        StyleManager.styleCheckBox(lowCheckBox);
+        StyleManager.styleCheckBox(mediumCheckBox);
+        StyleManager.styleCheckBox(highCheckBox);
+        StyleManager.styleCheckBox(criticalCheckBox);
+        StyleManager.styleCheckBox(questionCheckBox);
+        StyleManager.styleCheckBox(bugCheckBox);
+        StyleManager.styleCheckBox(documentationCheckBox);
+        StyleManager.styleCheckBox(featureCheckBox);
+
         ActionListener assegnazioneListener = e -> {
             assigneeComboBox.setEnabled(manualeCheckBox.isSelected());
         };
@@ -131,6 +144,19 @@ public class NuovaIssue extends BaseFrame {
                 fileSelezionato = null;
                 aggiornaStatoImmagine();
                 JOptionPane.showMessageDialog(null, "Allegato rimosso.");
+            });
+        }
+
+        if (visualizzaButton != null) {
+            visualizzaButton.addActionListener(e -> {
+                if (fileSelezionato != null) {
+                    try {
+                        String localUrl = fileSelezionato.toURI().toURL().toString();
+                        new ImmagineIssue(localUrl);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(this, "Errore visualizzazione: " + ex.getMessage());
+                    }
+                }
             });
         }
 
@@ -220,14 +246,14 @@ public class NuovaIssue extends BaseFrame {
     private void aggiornaStatoImmagine() {
         if (fileSelezionato != null) {
             statoImmagineLabel.setText("Stato: Allegata");
-            if (rimuoviAllegatoButton != null) {
-                rimuoviAllegatoButton.setEnabled(true);
-            }
+            allegaButton.setEnabled(false);
+            if (rimuoviAllegatoButton != null) rimuoviAllegatoButton.setEnabled(true);
+            if (visualizzaButton != null) visualizzaButton.setEnabled(true);
         } else {
             statoImmagineLabel.setText("Stato: Non Allegata");
-            if (rimuoviAllegatoButton != null) {
-                rimuoviAllegatoButton.setEnabled(false);
-            }
+            allegaButton.setEnabled(true);
+            if (rimuoviAllegatoButton != null) rimuoviAllegatoButton.setEnabled(false);
+            if (visualizzaButton != null) visualizzaButton.setEnabled(false);
         }
     }
 

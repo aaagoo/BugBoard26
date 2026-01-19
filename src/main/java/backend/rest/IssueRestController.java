@@ -63,7 +63,7 @@ public class IssueRestController {
                     priorita,
                     tipo,
                     body.get("creatoreUsername"),
-                    body.getOrDefault("assegnatarioUsername", null), // Legge l'assegnatario opzionale
+                    body.getOrDefault("assegnatarioUsername", null),
                     body.getOrDefault("immagineUrl", null)
             );
             return ResponseEntity.ok(Map.of("messaggio", messaggio));
@@ -71,6 +71,35 @@ public class IssueRestController {
             return ResponseEntity.badRequest().body(Map.of("messaggio", "Errore: Priorità o tipo non validi"));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(Map.of("messaggio", "Errore nella creazione dell'issue: " + e.getMessage()));
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> modificaIssue(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        try {
+            Priorita priorita = Priorita.valueOf(body.get("priorita").toUpperCase());
+            Tipo tipo = Tipo.valueOf(body.get("tipo").toUpperCase());
+
+            String messaggio = issueService.modificaIssue(
+                    id,
+                    body.get("titolo"),
+                    body.get("descrizione"),
+                    priorita,
+                    tipo,
+                    body.get("assegnatarioUsername"),
+                    body.getOrDefault("immagineUrl", null),
+                    body.get("richiedente")
+            );
+            
+            if (messaggio.contains("successo")) {
+                return ResponseEntity.ok(Map.of("messaggio", messaggio));
+            } else {
+                return ResponseEntity.status(403).body(Map.of("messaggio", messaggio));
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("messaggio", "Errore: Priorità o tipo non validi"));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of("messaggio", "Errore nella modifica dell'issue: " + e.getMessage()));
         }
     }
 

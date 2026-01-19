@@ -31,6 +31,15 @@ CREATE TABLE issue (
     FOREIGN KEY (assegnatarioUsername) REFERENCES account(nomeUtente)
 );
 
+CREATE TABLE notifica (
+    id BIGSERIAL PRIMARY KEY,
+    destinatarioUsername VARCHAR(50) NOT NULL,
+    messaggio TEXT NOT NULL,
+    letta BOOLEAN NOT NULL DEFAULT FALSE,
+    dataCreazione TIMESTAMP NOT NULL DEFAULT NOW(),
+    FOREIGN KEY (destinatarioUsername) REFERENCES account(nomeUtente) ON DELETE CASCADE
+);
+
 
 CREATE OR REPLACE FUNCTION crea_account(
     p_nomeUtente VARCHAR,
@@ -177,12 +186,10 @@ DECLARE
     v_issue_id BIGINT;
     v_peso INT;
 BEGIN
-    -- Inserisci la nuova issue
     INSERT INTO issue (titolo, descrizione, priorita, tipo, creatoreUsername, assegnatarioUsername, immagineUrl, dataCreazione, risolto)
     VALUES (p_titolo, p_descrizione, p_priorita, p_tipo, p_creatore, p_assegnatario, p_immagine, NOW(), FALSE)
     RETURNING id INTO v_issue_id;
 
-    -- Calcola il peso in base alla priorità
     v_peso := CASE p_priorita
         WHEN 'LOW' THEN 1
         WHEN 'MEDIUM' THEN 2
@@ -190,11 +197,13 @@ BEGIN
         WHEN 'CRITICAL' THEN 4
     END;
 
-    -- Incrementa il contatore issueAssegnate per l'assegnatario
     IF p_assegnatario IS NOT NULL THEN
         UPDATE account
         SET issueAssegnate = issueAssegnate + v_peso
         WHERE nomeUtente = p_assegnatario;
+
+        INSERT INTO notifica (destinatarioUsername, messaggio, dataCreazione)
+        VALUES (p_assegnatario, 'Ti è stata assegnata una nuova issue: "' || p_titolo || '"', NOW());
     END IF;
 
     RETURN QUERY SELECT v_issue_id, 'Issue creata con successo'::TEXT;
@@ -208,16 +217,19 @@ $$ LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE FUNCTION elimina_issue(
-    p_issue_id BIGINT
+    p_issue_id BIGINT,
+    p_richiedente VARCHAR
 )
 RETURNS TABLE(successo BOOLEAN, messaggio VARCHAR) AS $$
 DECLARE
     v_assegnatario VARCHAR(50);
+    v_creatore VARCHAR(50);
     v_priorita priorita_enum;
     v_risolto BOOLEAN;
+    v_ruolo_richiedente ruolo_enum;
 BEGIN
-    SELECT assegnatarioUsername, priorita, risolto
-    INTO v_assegnatario, v_priorita, v_risolto
+    SELECT assegnatarioUsername, creatoreUsername, priorita, risolto
+    INTO v_assegnatario, v_creatore, v_priorita, v_risolto
     FROM issue
     WHERE id = p_issue_id;
 
@@ -226,7 +238,15 @@ BEGIN
         RETURN;
     END IF;
 
-    -- Decrementa issueAssegnate solo se l'issue NON è ancora risolta
+    SELECT ruolo INTO v_ruolo_richiedente
+    FROM account
+    WHERE nomeUtente = p_richiedente;
+
+    IF v_creatore != p_richiedente AND v_ruolo_richiedente != 'AMMINISTRATORE' THEN
+        RETURN QUERY SELECT false::BOOLEAN, 'Non sei autorizzato a eliminare questa issue'::VARCHAR;
+        RETURN;
+    END IF;
+
     IF v_assegnatario IS NOT NULL AND v_risolto = FALSE THEN
         UPDATE account
         SET issueAssegnate = issueAssegnate -
@@ -257,10 +277,12 @@ RETURNS TABLE(successo BOOLEAN, messaggio VARCHAR) AS $$
 DECLARE
     v_risolto BOOLEAN;
     v_assegnatario VARCHAR(50);
+    v_creatore VARCHAR(50);
+    v_titolo VARCHAR(100);
     v_priorita priorita_enum;
 BEGIN
-    SELECT risolto, assegnatarioUsername, priorita
-    INTO v_risolto, v_assegnatario, v_priorita
+    SELECT risolto, assegnatarioUsername, creatoreUsername, titolo, priorita
+    INTO v_risolto, v_assegnatario, v_creatore, v_titolo, v_priorita
     FROM issue
     WHERE id = p_issue_id;
 
@@ -290,6 +312,9 @@ BEGIN
             END
         WHERE nomeUtente = v_assegnatario;
     END IF;
+
+    INSERT INTO notifica (destinatarioUsername, messaggio, dataCreazione)
+    VALUES (v_creatore, 'La tua issue "' || v_titolo || '" è stata risolta da ' || v_assegnatario, NOW());
 
     RETURN QUERY SELECT true::BOOLEAN, 'Issue risolta con successo'::VARCHAR;
 
@@ -436,5 +461,127 @@ BEGIN
     END IF;
 
     RETURN v_utente;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION modifica_issue(
+    p_issue_id BIGINT,
+    p_titolo VARCHAR(100),
+    p_descrizione TEXT,
+    p_priorita priorita_enum,
+    p_tipo tipo_enum,
+    p_assegnatario VARCHAR(50),
+    p_immagine TEXT,
+    p_richiedente VARCHAR
+) RETURNS TABLE(successo BOOLEAN, messaggio VARCHAR) AS $$
+DECLARE
+    v_vecchio_assegnatario VARCHAR(50);
+    v_vecchia_priorita priorita_enum;
+    v_creatore VARCHAR(50);
+    v_risolto BOOLEAN;
+    v_ruolo_richiedente ruolo_enum;
+    v_peso_vecchio INT;
+    v_peso_nuovo INT;
+BEGIN
+    SELECT assegnatarioUsername, creatoreUsername, priorita, risolto
+    INTO v_vecchio_assegnatario, v_creatore, v_vecchia_priorita, v_risolto
+    FROM issue
+    WHERE id = p_issue_id;
+
+    IF NOT FOUND THEN
+        RETURN QUERY SELECT false::BOOLEAN, 'Issue non trovata'::VARCHAR;
+        RETURN;
+    END IF;
+
+    SELECT ruolo INTO v_ruolo_richiedente FROM account WHERE nomeUtente = p_richiedente;
+    IF v_creatore != p_richiedente AND v_ruolo_richiedente != 'AMMINISTRATORE' THEN
+        RETURN QUERY SELECT false::BOOLEAN, 'Non sei autorizzato a modificare questa issue'::VARCHAR;
+        RETURN;
+    END IF;
+
+    IF v_risolto = FALSE THEN
+        v_peso_vecchio := CASE v_vecchia_priorita
+            WHEN 'LOW' THEN 1 WHEN 'MEDIUM' THEN 2 WHEN 'HIGH' THEN 3 WHEN 'CRITICAL' THEN 4 END;
+
+        v_peso_nuovo := CASE p_priorita
+            WHEN 'LOW' THEN 1 WHEN 'MEDIUM' THEN 2 WHEN 'HIGH' THEN 3 WHEN 'CRITICAL' THEN 4 END;
+
+        IF v_vecchio_assegnatario IS DISTINCT FROM p_assegnatario THEN
+            IF v_vecchio_assegnatario IS NOT NULL THEN
+                UPDATE account SET issueAssegnate = issueAssegnate - v_peso_vecchio WHERE nomeUtente = v_vecchio_assegnatario;
+            END IF;
+            IF p_assegnatario IS NOT NULL THEN
+                UPDATE account SET issueAssegnate = issueAssegnate + v_peso_nuovo WHERE nomeUtente = p_assegnatario;
+
+                INSERT INTO notifica (destinatarioUsername, messaggio, dataCreazione)
+                VALUES (p_assegnatario, 'Ti è stata assegnata la issue: "' || p_titolo || '"', NOW());
+            END IF;
+
+        ELSIF v_peso_vecchio != v_peso_nuovo AND p_assegnatario IS NOT NULL THEN
+            UPDATE account SET issueAssegnate = issueAssegnate - v_peso_vecchio + v_peso_nuovo WHERE nomeUtente = p_assegnatario;
+        END IF;
+    END IF;
+
+    UPDATE issue
+    SET titolo = p_titolo,
+        descrizione = p_descrizione,
+        priorita = p_priorita,
+        tipo = p_tipo,
+        assegnatarioUsername = p_assegnatario,
+        immagineUrl = COALESCE(p_immagine, immagineUrl)
+    WHERE id = p_issue_id;
+
+    RETURN QUERY SELECT true::BOOLEAN, 'Issue modificata con successo'::VARCHAR;
+
+EXCEPTION
+    WHEN others THEN
+        RETURN QUERY SELECT false::BOOLEAN, ('Errore: ' || SQLERRM)::VARCHAR;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION get_notifiche(
+    p_username VARCHAR(50)
+)
+RETURNS TABLE(
+    id BIGINT,
+    messaggio TEXT,
+    letta BOOLEAN,
+    dataCreazione TIMESTAMP
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT n.id, n.messaggio, n.letta, n.dataCreazione
+    FROM notifica n
+    WHERE n.destinatarioUsername = p_username
+    ORDER BY n.dataCreazione DESC;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION segna_notifica_letta(
+    p_notifica_id BIGINT
+)
+RETURNS VOID AS $$
+BEGIN
+    UPDATE notifica
+    SET letta = TRUE
+    WHERE id = p_notifica_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION conta_notifiche_non_lette(
+    p_username VARCHAR(50)
+)
+RETURNS INT AS $$
+DECLARE
+    v_count INT;
+BEGIN
+    SELECT COUNT(*) INTO v_count
+    FROM notifica
+    WHERE destinatarioUsername = p_username AND letta = FALSE;
+    RETURN v_count;
 END;
 $$ LANGUAGE plpgsql;

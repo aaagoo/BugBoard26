@@ -24,11 +24,11 @@
           <color color="-5524801"/>
         </border>
         <children>
-          <grid id="bf0ed" binding="operationsPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+          <grid id="bf0ed" binding="operationsPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="260" height="180"/>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="260" height="250"/>
               </grid>
             </constraints>
             <properties>
@@ -40,7 +40,7 @@
             <children>
               <component id="890b4" class="javax.swing.JButton" binding="gestisciUtentiButton" default-binding="true">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="200" height="45"/>
                   </grid>
                 </constraints>
@@ -48,6 +48,32 @@
                   <background color="-13194090"/>
                   <font name="Inter" size="15" style="1"/>
                   <text value="Gestisci Utenti"/>
+                </properties>
+              </component>
+              <component id="f66dc" class="javax.swing.JButton" binding="modificaButton">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="200" height="45"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-13194090"/>
+                  <font name="Inter" size="15" style="1"/>
+                  <horizontalTextPosition value="0"/>
+                  <text value="Modifica Issue"/>
+                </properties>
+              </component>
+              <component id="74d9b" class="javax.swing.JButton" binding="eliminaButton">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="200" height="45"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-13194090"/>
+                  <font name="Inter" size="15" style="1"/>
+                  <horizontalTextPosition value="0"/>
+                  <text value="Elimina Issue"/>
                 </properties>
               </component>
             </children>
@@ -66,19 +92,27 @@
               <title-color color="-5524801"/>
             </border>
             <children>
-              <component id="f87b8" class="javax.swing.JTable" binding="dashboardTable">
+              <scrollpane id="e9f3e" binding="dashboardScroll">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="4" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="750" height="450"/>
                   </grid>
                 </constraints>
-                <properties>
-                  <background color="-855068"/>
-                  <enabled value="false"/>
-                  <font name="Inter" size="16" style="0"/>
-                  <showVerticalLines value="false"/>
-                </properties>
-              </component>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="f87b8" class="javax.swing.JTable" binding="dashboardTable">
+                    <constraints/>
+                    <properties>
+                      <background color="-855068"/>
+                      <enabled value="true"/>
+                      <font name="Inter" size="16" style="0"/>
+                      <rowHeight value="30"/>
+                      <showVerticalLines value="false"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </grid>
           <hspacer id="5a8c6">
