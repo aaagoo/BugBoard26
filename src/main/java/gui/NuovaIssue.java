@@ -139,26 +139,22 @@ public class NuovaIssue extends BaseFrame {
             }
         });
 
-        if (rimuoviAllegatoButton != null) {
-            rimuoviAllegatoButton.addActionListener(e -> {
-                fileSelezionato = null;
-                aggiornaStatoImmagine();
-                JOptionPane.showMessageDialog(null, "Allegato rimosso.");
-            });
-        }
+        rimuoviAllegatoButton.addActionListener(e -> {
+            fileSelezionato = null;
+            aggiornaStatoImmagine();
+            JOptionPane.showMessageDialog(null, "Allegato rimosso.");
+        });
 
-        if (visualizzaButton != null) {
-            visualizzaButton.addActionListener(e -> {
-                if (fileSelezionato != null) {
-                    try {
-                        String localUrl = fileSelezionato.toURI().toURL().toString();
-                        new ImmagineIssue(localUrl);
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(this, "Errore visualizzazione: " + ex.getMessage());
-                    }
+        visualizzaButton.addActionListener(e -> {
+            if (fileSelezionato != null) {
+                try {
+                    String localUrl = fileSelezionato.toURI().toURL().toString();
+                    new ImmagineIssue(localUrl);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Errore visualizzazione: " + ex.getMessage());
                 }
-            });
-        }
+            }
+        });
 
         confermaButton.addActionListener(new ActionListener() {
             @Override

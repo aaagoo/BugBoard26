@@ -21,6 +21,8 @@ public class EliminaAccount extends BaseFrame {
     private JButton annullaButton;
     private JButton eliminaButton;
     private JPanel mainPanel;
+    private JScrollPane utentiScrollPane;
+    private JScrollPane amministratoriScrollPane;
 
     private Controller controller;
 
@@ -40,7 +42,10 @@ public class EliminaAccount extends BaseFrame {
         buttonsPanel.setBorder(new RoundedPanel("pannello"));
 
         controller = Controller.getInstance();
-        
+
+        StyleManager.styleTable(utentiTable, utentiScrollPane);
+        StyleManager.styleTable(amministratoriTable, amministratoriScrollPane);
+
         caricaDatiAsincrono();
 
         Utility.selezionaRigaTabella(utentiTable, nomeUtenteField, 0);
@@ -93,13 +98,22 @@ public class EliminaAccount extends BaseFrame {
 
     private void caricaDatiAsincrono() {
         showLoading();
-        new SwingWorker<Void, Void>() {
+        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+            java.util.List<java.util.Map<String, Object>> utenti;
+            java.util.List<java.util.Map<String, Object>> admin;
+
             @Override
             protected Void doInBackground() throws Exception {
-                java.util.List<java.util.Map<String, Object>> utenti = controller.getUtenti();
-                java.util.List<java.util.Map<String, Object>> admin = controller.getAmministratori();
-                
-                SwingUtilities.invokeLater(() -> {
+                utenti = controller.getUtenti();
+                admin = controller.getAmministratori();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                hideLoading();
+                try {
+                    get();
                     Utility.popolaTabellaAccount(utentiTable, utenti);
                     Utility.popolaTabellaAccount(amministratoriTable, admin);
                     
@@ -107,14 +121,11 @@ public class EliminaAccount extends BaseFrame {
                     column1.setPreferredWidth(200);
                     TableColumn column2 = amministratoriTable.getColumnModel().getColumn(3);
                     column2.setPreferredWidth(200);
-                });
-                return null;
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(EliminaAccount.this, "Errore caricamento dati: " + e.getMessage());
+                }
             }
-            
-            @Override
-            protected void done() {
-                hideLoading();
-            }
-        }.execute();
+        };
+        worker.execute();
     }
 }

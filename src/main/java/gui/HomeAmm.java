@@ -9,10 +9,12 @@ import modello.Account;
 import sessione.SessioneManager;
 
 import javax.swing.*;
+import javax.swing.table.TableRowSorter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -35,6 +37,11 @@ public class HomeAmm extends BaseFrame {
     private JButton modificaButton;
     private JButton eliminaButton;
     private JScrollPane dashboardScroll;
+    private JPanel filtroPanel;
+    private JButton filtraButton;
+    private JButton resetButton;
+
+    private TableRowSorter<javax.swing.table.TableModel> sorter;
 
     public HomeAmm() {
         super();
@@ -50,8 +57,11 @@ public class HomeAmm extends BaseFrame {
         botPanel.setBorder(new RoundedPanel("pannello"));
         operationsPanel.setBorder(new RoundedPanel("finestra"));
         dashboardPanel.setBorder(new RoundedPanel("finestra"));
+        filtroPanel.setBorder(new RoundedPanel("pannello"));
 
         StyleManager.styleTable(dashboardTable, dashboardScroll);
+
+        dashboardScroll.getVerticalScrollBar().setUnitIncrement(8);
 
         Account utente = SessioneManager.getInstance().getUtenteCorrente();
         if (utente != null) {
@@ -66,15 +76,16 @@ public class HomeAmm extends BaseFrame {
                 if (e.getClickCount() == 1) {
                     int row = dashboardTable.getSelectedRow();
                     if (row != -1) {
-                        Object idObj = dashboardTable.getValueAt(row, 0);
+                        int modelRow = dashboardTable.convertRowIndexToModel(row);
+                        Object idObj = dashboardTable.getModel().getValueAt(modelRow, 0);
+                        
                         Long issueId = null;
                         if (idObj instanceof Number) {
                             issueId = ((Number) idObj).longValue();
                         }
                         
                         if (issueId != null) {
-                            new VIsualizzaIssue(issueId, VIsualizzaIssue.Provenienza.HOME);
-                            dispose();
+                            new AzioniIssue(HomeAmm.this, issueId, AzioniIssue.Provenienza.HOME, () -> caricaDatiAsincrono());
                         }
                     }
                 }
@@ -99,25 +110,21 @@ public class HomeAmm extends BaseFrame {
             }
         });
 
-        if (eliminaButton != null) {
-            eliminaButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    new EliminaIssue(EliminaIssue.Provenienza.HOME);
-                    dispose();
+        filtraButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new FIltraIssue(HomeAmm.this, filtri -> applicaFiltriTabella(filtri));
+            }
+        });
+
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (sorter != null) {
+                    sorter.setRowFilter(null);
                 }
-            });
-        }
-        
-        if (modificaButton != null) {
-             modificaButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    new ModificaIssueSeleziona(ModificaIssueSeleziona.Provenienza.HOME);
-                    dispose();
-                }
-            });
-        }
+            }
+        });
     }
 
     private void caricaDatiAsincrono() {
@@ -138,6 +145,9 @@ public class HomeAmm extends BaseFrame {
                     Utility.popolaTabellaIssue(dashboardTable, dati);
                     Utility.impostaColorazioneRisolto(dashboardTable);
                     Utility.impostaLarghezzeColonne(dashboardTable, 15, 100, 20, 40, 60, 60, 60, 20);
+
+                    sorter = new TableRowSorter<>(dashboardTable.getModel());
+                    dashboardTable.setRowSorter(sorter);
                     
                 } catch (InterruptedException | ExecutionException ex) {
                     JOptionPane.showMessageDialog(HomeAmm.this, 
@@ -149,5 +159,43 @@ public class HomeAmm extends BaseFrame {
             }
         };
         worker.execute();
+    }
+
+    private void applicaFiltriTabella(Map<String, Object> filtri) {
+        if (sorter == null) return;
+
+        List<RowFilter<Object, Object>> filters = new ArrayList<>();
+
+        if (filtri.containsKey("id")) {
+            filters.add(RowFilter.regexFilter("^" + filtri.get("id") + "$", 0));
+        }
+        if (filtri.containsKey("parole")) {
+            filters.add(RowFilter.regexFilter("(?i)" + filtri.get("parole"), 1)); 
+        }
+        if (filtri.containsKey("priorita")) {
+            filters.add(RowFilter.regexFilter(filtri.get("priorita").toString(), 2));
+        }
+        if (filtri.containsKey("tipo")) {
+            filters.add(RowFilter.regexFilter(filtri.get("tipo").toString(), 3));
+        }
+        if (filtri.containsKey("creatore")) {
+            filters.add(RowFilter.regexFilter(filtri.get("creatore").toString(), 4));
+        }
+        if (filtri.containsKey("assegnatario")) {
+            filters.add(RowFilter.regexFilter(filtri.get("assegnatario").toString(), 5));
+        }
+        if (filtri.containsKey("data")) {
+            filters.add(RowFilter.regexFilter(filtri.get("data").toString(), 6));
+        }
+        if (filtri.containsKey("risolto")) {
+            String val = filtri.get("risolto").toString();
+            filters.add(RowFilter.regexFilter("^" + val + "$", 7));
+        }
+
+        if (filters.isEmpty()) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.andFilter(filters));
+        }
     }
 }

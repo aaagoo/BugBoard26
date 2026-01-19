@@ -36,20 +36,30 @@
               <color color="-5524801"/>
             </border>
             <children>
-              <component id="a284c" class="javax.swing.JTable" binding="utentiTable">
+              <scrollpane id="b7b3f" binding="utentiScrollPane">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="530" height="430"/>
                   </grid>
                 </constraints>
-                <properties>
-                  <background color="-855068"/>
-                  <enabled value="false"/>
-                  <font name="Inter" size="13" style="0"/>
-                  <rowHeight value="25"/>
-                  <showVerticalLines value="false"/>
-                </properties>
-              </component>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="a284c" class="javax.swing.JTable" binding="utentiTable">
+                    <constraints/>
+                    <properties>
+                      <background color="-855068"/>
+                      <enabled value="true"/>
+                      <focusable value="true"/>
+                      <font name="Inter" size="13" style="0"/>
+                      <rowHeight value="30"/>
+                      <selectionBackground color="-3474724"/>
+                      <selectionForeground color="-14605013"/>
+                      <showVerticalLines value="false"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </grid>
           <grid id="5a954" binding="amministratoriPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -66,20 +76,29 @@
               <color color="-5524801"/>
             </border>
             <children>
-              <component id="549b6" class="javax.swing.JTable" binding="amministratoriTable">
+              <scrollpane id="e7b64" binding="amministratoriScrollPane">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="530" height="430"/>
                   </grid>
                 </constraints>
-                <properties>
-                  <background color="-855068"/>
-                  <enabled value="false"/>
-                  <font name="Inter" size="13" style="0"/>
-                  <rowHeight value="25"/>
-                  <showVerticalLines value="false"/>
-                </properties>
-              </component>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="549b6" class="javax.swing.JTable" binding="amministratoriTable">
+                    <constraints/>
+                    <properties>
+                      <background color="-855068"/>
+                      <enabled value="true"/>
+                      <font name="Inter" size="13" style="0"/>
+                      <rowHeight value="30"/>
+                      <selectionBackground color="-3474724"/>
+                      <selectionForeground color="-14605013"/>
+                      <showVerticalLines value="false"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </grid>
           <component id="d7bfd" class="javax.swing.JLabel">

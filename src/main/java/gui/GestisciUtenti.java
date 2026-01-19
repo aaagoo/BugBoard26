@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.ExecutionException;
 import controller.Controller;
 import gui.util.BaseFrame;
+import gui.util.StyleManager;
 import gui.util.Utility;
 import gui.util.RoundedPanel;
 import javax.swing.table.TableColumn;
@@ -23,6 +24,8 @@ public class GestisciUtenti extends BaseFrame {
     private JPanel amministratoriPanel;
     private JTable amministratoriTable;
     private JButton eliminaButton;
+    private JScrollPane utentiScrollPane;
+    private JScrollPane amministratoriScrollPane;
 
     private Controller controller;
 
@@ -41,7 +44,10 @@ public class GestisciUtenti extends BaseFrame {
         operationsPanel.setBorder(new RoundedPanel("pannello"));
 
         controller = Controller.getInstance();
-        
+
+        StyleManager.styleTable(utentiTable, utentiScrollPane);
+        StyleManager.styleTable(amministratoriTable, amministratoriScrollPane);
+
         caricaDatiAsincrono();
 
         indietroButton.addActionListener(new ActionListener() {
@@ -79,28 +85,32 @@ public class GestisciUtenti extends BaseFrame {
 
     private void caricaDatiAsincrono() {
         showLoading();
-        new SwingWorker<Void, Void>() {
+        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+            java.util.List<java.util.Map<String, Object>> utenti;
+            java.util.List<java.util.Map<String, Object>> admin;
+
             @Override
             protected Void doInBackground() throws Exception {
-                java.util.List<java.util.Map<String, Object>> utenti = controller.getUtenti();
-                java.util.List<java.util.Map<String, Object>> admin = controller.getAmministratori();
-                
-                SwingUtilities.invokeLater(() -> {
-                    Utility.popolaTabellaAccount(utentiTable, utenti);
-                    Utility.popolaTabellaAccount(amministratoriTable, admin);
-                    
-                    TableColumn column1 = utentiTable.getColumnModel().getColumn(3);
-                    column1.setPreferredWidth(200);
-                    TableColumn column2 = amministratoriTable.getColumnModel().getColumn(3);
-                    column2.setPreferredWidth(200);
-                });
+                utenti = controller.getUtenti();
+                admin = controller.getAmministratori();
                 return null;
             }
-            
+
             @Override
             protected void done() {
                 hideLoading();
+                try {
+                    get();
+                    Utility.popolaTabellaAccount(utentiTable, utenti);
+                    Utility.popolaTabellaAccount(amministratoriTable, admin);
+                    
+                    Utility.impostaLarghezzeColonne(utentiTable, 100, 100, 100, 200);
+                    Utility.impostaLarghezzeColonne(amministratoriTable, 100, 100, 100, 200);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(GestisciUtenti.this, "Errore caricamento dati: " + e.getMessage());
+                }
             }
-        }.execute();
+        };
+        worker.execute();
     }
 }

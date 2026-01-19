@@ -6,13 +6,16 @@ import gui.util.RoundedPanel;
 import gui.util.StyleManager;
 import gui.util.Utility;
 import modello.Account;
+import modello.Notifica;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
-import java.util.Map;
 
 public class Notifiche extends BaseFrame {
 
@@ -22,7 +25,6 @@ public class Notifiche extends BaseFrame {
     private JTable dashboardTable;
     private JPanel botPanel;
     private JButton indietroButton;
-    private JButton segnaLettaButton;
     private JPanel topPanel;
     private JPanel infoutentePanel;
     private JLabel ruoloLabel;
@@ -34,7 +36,7 @@ public class Notifiche extends BaseFrame {
     public Notifiche(){
         super();
         setContentPane(mainPanel);
-        setTitle("Notifiche");
+        setTitle("BugBoard26");
         setSize(1200,800);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -64,21 +66,22 @@ public class Notifiche extends BaseFrame {
             }
         });
 
-        segnaLettaButton.addActionListener(new ActionListener() {
+        dashboardTable.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                int row = dashboardTable.getSelectedRow();
-                if (row != -1) {
-                    String statoLetta = (String) dashboardTable.getValueAt(row, 3);
-                    if ("Sì".equalsIgnoreCase(statoLetta)) {
-                        JOptionPane.showMessageDialog(Notifiche.this, "Questa notifica è già stata letta.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                        return;
-                    }
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 1) {
+                    int row = dashboardTable.getSelectedRow();
+                    if (row != -1) {
+                        String statoLetta = (String) dashboardTable.getValueAt(row, 3);
+                        if ("Sì".equalsIgnoreCase(statoLetta)) {
+                            String messaggio = (String) dashboardTable.getValueAt(row, 1);
+                            JOptionPane.showMessageDialog(Notifiche.this, messaggio, "Dettaglio Notifica", JOptionPane.INFORMATION_MESSAGE);
+                            return;
+                        }
 
-                    Long id = Long.parseLong(dashboardTable.getValueAt(row, 0).toString());
-                    segnaLettaAsincrono(id);
-                } else {
-                    JOptionPane.showMessageDialog(Notifiche.this, "Seleziona una notifica.");
+                        Long id = Long.parseLong(dashboardTable.getValueAt(row, 0).toString());
+                        segnaLettaAsincrono(id);
+                    }
                 }
             }
         });
@@ -86,9 +89,9 @@ public class Notifiche extends BaseFrame {
 
     private void caricaNotificheAsincrono() {
         showLoading();
-        SwingWorker<List<Map<String, Object>>, Void> worker = new SwingWorker<>() {
+        SwingWorker<List<Notifica>, Void> worker = new SwingWorker<>() {
             @Override
-            protected List<Map<String, Object>> doInBackground() throws Exception {
+            protected List<Notifica> doInBackground() throws Exception {
                 return Controller.getInstance().getNotifiche();
             }
 
@@ -96,7 +99,7 @@ public class Notifiche extends BaseFrame {
             protected void done() {
                 hideLoading();
                 try {
-                    List<Map<String, Object>> notifiche = get();
+                    List<Notifica> notifiche = get();
                     popolaTabellaNotifiche(notifiche);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -106,7 +109,7 @@ public class Notifiche extends BaseFrame {
         worker.execute();
     }
 
-    private void popolaTabellaNotifiche(List<Map<String, Object>> notifiche) {
+    private void popolaTabellaNotifiche(List<Notifica> notifiche) {
         String[] colonne = {"ID", "Messaggio", "Data", "Letta"};
         DefaultTableModel model = new DefaultTableModel(colonne, 0) {
             @Override
@@ -115,12 +118,12 @@ public class Notifiche extends BaseFrame {
             }
         };
 
-        for (Map<String, Object> n : notifiche) {
+        for (Notifica n : notifiche) {
             model.addRow(new Object[]{
-                    n.get("id"),
-                    n.get("messaggio"),
-                    Utility.formattaData(n.get("datacreazione")), 
-                    (Boolean) n.get("letta") ? "Sì" : "No"
+                    n.getId(),
+                    n.getMessaggio(),
+                    Utility.formattaData(n.getDataCreazione()), 
+                    n.isLetta() ? "Sì" : "No"
             });
         }
         dashboardTable.setModel(model);
@@ -133,9 +136,9 @@ public class Notifiche extends BaseFrame {
                 java.awt.Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 if ("No".equals(value)) {
                     c.setFont(c.getFont().deriveFont(java.awt.Font.BOLD));
-                    c.setForeground(java.awt.Color.RED);
+                    c.setForeground(new Color(172,71,53));
                 } else {
-                    c.setForeground(java.awt.Color.BLACK);
+                    c.setForeground(new Color(33, 37, 43));
                 }
                 return c;
             }

@@ -3,14 +3,12 @@ package gui;
 import controller.Controller;
 import gui.util.BaseFrame;
 import gui.util.RoundedPanel;
-import gui.util.StyleManager;
 import gui.util.Utility;
+import gui.util.StyleManager;
 import modello.Account;
 
 import javax.swing.*;
-import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -32,8 +30,6 @@ public class Dashboard extends BaseFrame {
     private JLabel userpngLabel;
     private JLabel ruoloLabel;
     private JLabel benvenutoLabel;
-    private JButton eliminaButton;
-    private JButton modificaButton;
     private JButton filtraButton;
     private JPanel filtroPanel;
     private JButton resetButton;
@@ -66,6 +62,8 @@ public class Dashboard extends BaseFrame {
             Utility.caricaAvatar(userpngLabel, utente.getAvatar(), 80, 80);
         }
 
+        dashboardScroll.getVerticalScrollBar().setUnitIncrement(8);
+        
         StyleManager.styleTable(dashboardTable, dashboardScroll);
 
         dashboardTable.addMouseListener(new MouseAdapter() {
@@ -83,8 +81,7 @@ public class Dashboard extends BaseFrame {
                         }
                         
                         if (issueId != null) {
-                            new VIsualizzaIssue(issueId, VIsualizzaIssue.Provenienza.DASHBOARD);
-                            dispose();
+                            new AzioniIssue(Dashboard.this, issueId, AzioniIssue.Provenienza.DASHBOARD, () -> caricaDatiAsincrono());
                         }
                     }
                 }
@@ -101,43 +98,21 @@ public class Dashboard extends BaseFrame {
             }
         });
 
-        eliminaButton.addActionListener(new ActionListener() {
+        filtraButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new EliminaIssue(EliminaIssue.Provenienza.DASHBOARD);
-                dispose();
+                new FIltraIssue(Dashboard.this, filtri -> applicaFiltriTabella(filtri));
             }
         });
 
-        if (modificaButton != null) {
-            modificaButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    new ModificaIssueSeleziona(ModificaIssueSeleziona.Provenienza.DASHBOARD);
-                    dispose();
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (sorter != null) {
+                    sorter.setRowFilter(null);
                 }
-            });
-        }
-
-        if (filtraButton != null) {
-            filtraButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    new FIltraIssue(Dashboard.this, filtri -> applicaFiltriTabella(filtri));
-                }
-            });
-        }
-
-        if (resetButton != null) {
-            resetButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (sorter != null) {
-                        sorter.setRowFilter(null);
-                    }
-                }
-            });
-        }
+            }
+        });
     }
 
     private void caricaDatiAsincrono() {

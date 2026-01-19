@@ -1,7 +1,11 @@
 package remote;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import modello.Notifica;
 import modello.Ruolo;
 import modello.Account;
 import sessione.SessioneManager;
@@ -12,6 +16,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 public class ApiClient {
@@ -20,6 +27,8 @@ public class ApiClient {
 
     public ApiClient(String baseUrl) {
         this.baseUrl = baseUrl;
+        this.mapper.registerModule(new JavaTimeModule());
+        this.mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
     }
 
     public Account login(String username, String password) {
@@ -315,12 +324,36 @@ public class ApiClient {
     }
 
     // Metodi Notifiche
-    public List<Map<String, Object>> getNotifiche(String username) {
+    public List<Notifica> getNotifiche(String username) {
         try {
             String response = get("/api/notifiche/" + username);
-            return mapper.readValue(response, List.class);
+            
+            List<Map<String, Object>> rawList = mapper.readValue(response, List.class);
+            List<Notifica> notifiche = new ArrayList<>();
+            
+            for (Map<String, Object> raw : rawList) {
+                Notifica n = new Notifica();
+                n.setId(((Number) raw.get("id")).longValue());
+                n.setMessaggio((String) raw.get("messaggio"));
+                n.setLetta((Boolean) raw.get("letta"));
+                n.setDestinatarioUsername(username); 
+                
+                String dataStr = (String) raw.get("datacreazione");
+                if (dataStr != null) {
+                    if (dataStr.contains("+")) {
+                        // Parsa come ZonedDateTime e converti in LocalDateTime LOCALE (Europe/Rome)
+                        ZonedDateTime zdt = ZonedDateTime.parse(dataStr);
+                        n.setDataCreazione(zdt.withZoneSameInstant(ZoneId.of("Europe/Rome")).toLocalDateTime());
+                    } else {
+                        n.setDataCreazione(LocalDateTime.parse(dataStr));
+                    }
+                }
+                notifiche.add(n);
+            }
+            return notifiche;
         } catch (Exception e) {
             System.out.println("[ApiClient] getNotifiche fallito: " + e.getMessage());
+            e.printStackTrace();
             return new ArrayList<>();
         }
     }

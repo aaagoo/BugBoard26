@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 import gui.util.RoundedPanel;
 import gui.util.Utility;
 
-public class ImmagineIssue extends JFrame {
+public class ImmagineIssue extends JDialog {
     private JPanel mainPanel;
     private JButton indietroButton;
     private JLabel immagineLabel;

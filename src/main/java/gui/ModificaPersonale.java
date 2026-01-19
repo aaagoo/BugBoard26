@@ -50,6 +50,7 @@ public class ModificaPersonale extends BaseFrame {
         });
 
         modificaButton.addActionListener(e -> salvaModifiche());
+
         indietroButton.addActionListener(e -> {
             new AreaPersonale();
             dispose();

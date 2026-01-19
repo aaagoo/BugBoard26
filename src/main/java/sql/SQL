@@ -24,7 +24,7 @@ CREATE TABLE issue (
     immagineUrl TEXT,
     creatoreUsername VARCHAR(50) NOT NULL,
     assegnatarioUsername VARCHAR(50),
-    dataCreazione TIMESTAMP NOT NULL DEFAULT NOW(),
+    dataCreazione TIMESTAMP NOT NULL DEFAULT (timezone('Europe/Rome', NOW()::timestamptz)),
     risolto BOOLEAN NOT NULL DEFAULT FALSE,
     dataRisoluzione TIMESTAMP,
     FOREIGN KEY (creatoreUsername) REFERENCES account(nomeUtente),
@@ -36,7 +36,7 @@ CREATE TABLE notifica (
     destinatarioUsername VARCHAR(50) NOT NULL,
     messaggio TEXT NOT NULL,
     letta BOOLEAN NOT NULL DEFAULT FALSE,
-    dataCreazione TIMESTAMP NOT NULL DEFAULT NOW(),
+    dataCreazione TIMESTAMP NOT NULL DEFAULT (timezone('Europe/Rome', NOW()::timestamptz)),
     FOREIGN KEY (destinatarioUsername) REFERENCES account(nomeUtente) ON DELETE CASCADE
 );
 
@@ -123,7 +123,21 @@ CREATE OR REPLACE FUNCTION elimina_account(
     p_nomeUtente VARCHAR
 )
 RETURNS TABLE(successo BOOLEAN, messaggio VARCHAR) AS $$
+DECLARE
+    v_count INT;
 BEGIN
+    SELECT COUNT(*) INTO v_count FROM issue WHERE creatoreUsername = p_nomeUtente;
+    IF v_count > 0 THEN
+        RETURN QUERY SELECT false::BOOLEAN, 'Impossibile eliminare: l''utente ha creato delle issue.'::VARCHAR;
+        RETURN;
+    END IF;
+
+    SELECT COUNT(*) INTO v_count FROM issue WHERE assegnatarioUsername = p_nomeUtente;
+    IF v_count > 0 THEN
+        RETURN QUERY SELECT false::BOOLEAN, 'Impossibile eliminare: l''utente ha delle issue assegnate.'::VARCHAR;
+        RETURN;
+    END IF;
+
     DELETE FROM account WHERE nomeUtente = p_nomeUtente;
 
     IF FOUND THEN
@@ -187,7 +201,7 @@ DECLARE
     v_peso INT;
 BEGIN
     INSERT INTO issue (titolo, descrizione, priorita, tipo, creatoreUsername, assegnatarioUsername, immagineUrl, dataCreazione, risolto)
-    VALUES (p_titolo, p_descrizione, p_priorita, p_tipo, p_creatore, p_assegnatario, p_immagine, NOW(), FALSE)
+    VALUES (p_titolo, p_descrizione, p_priorita, p_tipo, p_creatore, p_assegnatario, p_immagine, timezone('Europe/Rome', NOW()::timestamptz), FALSE)
     RETURNING id INTO v_issue_id;
 
     v_peso := CASE p_priorita
@@ -203,7 +217,7 @@ BEGIN
         WHERE nomeUtente = p_assegnatario;
 
         INSERT INTO notifica (destinatarioUsername, messaggio, dataCreazione)
-        VALUES (p_assegnatario, 'Ti è stata assegnata una nuova issue: "' || p_titolo || '"', NOW());
+        VALUES (p_assegnatario, 'Ti è stata assegnata una nuova issue: "' || p_titolo || '"', timezone('Europe/Rome', NOW()::timestamptz));
     END IF;
 
     RETURN QUERY SELECT v_issue_id, 'Issue creata con successo'::TEXT;
@@ -224,12 +238,13 @@ RETURNS TABLE(successo BOOLEAN, messaggio VARCHAR) AS $$
 DECLARE
     v_assegnatario VARCHAR(50);
     v_creatore VARCHAR(50);
+    v_titolo VARCHAR(100);
     v_priorita priorita_enum;
     v_risolto BOOLEAN;
     v_ruolo_richiedente ruolo_enum;
 BEGIN
-    SELECT assegnatarioUsername, creatoreUsername, priorita, risolto
-    INTO v_assegnatario, v_creatore, v_priorita, v_risolto
+    SELECT assegnatarioUsername, creatoreUsername, titolo, priorita, risolto
+    INTO v_assegnatario, v_creatore, v_titolo, v_priorita, v_risolto
     FROM issue
     WHERE id = p_issue_id;
 
@@ -257,6 +272,16 @@ BEGIN
                 WHEN 'CRITICAL' THEN 4
             END
         WHERE nomeUtente = v_assegnatario;
+    END IF;
+
+    IF v_assegnatario IS NOT NULL AND v_assegnatario != p_richiedente THEN
+        INSERT INTO notifica (destinatarioUsername, messaggio, dataCreazione)
+        VALUES (v_assegnatario, 'La issue "' || v_titolo || '" che ti era assegnata è stata eliminata da ' || p_richiedente, timezone('Europe/Rome', NOW()::timestamptz));
+    END IF;
+
+    IF v_creatore != p_richiedente THEN
+        INSERT INTO notifica (destinatarioUsername, messaggio, dataCreazione)
+        VALUES (v_creatore, 'La tua issue "' || v_titolo || '" è stata eliminata da ' || p_richiedente, timezone('Europe/Rome', NOW()::timestamptz));
     END IF;
 
     DELETE FROM issue WHERE id = p_issue_id;
@@ -298,7 +323,7 @@ BEGIN
 
     UPDATE issue
     SET risolto = TRUE,
-        dataRisoluzione = NOW()
+        dataRisoluzione = timezone('Europe/Rome', NOW()::timestamptz)
     WHERE id = p_issue_id;
 
     IF v_assegnatario IS NOT NULL THEN
@@ -314,7 +339,7 @@ BEGIN
     END IF;
 
     INSERT INTO notifica (destinatarioUsername, messaggio, dataCreazione)
-    VALUES (v_creatore, 'La tua issue "' || v_titolo || '" è stata risolta da ' || v_assegnatario, NOW());
+    VALUES (v_creatore, 'La tua issue "' || v_titolo || '" è stata risolta da ' || v_assegnatario, timezone('Europe/Rome', NOW()::timestamptz));
 
     RETURN QUERY SELECT true::BOOLEAN, 'Issue risolta con successo'::VARCHAR;
 
@@ -515,7 +540,7 @@ BEGIN
                 UPDATE account SET issueAssegnate = issueAssegnate + v_peso_nuovo WHERE nomeUtente = p_assegnatario;
 
                 INSERT INTO notifica (destinatarioUsername, messaggio, dataCreazione)
-                VALUES (p_assegnatario, 'Ti è stata assegnata la issue: "' || p_titolo || '"', NOW());
+                VALUES (p_assegnatario, 'Ti è stata assegnata la issue: "' || p_titolo || '"', timezone('Europe/Rome', NOW()::timestamptz));
             END IF;
 
         ELSIF v_peso_vecchio != v_peso_nuovo AND p_assegnatario IS NOT NULL THEN

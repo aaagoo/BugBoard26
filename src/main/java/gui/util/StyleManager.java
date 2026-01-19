@@ -16,9 +16,7 @@ public class StyleManager {
     public static final Font FONT_HEADER = new Font("Inter", Font.BOLD, 14);
     public static final Font FONT_NORMAL = new Font("Segoe UI", Font.PLAIN, 14);
 
-    /**
-     * Applica lo stile standard alle tabelle del progetto.
-     */
+
     public static void styleTable(JTable table, JScrollPane scrollPane) {
         if (table == null) return;
 
@@ -39,11 +37,10 @@ public class StyleManager {
         
         // Tabella
         table.setFillsViewportHeight(true);
-        // table.setRowHeight(30); // Opzionale: righe più alte per leggibilità
     }
 
     /**
-     * Applica lo stile personalizzato (quadratino verde acqua) ai CheckBox.
+     * Applica lo stile personalizzato ai CheckBox.
      */
     public static void styleCheckBox(JCheckBox checkBox) {
         if (checkBox == null) return;
@@ -53,7 +50,7 @@ public class StyleManager {
         checkBox.setForeground(TESTO_SCURO);
         checkBox.setFont(FONT_NORMAL);
 
-        // Icona non selezionata (quadratino vuoto con bordo verde acqua)
+        // Icona non selezionata
         checkBox.setIcon(new Icon() {
             @Override
             public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -71,7 +68,7 @@ public class StyleManager {
             public int getIconHeight() { return 18; }
         });
 
-        // Icona selezionata (quadratino pieno verde acqua con spunta bianca)
+        // Icona selezionata
         checkBox.setSelectedIcon(new Icon() {
             @Override
             public void paintIcon(Component c, Graphics g, int x, int y) {

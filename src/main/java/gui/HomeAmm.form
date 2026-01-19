@@ -24,11 +24,11 @@
           <color color="-5524801"/>
         </border>
         <children>
-          <grid id="bf0ed" binding="operationsPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+          <grid id="bf0ed" binding="operationsPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="260" height="250"/>
+                <preferred-size width="260" height="100"/>
               </grid>
             </constraints>
             <properties>
@@ -40,7 +40,7 @@
             <children>
               <component id="890b4" class="javax.swing.JButton" binding="gestisciUtentiButton" default-binding="true">
                 <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="200" height="45"/>
                   </grid>
                 </constraints>
@@ -48,32 +48,6 @@
                   <background color="-13194090"/>
                   <font name="Inter" size="15" style="1"/>
                   <text value="Gestisci Utenti"/>
-                </properties>
-              </component>
-              <component id="f66dc" class="javax.swing.JButton" binding="modificaButton">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="200" height="45"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <background color="-13194090"/>
-                  <font name="Inter" size="15" style="1"/>
-                  <horizontalTextPosition value="0"/>
-                  <text value="Modifica Issue"/>
-                </properties>
-              </component>
-              <component id="74d9b" class="javax.swing.JButton" binding="eliminaButton">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="200" height="45"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <background color="-13194090"/>
-                  <font name="Inter" size="15" style="1"/>
-                  <horizontalTextPosition value="0"/>
-                  <text value="Elimina Issue"/>
                 </properties>
               </component>
             </children>
@@ -108,6 +82,8 @@
                       <enabled value="true"/>
                       <font name="Inter" size="16" style="0"/>
                       <rowHeight value="30"/>
+                      <selectionBackground color="-3474724"/>
+                      <selectionForeground color="-14605013"/>
                       <showVerticalLines value="false"/>
                     </properties>
                   </component>
@@ -167,7 +143,7 @@
         <children>
           <component id="e5fba" class="javax.swing.JLabel">
             <constraints>
-              <grid row="0" column="1" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="1" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="8" use-parent-layout="false"/>
             </constraints>
             <properties>
               <background color="-7144784"/>
@@ -177,21 +153,6 @@
               <text value="Benvenuto su BugBoard26!"/>
             </properties>
           </component>
-          <grid id="de286" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="250" height="80"/>
-              </grid>
-            </constraints>
-            <properties>
-              <background color="-7144784"/>
-            </properties>
-            <border type="none">
-              <color color="-5524801"/>
-            </border>
-            <children/>
-          </grid>
           <grid id="2c35a" binding="infoutentePanel" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
@@ -232,6 +193,46 @@
                 </constraints>
                 <properties>
                   <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="a8780" binding="filtroPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="10" fill="0" indent="5" use-parent-layout="false">
+                <preferred-size width="250" height="100"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-3474724"/>
+            </properties>
+            <border type="none">
+              <color color="-5524801"/>
+            </border>
+            <children>
+              <component id="dbeb2" class="javax.swing.JButton" binding="filtraButton" default-binding="true">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="200" height="40"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-13194090"/>
+                  <font name="Inter" size="14" style="1"/>
+                  <text value="Filtra"/>
+                </properties>
+              </component>
+              <component id="d5fc6" class="javax.swing.JButton" binding="resetButton">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="200" height="30"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-13194090"/>
+                  <font name="Inter" size="14" style="1"/>
+                  <text value="Reset Filtri"/>
                 </properties>
               </component>
             </children>

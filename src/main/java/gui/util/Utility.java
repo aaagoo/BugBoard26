@@ -12,12 +12,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import javax.swing.table.JTableHeader;
 import modello.*;
 import gui.HomeAmm;
 import gui.HomeUtente;
 import gui.ModificaAccount;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.table.TableColumn;
 
@@ -38,7 +39,12 @@ public class Utility {
     }
 
     public static void popolaTabella(JTable tabella, List<Map<String, Object>> dati, String[] colonne) {
-        DefaultTableModel model = new DefaultTableModel(colonne, 0);
+        DefaultTableModel model = new DefaultTableModel(colonne, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
         for (Map<String, Object> riga : dati) {
             Object[] rigaData = new Object[colonne.length];
@@ -53,7 +59,12 @@ public class Utility {
 
     public static void popolaTabellaAccount(JTable tabella, List<Map<String, Object>> dati) {
         String[] colonne = {"nomeutente", "nome", "cognome", "email"};
-        DefaultTableModel model = new DefaultTableModel(colonne, 0);
+        DefaultTableModel model = new DefaultTableModel(colonne, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
         for (Map<String, Object> riga : dati) {
             model.addRow(new Object[]{
@@ -66,12 +77,6 @@ public class Utility {
 
         tabella.setModel(model);
     }
-
-    public static void caricaDatiUtenti(JTable utentiTable, JTable amministratoriTable, Controller controller) {
-        popolaTabellaAccount(utentiTable, controller.getUtenti());
-        popolaTabellaAccount(amministratoriTable, controller.getAmministratori());
-    }
-
 
     public static void caricaAvatar(JLabel label, String avatarName, int width, int height) {
         if (avatarName == null || avatarName.isEmpty()) {
@@ -336,12 +341,27 @@ public class Utility {
         }
 
         try {
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+            if (dataObj instanceof ZonedDateTime) {
+                ZonedDateTime zdt = ((ZonedDateTime) dataObj).withZoneSameInstant(ZoneId.of("Europe/Rome"));
+                return zdt.format(outputFormatter);
+            } else if (dataObj instanceof LocalDateTime) {
+                return ((LocalDateTime) dataObj).format(outputFormatter);
+            }
+
             String dataStr = dataObj.toString();
+
+             if (dataStr.contains("+")) {
+                ZonedDateTime zdt = ZonedDateTime.parse(dataStr);
+                zdt = zdt.withZoneSameInstant(ZoneId.of("Europe/Rome"));
+                return zdt.format(outputFormatter);
+            }
+            
             if (dataStr.contains(".")) {
                 dataStr = dataStr.substring(0, dataStr.indexOf('.'));
             }
             LocalDateTime dateTime = LocalDateTime.parse(dataStr);
-            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
             return dateTime.format(outputFormatter);
         } catch (Exception e) {
             return dataObj.toString();

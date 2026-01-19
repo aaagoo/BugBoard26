@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +26,6 @@ public class FIltraIssue extends JDialog {
     private JPanel mainPanel;
     private JPanel botPanel;
     private JButton indietroButton;
-    private JButton applicaButton; 
     private JTextField idField;
     private JComboBox<String> prioritaComboBox;
     private JTextField paroleChiaveFIeld;
@@ -39,7 +40,11 @@ public class FIltraIssue extends JDialog {
     private FiltroListener listener;
 
     public FIltraIssue(JFrame owner, FiltroListener listener) {
-        super(owner, "Filtra Issue", true);
+        this(owner, listener, false);
+    }
+
+    public FIltraIssue(JFrame owner, FiltroListener listener, boolean disableAssegnatario) {
+        super(owner, "Filtra Issue", true); 
         this.listener = listener;
         
         setContentPane(mainPanel);
@@ -59,6 +64,11 @@ public class FIltraIssue extends JDialog {
 
         popolaComboBox();
 
+        if (disableAssegnatario) {
+            assegnatarioComboBox.setEnabled(false);
+            assegnatarioComboBox.setToolTipText("Filtro disabilitato in questa vista");
+        }
+
         filtraButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -73,7 +83,7 @@ public class FIltraIssue extends JDialog {
             }
         });
         
-        setVisible(true);
+        setVisible(true); 
     }
 
     private void popolaComboBox() {
@@ -106,11 +116,20 @@ public class FIltraIssue extends JDialog {
                         creatoreComboBox.addItem((String) u.get("nomeutente"));
                         assegnatarioComboBox.addItem((String) u.get("nomeutente"));
                     }
+
+                    DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                     
                     List<String> date = issues.stream()
                             .map(i -> {
                                 String d = (String) i.get("datacreazione");
-                                return d != null && d.length() >= 10 ? d.substring(0, 10) : null;
+                                if (d == null) return null;
+                                try {
+                                    if (d.contains(".")) d = d.substring(0, d.indexOf('.'));
+                                    LocalDateTime dt = LocalDateTime.parse(d);
+                                    return dt.format(outputFormatter);
+                                } catch (Exception e) {
+                                    return null;
+                                }
                             })
                             .filter(d -> d != null)
                             .distinct()
@@ -148,7 +167,7 @@ public class FIltraIssue extends JDialog {
         if (creatoreComboBox.getSelectedIndex() > 0) 
             filtri.put("creatore", creatoreComboBox.getSelectedItem());
 
-        if (assegnatarioComboBox.getSelectedIndex() > 0) 
+        if (assegnatarioComboBox.isEnabled() && assegnatarioComboBox.getSelectedIndex() > 0)
             filtri.put("assegnatario", assegnatarioComboBox.getSelectedItem());
             
         if (dataCreazioneComboBox.getSelectedIndex() > 0)

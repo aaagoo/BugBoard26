@@ -10,11 +10,11 @@
     </properties>
     <border type="none"/>
     <children>
-      <grid id="83d3a" binding="botPanel" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="83d3a" binding="botPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="1100" height="80"/>
+            <preferred-size width="400" height="80"/>
           </grid>
         </constraints>
         <properties>
@@ -35,32 +35,6 @@
               <font name="Inter" size="15" style="1"/>
               <horizontalTextPosition value="0"/>
               <text value="Indietro"/>
-            </properties>
-          </component>
-          <component id="a96d0" class="javax.swing.JButton" binding="modificaButton">
-            <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="300" height="45"/>
-              </grid>
-            </constraints>
-            <properties>
-              <background color="-13194090"/>
-              <font name="Inter" size="15" style="1"/>
-              <horizontalTextPosition value="0"/>
-              <text value="Modifica Issue"/>
-            </properties>
-          </component>
-          <component id="91750" class="javax.swing.JButton" binding="eliminaButton">
-            <constraints>
-              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="300" height="45"/>
-              </grid>
-            </constraints>
-            <properties>
-              <background color="-13194090"/>
-              <font name="Inter" size="15" style="1"/>
-              <horizontalTextPosition value="0"/>
-              <text value="Elimina Issue"/>
             </properties>
           </component>
         </children>
@@ -113,7 +87,8 @@
                       <enabled value="true"/>
                       <font name="Inter" size="14" style="0"/>
                       <rowHeight value="30"/>
-                      <selectionForeground color="-855068"/>
+                      <selectionBackground color="-3474724"/>
+                      <selectionForeground color="-14605013"/>
                       <showVerticalLines value="false"/>
                     </properties>
                   </component>

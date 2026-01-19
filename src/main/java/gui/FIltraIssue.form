@@ -51,7 +51,7 @@
                 </constraints>
                 <properties>
                   <font name="Inter" size="14" style="1"/>
-                  <text value="aaa"/>
+                  <text value="Risolto"/>
                 </properties>
               </component>
               <component id="2d127" class="javax.swing.JLabel">

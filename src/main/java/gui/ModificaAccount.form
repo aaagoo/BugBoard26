@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
     <margin top="5" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="1173" height="603"/>
+      <xy x="20" y="20" width="1173" height="648"/>
     </constraints>
     <properties>
       <background color="-7144784"/>
@@ -76,20 +76,31 @@
               <color color="-5524801"/>
             </border>
             <children>
-              <component id="30140" class="javax.swing.JTable" binding="utentiTable">
+              <scrollpane id="7a838" binding="utentiScrollPane">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="530" height="280"/>
                   </grid>
                 </constraints>
                 <properties>
                   <background color="-855068"/>
-                  <enabled value="false"/>
-                  <font name="Inter" size="13" style="0"/>
-                  <rowHeight value="25"/>
-                  <showVerticalLines value="false"/>
                 </properties>
-              </component>
+                <border type="none"/>
+                <children>
+                  <component id="30140" class="javax.swing.JTable" binding="utentiTable">
+                    <constraints/>
+                    <properties>
+                      <background color="-855068"/>
+                      <enabled value="true"/>
+                      <font name="Inter" size="13" style="0"/>
+                      <rowHeight value="30"/>
+                      <selectionBackground color="-3474724"/>
+                      <selectionForeground color="-14605013"/>
+                      <showVerticalLines value="false"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </grid>
           <grid id="c3d5d" binding="amministratoriPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -106,20 +117,32 @@
               <color color="-5524801"/>
             </border>
             <children>
-              <component id="2e33f" class="javax.swing.JTable" binding="amministratoriTable">
+              <scrollpane id="a927c" binding="amministratoriScrollPane">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="530" height="280"/>
                   </grid>
                 </constraints>
                 <properties>
                   <background color="-855068"/>
-                  <enabled value="false"/>
-                  <font name="Inter" size="13" style="0"/>
-                  <rowHeight value="25"/>
-                  <showVerticalLines value="false"/>
                 </properties>
-              </component>
+                <border type="none"/>
+                <children>
+                  <component id="2e33f" class="javax.swing.JTable" binding="amministratoriTable">
+                    <constraints/>
+                    <properties>
+                      <background color="-855068"/>
+                      <enabled value="true"/>
+                      <focusable value="true"/>
+                      <font name="Inter" size="13" style="0"/>
+                      <rowHeight value="30"/>
+                      <selectionBackground color="-3474724"/>
+                      <selectionForeground color="-14605013"/>
+                      <showVerticalLines value="false"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </grid>
           <component id="51600" class="javax.swing.JLabel">

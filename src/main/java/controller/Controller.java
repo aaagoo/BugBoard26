@@ -1,5 +1,6 @@
 package controller;
 
+import modello.Notifica;
 import modello.Ruolo;
 import modello.Account;
 import sessione.SessioneManager;
@@ -185,7 +186,7 @@ public class Controller {
         }
     }
 
-    public List<Map<String, Object>> getNotifiche() {
+    public List<Notifica> getNotifiche() {
         Account utente = getUtenteCorrente();
         if (utente == null) return new ArrayList<>();
         return apiClient.getNotifiche(utente.getNomeUtente());

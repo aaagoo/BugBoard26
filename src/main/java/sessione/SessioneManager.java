@@ -6,6 +6,7 @@ public class SessioneManager {
     private static SessioneManager instance;
     private Account utenteCorrente;
     private String token;
+    private boolean notificheGiaControllate = false;
 
     private SessioneManager() {
     }
@@ -28,6 +29,7 @@ public class SessioneManager {
     public void logout() {
         utenteCorrente = null;
         token = null;
+        notificheGiaControllate = false;
     }
 
     public boolean isLoggato() {
@@ -40,5 +42,13 @@ public class SessioneManager {
 
     public String getToken() {
         return token;
+    }
+
+    public boolean isNotificheGiaControllate() {
+        return notificheGiaControllate;
+    }
+
+    public void setNotificheGiaControllate(boolean notificheGiaControllate) {
+        this.notificheGiaControllate = notificheGiaControllate;
     }
 }

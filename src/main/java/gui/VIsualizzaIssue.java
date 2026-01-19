@@ -4,7 +4,6 @@ import gui.util.BaseFrame;
 import gui.util.RoundedPanel;
 import gui.util.Utility;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import controller.Controller;
 import modello.Account;
 import modello.Ruolo;
@@ -143,7 +142,6 @@ public class VIsualizzaIssue extends BaseFrame {
     }
 
     private void salvaImmagineAsincrono() {
-        // Prima chiediamo dove salvare (deve essere fatto nell'EDT)
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Salva Immagine");
         fileChooser.setSelectedFile(new java.io.File("issue_" + issueId + ".png"));
@@ -185,7 +183,7 @@ public class VIsualizzaIssue extends BaseFrame {
             protected void done() {
                 hideLoading();
                 try {
-                    get(); // Controlla eccezioni
+                    get(); 
                     JOptionPane.showMessageDialog(VIsualizzaIssue.this, "Immagine salvata con successo in:\n" + finalFile.getAbsolutePath());
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(VIsualizzaIssue.this, "Errore nel salvataggio: " + ex.getMessage());
@@ -233,7 +231,7 @@ public class VIsualizzaIssue extends BaseFrame {
                     String risultato = get();
                     if (risultato.contains("successo")) {
                         JOptionPane.showMessageDialog(VIsualizzaIssue.this, risultato, "Successo", JOptionPane.INFORMATION_MESSAGE);
-                        caricaIssueAsincrono(); // Ricarica i dati
+                        caricaIssueAsincrono(); 
                     } else {
                         JOptionPane.showMessageDialog(VIsualizzaIssue.this, risultato, "Errore", JOptionPane.ERROR_MESSAGE);
                     }
@@ -254,8 +252,8 @@ public class VIsualizzaIssue extends BaseFrame {
         risoltoLabel.setText("Risolto: " + ((Boolean) issue.get("risolto") ? "Sì" : "No"));
         creatoreLabel.setText("Creatore: " + issue.get("creatoreusername"));
 
-        dataCreazioneLabel.setText("Data Creazione: " + issue.get("datacreazione"));
-        dataRisoluzioneLabel.setText("Data Risoluzione: " + issue.get("datarisoluzione"));
+        dataCreazioneLabel.setText("Data Creazione: " + Utility.formattaData(issue.get("datacreazione")));
+        dataRisoluzioneLabel.setText("Data Risoluzione: " + Utility.formattaData(issue.get("datarisoluzione")));
 
         titoloField.setEditable(false);
         descrizioneArea.setEditable(false);

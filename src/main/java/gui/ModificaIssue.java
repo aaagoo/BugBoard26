@@ -3,11 +3,8 @@ package gui;
 import controller.Controller;
 import gui.util.BaseFrame;
 import gui.util.RoundedPanel;
-import gui.util.StyleManager;
 import gui.util.Utility;
 import modello.Account;
-import modello.Ruolo;
-import sessione.SessioneManager;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -15,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 public class ModificaIssue extends BaseFrame {
 
@@ -80,6 +76,8 @@ public class ModificaIssue extends BaseFrame {
         infoPanel.setBorder(new RoundedPanel("finestra"));
         assegnaPanel.setBorder(new RoundedPanel("finestra"));
 
+        descrizioneArea.setBorder(titoloField.getBorder());
+
         Account utente = Controller.getInstance().getUtenteCorrente();
         if (utente != null) {
             benvenutoLabel.setText(utente.getNome() + " " + utente.getCognome());
@@ -102,22 +100,11 @@ public class ModificaIssue extends BaseFrame {
         ButtonGroup assegnazioneGroup = new ButtonGroup();
         assegnazioneGroup.add(automaticoCheckBox);
         assegnazioneGroup.add(manualeCheckBox);
-
+        
         manualeCheckBox.setSelected(true);
         assigneeComboBox.setEnabled(true);
 
         popolaComboBoxUtentiAndCaricaDati();
-
-        StyleManager.styleCheckBox(automaticoCheckBox);
-        StyleManager.styleCheckBox(manualeCheckBox);
-        StyleManager.styleCheckBox(lowCheckBox);
-        StyleManager.styleCheckBox(mediumCheckBox);
-        StyleManager.styleCheckBox(highCheckBox);
-        StyleManager.styleCheckBox(criticalCheckBox);
-        StyleManager.styleCheckBox(questionCheckBox);
-        StyleManager.styleCheckBox(bugCheckBox);
-        StyleManager.styleCheckBox(documentationCheckBox);
-        StyleManager.styleCheckBox(featureCheckBox);
 
         ActionListener assegnazioneListener = e -> {
             assigneeComboBox.setEnabled(manualeCheckBox.isSelected());
@@ -148,30 +135,26 @@ public class ModificaIssue extends BaseFrame {
             }
         });
 
-        if (rimuoviAllegatoButton != null) {
-            rimuoviAllegatoButton.addActionListener(e -> {
-                fileSelezionato = null;
-                immagineUrlCorrente = null;
-                aggiornaStatoImmagine();
-                JOptionPane.showMessageDialog(null, "Allegato rimosso.");
-            });
-        }
+        rimuoviAllegatoButton.addActionListener(e -> {
+            fileSelezionato = null;
+            immagineUrlCorrente = null;
+            aggiornaStatoImmagine();
+            JOptionPane.showMessageDialog(null, "Allegato rimosso.");
+        });
 
-        if (visualizzaButton != null) {
-            visualizzaButton.addActionListener(e -> {
-                try {
-                    if (fileSelezionato != null) {
-                        String localUrl = fileSelezionato.toURI().toURL().toString();
-                        new ImmagineIssue(localUrl);
-                    } else if (immagineUrlCorrente != null && !immagineUrlCorrente.isEmpty()) {
-                        String proxyUrl = Controller.getInstance().getProxyImageUrl(immagineUrlCorrente);
-                        new ImmagineIssue(proxyUrl);
-                    }
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, "Errore visualizzazione: " + ex.getMessage());
+        visualizzaButton.addActionListener(e -> {
+            try {
+                if (fileSelezionato != null) {
+                    String localUrl = fileSelezionato.toURI().toURL().toString();
+                    new ImmagineIssue(localUrl);
+                } else if (immagineUrlCorrente != null && !immagineUrlCorrente.isEmpty()) {
+                    String proxyUrl = Controller.getInstance().getProxyImageUrl(immagineUrlCorrente);
+                    new ImmagineIssue(proxyUrl);
                 }
-            });
-        }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Errore visualizzazione: " + ex.getMessage());
+            }
+        });
 
         confermaButton.addActionListener(new ActionListener() {
             @Override
@@ -182,11 +165,12 @@ public class ModificaIssue extends BaseFrame {
     }
 
     private void tornaIndietro() {
-        ModificaIssueSeleziona.Provenienza provSeleziona = (provenienza == Provenienza.DASHBOARD) 
-                ? ModificaIssueSeleziona.Provenienza.DASHBOARD 
-                : ModificaIssueSeleziona.Provenienza.HOME;
-        
-        new ModificaIssueSeleziona(provSeleziona);
+        if (provenienza == Provenienza.DASHBOARD) {
+            new Dashboard();
+        } else {
+            Account utente = Controller.getInstance().getUtenteCorrente();
+            Utility.redirectByRole(utente);
+        }
         dispose();
     }
 
