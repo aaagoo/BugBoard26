@@ -71,7 +71,7 @@ public class LoadingGlassPane extends JComponent {
 
         g2.draw(new Arc2D.Double(x, y, size, size, angle, 270, Arc2D.OPEN));
 
-        g2.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        g2.setFont(new Font("Inter", Font.BOLD, 16));
         FontMetrics fm = g2.getFontMetrics();
         String text = "Elaborazione in corso...";
         int textX = (getWidth() - fm.stringWidth(text)) / 2;

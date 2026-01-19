@@ -125,6 +125,7 @@ CREATE OR REPLACE FUNCTION elimina_account(
 RETURNS TABLE(successo BOOLEAN, messaggio VARCHAR) AS $$
 DECLARE
     v_count INT;
+    v_ruolo ruolo_enum;
 BEGIN
     SELECT COUNT(*) INTO v_count FROM issue WHERE creatoreUsername = p_nomeUtente;
     IF v_count > 0 THEN
@@ -136,6 +137,15 @@ BEGIN
     IF v_count > 0 THEN
         RETURN QUERY SELECT false::BOOLEAN, 'Impossibile eliminare: l''utente ha delle issue assegnate.'::VARCHAR;
         RETURN;
+    END IF;
+
+    SELECT ruolo INTO v_ruolo FROM account WHERE nomeUtente = p_nomeUtente;
+    IF v_ruolo = 'AMMINISTRATORE' THEN
+        SELECT COUNT(*) INTO v_count FROM account WHERE ruolo = 'AMMINISTRATORE';
+        IF v_count <= 1 THEN
+            RETURN QUERY SELECT false::BOOLEAN, 'Impossibile eliminare: è l''unico amministratore rimasto.'::VARCHAR;
+            RETURN;
+        END IF;
     END IF;
 
     DELETE FROM account WHERE nomeUtente = p_nomeUtente;
@@ -610,3 +620,23 @@ BEGIN
     RETURN v_count;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION mantieni_limite_notifiche()
+RETURNS TRIGGER AS $$
+BEGIN
+    DELETE FROM notifica
+    WHERE id IN (
+        SELECT id
+        FROM notifica
+        WHERE destinatarioUsername = NEW.destinatarioUsername
+        ORDER BY dataCreazione DESC
+        OFFSET 50
+    );
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_limite_notifiche
+AFTER INSERT ON notifica
+FOR EACH ROW
+EXECUTE FUNCTION mantieni_limite_notifiche();

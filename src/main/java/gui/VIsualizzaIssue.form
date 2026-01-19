@@ -10,11 +10,53 @@
     </properties>
     <border type="none"/>
     <children>
+      <grid id="739e1" binding="botPanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="700" height="80"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-3474724"/>
+        </properties>
+        <border type="line">
+          <color color="-5524801"/>
+        </border>
+        <children>
+          <component id="ffeef" class="javax.swing.JButton" binding="indietroButton" default-binding="true">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="300" height="45"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-13194090"/>
+              <font name="Inter" size="15" style="1"/>
+              <horizontalTextPosition value="0"/>
+              <text value="Indietro"/>
+            </properties>
+          </component>
+          <component id="6244c" class="javax.swing.JButton" binding="modificaButton">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="300" height="45"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-13194090"/>
+              <font name="Inter" size="15" style="1"/>
+              <horizontalTextPosition value="0"/>
+              <text value="Modifica Stato Issue"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
       <grid id="55276" binding="midPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="1100" height="570"/>
+            <preferred-size width="1100" height="520"/>
           </grid>
         </constraints>
         <properties>
@@ -28,7 +70,7 @@
             <margin top="5" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="2" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="1080" height="320"/>
+                <preferred-size width="1080" height="290"/>
               </grid>
             </constraints>
             <properties>
@@ -73,7 +115,7 @@
                 <border type="none"/>
                 <children/>
               </grid>
-              <scrollpane id="ef4c">
+              <scrollpane id="ef4c" binding="descrizioneScrollPane">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="700" height="210"/>
@@ -151,7 +193,7 @@
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="1100" height="230"/>
+                <preferred-size width="1100" height="210"/>
               </grid>
             </constraints>
             <properties>
@@ -163,7 +205,7 @@
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="640" height="220"/>
+                    <preferred-size width="640" height="200"/>
                   </grid>
                 </constraints>
                 <properties>
@@ -277,7 +319,7 @@
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="430" height="220"/>
+                    <preferred-size width="430" height="200"/>
                   </grid>
                 </constraints>
                 <properties>
@@ -335,53 +377,11 @@
           </grid>
         </children>
       </grid>
-      <grid id="739e1" binding="botPanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="0" left="0" bottom="0" right="0"/>
-        <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="700" height="80"/>
-          </grid>
-        </constraints>
-        <properties>
-          <background color="-3474724"/>
-        </properties>
-        <border type="line">
-          <color color="-5524801"/>
-        </border>
-        <children>
-          <component id="ffeef" class="javax.swing.JButton" binding="indietroButton" default-binding="true">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="300" height="45"/>
-              </grid>
-            </constraints>
-            <properties>
-              <background color="-13194090"/>
-              <font name="Inter" size="15" style="1"/>
-              <horizontalTextPosition value="0"/>
-              <text value="Indietro"/>
-            </properties>
-          </component>
-          <component id="6244c" class="javax.swing.JButton" binding="modificaButton">
-            <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                <preferred-size width="300" height="45"/>
-              </grid>
-            </constraints>
-            <properties>
-              <background color="-13194090"/>
-              <font name="Inter" size="15" style="1"/>
-              <horizontalTextPosition value="0"/>
-              <text value="Modifica Stato Issue"/>
-            </properties>
-          </component>
-        </children>
-      </grid>
-      <grid id="d449c" binding="topPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="7141b" binding="topPanel" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="1200" height="60"/>
+            <preferred-size width="1200" height="120"/>
           </grid>
         </constraints>
         <properties>
@@ -389,18 +389,77 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="69f53" class="javax.swing.JLabel">
+          <component id="73af2" class="javax.swing.JLabel">
             <constraints>
-              <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="1" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <background color="-7144784"/>
               <enabled value="true"/>
               <font name="Inter" size="20" style="1"/>
               <foreground color="-14144460"/>
-              <text value="Visualizza Issue"/>
+              <text value="Visualizza un Issue"/>
             </properties>
           </component>
+          <grid id="283d9" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="250" height="80"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-7144784"/>
+            </properties>
+            <border type="none">
+              <color color="-5524801"/>
+            </border>
+            <children/>
+          </grid>
+          <grid id="e7326" binding="infoutentePanel" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="2" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="250" height="100"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-3474724"/>
+            </properties>
+            <border type="line">
+              <color color="-5524801"/>
+            </border>
+            <children>
+              <component id="b3e7e" class="javax.swing.JLabel" binding="ruoloLabel">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Inter" size="14" style="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="df726" class="javax.swing.JLabel" binding="benvenutoLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Inter" size="14" style="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="100b9" class="javax.swing.JLabel" binding="userpngLabel">
+                <constraints>
+                  <grid row="0" column="1" row-span="3" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="80" height="80"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
     </children>

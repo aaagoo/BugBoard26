@@ -2,12 +2,15 @@ package main;
 
 import backend.BackendApplication;
 import gui.util.SplashScreen;
+import gui.util.StyleManager;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import javax.swing.SwingUtilities;
 
 public class Main {
 
     public static void main(String[] args) {
+        StyleManager.setupTheme();
+
         SwingUtilities.invokeLater(() -> {
             SplashScreen splash = new SplashScreen();
             splash.start();

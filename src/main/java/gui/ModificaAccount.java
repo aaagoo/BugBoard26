@@ -2,11 +2,13 @@ package gui;
 
 import controller.Controller;
 import gui.util.*;
+import modello.Account;
 
 import javax.swing.*;
-import javax.swing.table.TableColumn;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.concurrent.ExecutionException;
 
 
@@ -62,8 +64,8 @@ public class ModificaAccount extends BaseFrame {
 
         caricaDatiAsincrono();
 
-        Utility.selezionaUtenteECaricaDati(utentiTable, controller, nomeUtenteFIeld, nomeFIeld, cognomeFIeld, emailField, passwordField, ripPasswordField, imageLabel, this);
-        Utility.selezionaUtenteECaricaDati(amministratoriTable, controller, nomeUtenteFIeld, nomeFIeld, cognomeFIeld, emailField, passwordField, ripPasswordField, imageLabel, this);
+        aggiungiListenerSelezione(utentiTable);
+        aggiungiListenerSelezione(amministratoriTable);
 
         avatarSelezionato = "user.png";
         Utility.caricaAvatar(imageLabel, "user.png", 200, 200);
@@ -142,6 +144,31 @@ public class ModificaAccount extends BaseFrame {
         });
     }
 
+    private void aggiungiListenerSelezione(JTable tabella) {
+        tabella.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                int row = tabella.rowAtPoint(evt.getPoint());
+                if (row >= 0) {
+                    String nomeUtente = tabella.getValueAt(row, 0).toString();
+
+                    Account utente = controller.getUtenteByNomeUtente(nomeUtente);
+
+                    if (utente != null) {
+                        nomeUtenteFIeld.setText(utente.getNomeUtente());
+                        nomeFIeld.setText(utente.getNome());
+                        cognomeFIeld.setText(utente.getCognome());
+                        emailField.setText(utente.getEmail());
+                        passwordField.setText(utente.getPassword());
+                        ripPasswordField.setText(utente.getPassword());
+                        Utility.caricaAvatar(imageLabel, utente.getAvatar(), 200, 200);
+                        setAvatarSelezionato(utente.getAvatar());
+                    }
+                }
+            }
+        });
+    }
+
     private void caricaDatiAsincrono() {
         showLoading();
         SwingWorker<Void, Void> worker = new SwingWorker<>() {
@@ -163,10 +190,8 @@ public class ModificaAccount extends BaseFrame {
                     Utility.popolaTabellaAccount(utentiTable, utenti);
                     Utility.popolaTabellaAccount(amministratoriTable, admin);
                     
-                    TableColumn column1 = utentiTable.getColumnModel().getColumn(3);
-                    column1.setPreferredWidth(200);
-                    TableColumn column2 = amministratoriTable.getColumnModel().getColumn(3);
-                    column2.setPreferredWidth(200);
+                    Utility.impostaLarghezzeColonne(utentiTable, 100, 100, 100, 200);
+                    Utility.impostaLarghezzeColonne(amministratoriTable, 100, 100, 100, 200);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(ModificaAccount.this, "Errore caricamento dati: " + e.getMessage());
                 }

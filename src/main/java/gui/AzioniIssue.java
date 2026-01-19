@@ -39,7 +39,7 @@ public class AzioniIssue extends JDialog {
         this.onUpdate = onUpdate;
 
         setContentPane(mainPanel);
-        setSize(300, 400);
+        setSize(320, 400);
         setLocationRelativeTo(owner);
         setResizable(false);
         

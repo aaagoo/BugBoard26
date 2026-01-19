@@ -3,6 +3,7 @@ package gui;
 import controller.Controller;
 import gui.util.BaseFrame;
 import gui.util.RoundedPanel;
+import gui.util.StyleManager;
 import gui.util.Utility;
 import modello.Account;
 
@@ -52,6 +53,7 @@ public class ModificaIssue extends BaseFrame {
     private JButton rimuoviAllegatoButton;
     private JLabel statoImmagineLabel;
     private JButton visualizzaButton;
+    private JScrollPane descrizioneScrollPane;
     private File fileSelezionato = null;
     private String immagineUrlCorrente = null;
     private Long issueId;
@@ -76,7 +78,8 @@ public class ModificaIssue extends BaseFrame {
         infoPanel.setBorder(new RoundedPanel("finestra"));
         assegnaPanel.setBorder(new RoundedPanel("finestra"));
 
-        descrizioneArea.setBorder(titoloField.getBorder());
+        descrizioneArea.setBorder(null);
+        descrizioneScrollPane.putClientProperty("FlatLaf.style", "arc: 15");
 
         Account utente = Controller.getInstance().getUtenteCorrente();
         if (utente != null) {

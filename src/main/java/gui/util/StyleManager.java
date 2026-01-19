@@ -1,5 +1,6 @@
 package gui.util;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
@@ -14,9 +15,44 @@ public class StyleManager {
 
     // Font
     public static final Font FONT_HEADER = new Font("Inter", Font.BOLD, 14);
-    public static final Font FONT_NORMAL = new Font("Segoe UI", Font.PLAIN, 14);
 
 
+    public static void setupTheme() {
+        try {
+            FlatLightLaf.setup();
+
+            // Colori
+            UIManager.put("Component.accentColor", VERDE_ACQUA);
+            UIManager.put("Button.accentColor", VERDE_ACQUA);
+            UIManager.put("Focus.color", VERDE_ACQUA);
+            UIManager.put("TabbedPane.selectedBackground", VERDE_ACQUA);
+
+            // Forme
+            UIManager.put("Button.arc", 15);
+            UIManager.put("Component.arc", 15);
+            UIManager.put("TextComponent.arc", 15);
+            UIManager.put("ProgressBar.arc", 999);
+            UIManager.put("ScrollBar.thumbArc", 999);
+            UIManager.put("ScrollBar.width", 10);
+
+            // Funzionalità
+            UIManager.put("PasswordField.showRevealButton", true);
+            UIManager.put("TextField.showClearButton", true);
+            // Tabelle
+
+            UIManager.put("Table.showVerticalLines", false);
+            UIManager.put("Table.showHorizontalLines", true);
+            UIManager.put("Table.intercellSpacing", new Dimension(1, 1));
+            UIManager.put("Table.gridColor", new Color(230, 230, 230)); // Grigio chiaro
+
+        } catch (Exception e) {
+            System.err.println("Impossibile caricare FlatLaf: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Applica lo stile standard alle tabelle del progetto.
+     */
     public static void styleTable(JTable table, JScrollPane scrollPane) {
         if (table == null) return;
 
@@ -33,65 +69,14 @@ public class StyleManager {
             scrollPane.setBorder(BorderFactory.createEmptyBorder());
             scrollPane.getViewport().setBorder(null);
             scrollPane.getViewport().setBackground(table.getBackground());
+            
+            // Aumenta velocità scroll
+            scrollPane.getVerticalScrollBar().setUnitIncrement(10);
         }
         
         // Tabella
         table.setFillsViewportHeight(true);
-    }
-
-    /**
-     * Applica lo stile personalizzato ai CheckBox.
-     */
-    public static void styleCheckBox(JCheckBox checkBox) {
-        if (checkBox == null) return;
-
-        checkBox.setOpaque(false);
-        checkBox.setFocusPainted(false);
-        checkBox.setForeground(TESTO_SCURO);
-        checkBox.setFont(FONT_NORMAL);
-
-        // Icona non selezionata
-        checkBox.setIcon(new Icon() {
-            @Override
-            public void paintIcon(Component c, Graphics g, int x, int y) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(VERDE_ACQUA);
-                g2.setStroke(new BasicStroke(2));
-                g2.drawRoundRect(x + 1, y + 1, 14, 14, 4, 4);
-                g2.dispose();
-            }
-
-            @Override
-            public int getIconWidth() { return 18; }
-            @Override
-            public int getIconHeight() { return 18; }
-        });
-
-        // Icona selezionata
-        checkBox.setSelectedIcon(new Icon() {
-            @Override
-            public void paintIcon(Component c, Graphics g, int x, int y) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                
-                // Sfondo pieno
-                g2.setColor(VERDE_ACQUA);
-                g2.fillRoundRect(x + 1, y + 1, 14, 14, 4, 4);
-                
-                // Spunta bianca
-                g2.setColor(BIANCO);
-                g2.setStroke(new BasicStroke(2));
-                g2.drawLine(x + 4, y + 8, x + 7, y + 11);
-                g2.drawLine(x + 7, y + 11, x + 12, y + 5);
-                
-                g2.dispose();
-            }
-
-            @Override
-            public int getIconWidth() { return 18; }
-            @Override
-            public int getIconHeight() { return 18; }
-        });
+        table.setShowGrid(true); // Forza la griglia
+        table.setGridColor(new Color(220, 220, 220));
     }
 }

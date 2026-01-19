@@ -200,7 +200,7 @@
                 <border type="none"/>
                 <children/>
               </grid>
-              <scrollpane id="f3da5">
+              <scrollpane id="f3da5" binding="descrizioneScrollPane">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="700" height="210"/>
@@ -286,7 +286,7 @@
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="440" height="200"/>
+                    <preferred-size width="430" height="200"/>
                   </grid>
                 </constraints>
                 <properties>
@@ -426,7 +426,7 @@
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="300" height="200"/>
+                    <preferred-size width="320" height="200"/>
                   </grid>
                 </constraints>
                 <properties>
@@ -479,7 +479,7 @@
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="300" height="200"/>
+                    <preferred-size width="320" height="200"/>
                   </grid>
                 </constraints>
                 <properties>
@@ -499,7 +499,7 @@
                   <component id="c94c0" class="javax.swing.JButton" binding="allegaButton">
                     <constraints>
                       <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                        <preferred-size width="250" height="30"/>
+                        <preferred-size width="200" height="30"/>
                       </grid>
                     </constraints>
                     <properties>
@@ -521,7 +521,7 @@
                   <component id="2f5d6" class="javax.swing.JButton" binding="visualizzaButton">
                     <constraints>
                       <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                        <preferred-size width="250" height="30"/>
+                        <preferred-size width="200" height="30"/>
                       </grid>
                     </constraints>
                     <properties>
@@ -534,7 +534,7 @@
                   <component id="c4dac" class="javax.swing.JButton" binding="rimuoviAllegatoButton">
                     <constraints>
                       <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                        <preferred-size width="250" height="30"/>
+                        <preferred-size width="200" height="30"/>
                       </grid>
                     </constraints>
                     <properties>

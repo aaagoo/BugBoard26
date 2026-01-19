@@ -167,6 +167,7 @@
                 <properties>
                   <background color="-3474724"/>
                   <focusable value="false"/>
+                  <toolTipText value="l'Username non è modificabile"/>
                 </properties>
               </component>
               <component id="e5877" class="javax.swing.JLabel">

@@ -50,7 +50,10 @@ public class NuovaIssue extends BaseFrame {
     private JButton rimuoviAllegatoButton;
     private JLabel statoImmagineLabel;
     private JButton visualizzaButton;
+    private JScrollPane descrizioneScrollPane;
     private File fileSelezionato = null;
+    
+    private static final long MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
 
     public NuovaIssue() {
         super();
@@ -68,6 +71,9 @@ public class NuovaIssue extends BaseFrame {
         checkPanel.setBorder(new RoundedPanel("finestra"));
         infoPanel.setBorder(new RoundedPanel("finestra"));
         assegnaPanel.setBorder(new RoundedPanel("finestra"));
+
+        descrizioneArea.setBorder(null);
+        descrizioneScrollPane.putClientProperty("FlatLaf.style", "arc: 15");
 
         Account utente = Controller.getInstance().getUtenteCorrente();
         if (utente != null) {
@@ -96,17 +102,6 @@ public class NuovaIssue extends BaseFrame {
 
         popolaComboBoxUtenti();
 
-        StyleManager.styleCheckBox(automaticoCheckBox);
-        StyleManager.styleCheckBox(manualeCheckBox);
-        StyleManager.styleCheckBox(lowCheckBox);
-        StyleManager.styleCheckBox(mediumCheckBox);
-        StyleManager.styleCheckBox(highCheckBox);
-        StyleManager.styleCheckBox(criticalCheckBox);
-        StyleManager.styleCheckBox(questionCheckBox);
-        StyleManager.styleCheckBox(bugCheckBox);
-        StyleManager.styleCheckBox(documentationCheckBox);
-        StyleManager.styleCheckBox(featureCheckBox);
-
         ActionListener assegnazioneListener = e -> {
             assigneeComboBox.setEnabled(manualeCheckBox.isSelected());
         };
@@ -132,7 +127,16 @@ public class NuovaIssue extends BaseFrame {
 
                 int result = fileChooser.showOpenDialog(NuovaIssue.this);
                 if (result == JFileChooser.APPROVE_OPTION) {
-                    fileSelezionato = fileChooser.getSelectedFile();
+                    File file = fileChooser.getSelectedFile();
+                    
+                    if (file.length() > MAX_FILE_SIZE) {
+                        JOptionPane.showMessageDialog(NuovaIssue.this, 
+                                "Il file è troppo grande! Dimensione massima: 2 MB.", 
+                                "Errore", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    
+                    fileSelezionato = file;
                     aggiornaStatoImmagine();
                     JOptionPane.showMessageDialog(null, "Immagine selezionata: " + fileSelezionato.getName());
                 }

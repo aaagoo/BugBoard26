@@ -45,7 +45,7 @@
             <children>
               <component id="a7b0d" class="javax.swing.JButton" binding="visualizzaButton">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="210" height="40"/>
                   </grid>
                 </constraints>
@@ -57,7 +57,7 @@
               </component>
               <component id="b625e" class="javax.swing.JButton" binding="eliminaButton">
                 <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="210" height="40"/>
                   </grid>
                 </constraints>
@@ -69,7 +69,7 @@
               </component>
               <component id="6936" class="javax.swing.JButton" binding="modificaButton">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="210" height="40"/>
                   </grid>
                 </constraints>
@@ -81,7 +81,7 @@
               </component>
               <component id="13da6" class="javax.swing.JButton" binding="indietroButton">
                 <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="2" fill="0" indent="0" use-parent-layout="false">
                     <preferred-size width="210" height="40"/>
                   </grid>
                 </constraints>

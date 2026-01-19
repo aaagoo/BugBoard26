@@ -41,11 +41,16 @@ public class VIsualizzaIssue extends BaseFrame {
     private JLabel creatoreLabel;
     private JLabel dataCreazioneLabel;
     private JLabel dataRisoluzioneLabel;
-    private JPanel topPanel;
     private JLabel idLabel;
     private JButton salvaImmagineButton;
     private JLabel statoImmagineLabel;
     private JLabel assegnataALabel;
+    private JScrollPane descrizioneScrollPane;
+    private JPanel topPanel;
+    private JPanel infoutentePanel;
+    private JLabel ruoloLabel;
+    private JLabel benvenutoLabel;
+    private JLabel userpngLabel;
     private Long issueId;
     private Provenienza provenienza;
 
@@ -71,6 +76,17 @@ public class VIsualizzaIssue extends BaseFrame {
         imagePanel.setBorder(new RoundedPanel("finestra"));
         checkPanel.setBorder(new RoundedPanel("finestra"));
         infoPanel.setBorder(new RoundedPanel("finestra"));
+        infoutentePanel.setBorder(new RoundedPanel("pannello"));
+
+        descrizioneArea.setBorder(null);
+        descrizioneScrollPane.putClientProperty("FlatLaf.style", "arc: 15");
+
+        Account utente1 = Controller.getInstance().getUtenteCorrente();
+        if (utente1 != null) {
+            benvenutoLabel.setText(utente1.getNome() + " " + utente1.getCognome());
+            ruoloLabel.setText(utente1.getRuolo().toString());
+            Utility.caricaAvatar(userpngLabel, utente1.getAvatar(), 80, 80);
+        }
 
         indietroButton.addActionListener(e -> {
             if (this.provenienza == Provenienza.DASHBOARD) {

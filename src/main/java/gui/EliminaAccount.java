@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.ExecutionException;
 import gui.util.*;
 import controller.Controller;
+import modello.Account;
+import sessione.SessioneManager;
 
 public class EliminaAccount extends BaseFrame {
 
@@ -42,10 +44,10 @@ public class EliminaAccount extends BaseFrame {
         buttonsPanel.setBorder(new RoundedPanel("pannello"));
 
         controller = Controller.getInstance();
-
+        
         StyleManager.styleTable(utentiTable, utentiScrollPane);
         StyleManager.styleTable(amministratoriTable, amministratoriScrollPane);
-
+        
         caricaDatiAsincrono();
 
         Utility.selezionaRigaTabella(utentiTable, nomeUtenteField, 0);
@@ -62,10 +64,19 @@ public class EliminaAccount extends BaseFrame {
         eliminaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String nomeUtente = nomeUtenteField.getText().trim();
+                String nomeUtenteDaEliminare = nomeUtenteField.getText().trim();
 
-                if (nomeUtente.isEmpty()) {
+                if (nomeUtenteDaEliminare.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Inserisci un nome account", "Errore", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                int conferma = JOptionPane.showConfirmDialog(EliminaAccount.this, 
+                        "Sei sicuro di voler eliminare l'account " + nomeUtenteDaEliminare + "?", 
+                        "Conferma Eliminazione", 
+                        JOptionPane.YES_NO_OPTION);
+                
+                if (conferma != JOptionPane.YES_OPTION) {
                     return;
                 }
 
@@ -74,7 +85,7 @@ public class EliminaAccount extends BaseFrame {
                 SwingWorker<String, Void> worker = new SwingWorker<String, Void>() {
                     @Override
                     protected String doInBackground() throws Exception {
-                        return controller.eliminaAccount(nomeUtente);
+                        return controller.eliminaAccount(nomeUtenteDaEliminare);
                     }
 
                     @Override
@@ -82,9 +93,22 @@ public class EliminaAccount extends BaseFrame {
                         hideLoading();
                         try {
                             String risultato = get();
-                            JOptionPane.showMessageDialog(EliminaAccount.this, risultato, "Risultato", JOptionPane.INFORMATION_MESSAGE);
-                            nomeUtenteField.setText("");
-                            caricaDatiAsincrono();
+                            
+                            if (risultato.contains("successo")) {
+                                JOptionPane.showMessageDialog(EliminaAccount.this, risultato, "Successo", JOptionPane.INFORMATION_MESSAGE);
+
+                                Account utenteCorrente = SessioneManager.getInstance().getUtenteCorrente();
+                                if (utenteCorrente != null && utenteCorrente.getNomeUtente().equals(nomeUtenteDaEliminare)) {
+                                    SessioneManager.getInstance().logout();
+                                    new Login();
+                                    dispose();
+                                } else {
+                                    nomeUtenteField.setText("");
+                                    caricaDatiAsincrono();
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(EliminaAccount.this, risultato, "Errore", JOptionPane.ERROR_MESSAGE);
+                            }
                         } catch (InterruptedException | ExecutionException ex) {
                             JOptionPane.showMessageDialog(EliminaAccount.this, "Errore: " + ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
                             ex.printStackTrace();
@@ -117,10 +141,8 @@ public class EliminaAccount extends BaseFrame {
                     Utility.popolaTabellaAccount(utentiTable, utenti);
                     Utility.popolaTabellaAccount(amministratoriTable, admin);
                     
-                    TableColumn column1 = utentiTable.getColumnModel().getColumn(3);
-                    column1.setPreferredWidth(200);
-                    TableColumn column2 = amministratoriTable.getColumnModel().getColumn(3);
-                    column2.setPreferredWidth(200);
+                    Utility.impostaLarghezzeColonne(utentiTable, 100, 100, 100, 200);
+                    Utility.impostaLarghezzeColonne(amministratoriTable, 100, 100, 100, 200);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(EliminaAccount.this, "Errore caricamento dati: " + e.getMessage());
                 }

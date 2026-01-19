@@ -18,7 +18,7 @@ public class NotificaService {
     }
 
     public void segnaComeLetta(Long notificaId) {
-        jdbcTemplate.queryForObject("SELECT segna_notifica_letta(?)", Void.class, notificaId);
+        jdbcTemplate.queryForList("SELECT segna_notifica_letta(?)", notificaId);
     }
 
     public int contaNonLette(String username) {

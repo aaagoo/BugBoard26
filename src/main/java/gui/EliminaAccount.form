@@ -51,7 +51,7 @@
                       <background color="-855068"/>
                       <enabled value="true"/>
                       <focusable value="true"/>
-                      <font name="Inter" size="13" style="0"/>
+                      <font name="Inter" size="14" style="0"/>
                       <rowHeight value="30"/>
                       <selectionBackground color="-3474724"/>
                       <selectionForeground color="-14605013"/>
@@ -90,7 +90,7 @@
                     <properties>
                       <background color="-855068"/>
                       <enabled value="true"/>
-                      <font name="Inter" size="13" style="0"/>
+                      <font name="Inter" size="14" style="0"/>
                       <rowHeight value="30"/>
                       <selectionBackground color="-3474724"/>
                       <selectionForeground color="-14605013"/>

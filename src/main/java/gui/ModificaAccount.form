@@ -92,7 +92,7 @@
                     <properties>
                       <background color="-855068"/>
                       <enabled value="true"/>
-                      <font name="Inter" size="13" style="0"/>
+                      <font name="Inter" size="14" style="0"/>
                       <rowHeight value="30"/>
                       <selectionBackground color="-3474724"/>
                       <selectionForeground color="-14605013"/>
@@ -134,7 +134,7 @@
                       <background color="-855068"/>
                       <enabled value="true"/>
                       <focusable value="true"/>
-                      <font name="Inter" size="13" style="0"/>
+                      <font name="Inter" size="14" style="0"/>
                       <rowHeight value="30"/>
                       <selectionBackground color="-3474724"/>
                       <selectionForeground color="-14605013"/>
@@ -197,7 +197,7 @@
                 </constraints>
                 <properties>
                   <font name="Inter" size="14" style="0"/>
-                  <text value="Nome Account"/>
+                  <text value="Nome Utente"/>
                 </properties>
               </component>
               <component id="fe02d" class="javax.swing.JLabel">
@@ -227,6 +227,8 @@
                 </constraints>
                 <properties>
                   <background color="-3474724"/>
+                  <editable value="false"/>
+                  <toolTipText value="Il Nome Utente non può essere modificato"/>
                 </properties>
               </component>
               <component id="e53a3" class="javax.swing.JLabel">
