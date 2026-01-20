@@ -52,6 +52,7 @@
                 <properties>
                   <background color="-13194090"/>
                   <font name="Inter" size="15" style="1"/>
+                  <foreground color="-855068"/>
                   <text value="Visualizza Issue"/>
                 </properties>
               </component>
@@ -64,6 +65,7 @@
                 <properties>
                   <background color="-5486795"/>
                   <font name="Inter" size="15" style="1"/>
+                  <foreground color="-855068"/>
                   <text value="Elimina Issue"/>
                 </properties>
               </component>
@@ -76,6 +78,7 @@
                 <properties>
                   <background color="-13194090"/>
                   <font name="Inter" size="15" style="1"/>
+                  <foreground color="-855068"/>
                   <text value="Modifica Issue"/>
                 </properties>
               </component>
@@ -88,6 +91,7 @@
                 <properties>
                   <background color="-13194090"/>
                   <font name="Inter" size="15" style="1"/>
+                  <foreground color="-855068"/>
                   <text value="Indietro"/>
                 </properties>
               </component>

@@ -85,6 +85,7 @@
                 <properties>
                   <background color="-13194090"/>
                   <font name="Inter" size="15" style="1"/>
+                  <foreground color="-855068"/>
                   <text value="Area Personale"/>
                 </properties>
               </component>
@@ -113,6 +114,7 @@
                 <properties>
                   <background color="-13194090"/>
                   <font name="Inter" size="14" style="1"/>
+                  <foreground color="-855068"/>
                   <text value="Filtra"/>
                 </properties>
               </component>
@@ -125,6 +127,7 @@
                 <properties>
                   <background color="-13194090"/>
                   <font name="Inter" size="14" style="1"/>
+                  <foreground color="-855068"/>
                   <text value="Reset Filtri"/>
                 </properties>
               </component>
@@ -169,6 +172,7 @@
                 <properties>
                   <background color="-13194090"/>
                   <font name="Inter" size="15" style="1"/>
+                  <foreground color="-855068"/>
                   <text value="Nuova Issue"/>
                 </properties>
               </component>
@@ -181,6 +185,7 @@
                 <properties>
                   <background color="-13194090"/>
                   <font name="Inter" size="15" style="1"/>
+                  <foreground color="-855068"/>
                   <text value="Dashboard"/>
                 </properties>
               </component>
@@ -193,6 +198,7 @@
                 <properties>
                   <background color="-13194090"/>
                   <font name="Inter" size="15" style="1"/>
+                  <foreground color="-855068"/>
                   <text value="Notifiche"/>
                 </properties>
               </component>
@@ -282,6 +288,7 @@
             <properties>
               <background color="-13194090"/>
               <font name="Inter" size="15" style="1"/>
+              <foreground color="-855068"/>
               <horizontalTextPosition value="0"/>
               <text value="Disconnettiti"/>
             </properties>

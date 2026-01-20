@@ -463,6 +463,7 @@
                     <properties>
                       <background color="-13194090"/>
                       <font name="Inter" size="12" style="1"/>
+                      <foreground color="-855068"/>
                       <horizontalTextPosition value="0"/>
                       <text value="Allega"/>
                     </properties>
@@ -476,6 +477,7 @@
                     <properties>
                       <background color="-13194090"/>
                       <font name="Inter" size="12" style="1"/>
+                      <foreground color="-855068"/>
                       <horizontalTextPosition value="0"/>
                       <text value="Rimuovi Allegato"/>
                     </properties>
@@ -498,6 +500,7 @@
                     <properties>
                       <background color="-13194090"/>
                       <font name="Inter" size="12" style="1"/>
+                      <foreground color="-855068"/>
                       <horizontalTextPosition value="0"/>
                       <text value="Visualizza Immagine"/>
                     </properties>
@@ -531,6 +534,7 @@
             <properties>
               <background color="-13194090"/>
               <font name="Inter" size="15" style="1"/>
+              <foreground color="-855068"/>
               <horizontalTextPosition value="0"/>
               <text value="Conferma"/>
             </properties>
@@ -544,6 +548,7 @@
             <properties>
               <background color="-13194090"/>
               <font name="Inter" size="15" style="1"/>
+              <foreground color="-855068"/>
               <horizontalTextPosition value="0"/>
               <text value="Annulla"/>
             </properties>

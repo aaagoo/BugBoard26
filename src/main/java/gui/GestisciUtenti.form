@@ -33,6 +33,7 @@
             <properties>
               <background color="-13194090"/>
               <font name="Inter" size="15" style="1"/>
+              <foreground color="-855068"/>
               <text value="Crea Account"/>
             </properties>
           </component>
@@ -45,6 +46,7 @@
             <properties>
               <background color="-13194090"/>
               <font name="Inter" size="15" style="1"/>
+              <foreground color="-855068"/>
               <text value="Modifica Account"/>
             </properties>
           </component>
@@ -57,6 +59,7 @@
             <properties>
               <background color="-13194090"/>
               <font name="Inter" size="15" style="1"/>
+              <foreground color="-855068"/>
               <text value="Indietro"/>
             </properties>
           </component>
@@ -69,6 +72,7 @@
             <properties>
               <background color="-13194090"/>
               <font name="Inter" size="15" style="1"/>
+              <foreground color="-855068"/>
               <text value="Elimina Account"/>
             </properties>
           </component>

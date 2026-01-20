@@ -231,6 +231,7 @@
             <properties>
               <background color="-13194090"/>
               <font name="Inter" size="15" style="1"/>
+              <foreground color="-855068"/>
               <horizontalTextPosition value="0"/>
               <text value="Indietro"/>
             </properties>
@@ -244,6 +245,7 @@
             <properties>
               <background color="-13194090"/>
               <font name="Inter" size="15" style="1"/>
+              <foreground color="-855068"/>
               <horizontalTextPosition value="0"/>
               <text value="Applica FIltro"/>
             </properties>
