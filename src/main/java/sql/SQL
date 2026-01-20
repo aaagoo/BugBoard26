@@ -67,24 +67,24 @@ $$ LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE FUNCTION login(
-    p_nomeUtente VARCHAR,
+    p_identificativo VARCHAR,
     p_password VARCHAR
 )
 RETURNS TABLE(successo BOOLEAN, messaggio VARCHAR, ruolo ruolo_enum) AS $$
 BEGIN
-    IF EXISTS (SELECT 1 FROM account WHERE nomeUtente = p_nomeUtente AND password = p_password) THEN
+    IF EXISTS (SELECT 1 FROM account WHERE (nomeUtente = p_identificativo OR email = p_identificativo) AND password = p_password) THEN
         RETURN QUERY
         SELECT
             true::BOOLEAN,
             'Login effettuato con successo'::VARCHAR,
             a.ruolo
         FROM account a
-        WHERE a.nomeUtente = p_nomeUtente;
+        WHERE (a.nomeUtente = p_identificativo OR a.email = p_identificativo);
     ELSE
         RETURN QUERY
         SELECT
             false::BOOLEAN,
-            'NomeUtente o password errati'::VARCHAR,
+            'Credenziali errate'::VARCHAR,
             NULL::ruolo_enum;
     END IF;
 END;
@@ -127,18 +127,21 @@ DECLARE
     v_count INT;
     v_ruolo ruolo_enum;
 BEGIN
+    -- Controllo se l'utente ha creato issue
     SELECT COUNT(*) INTO v_count FROM issue WHERE creatoreUsername = p_nomeUtente;
     IF v_count > 0 THEN
         RETURN QUERY SELECT false::BOOLEAN, 'Impossibile eliminare: l''utente ha creato delle issue.'::VARCHAR;
         RETURN;
     END IF;
 
+    -- Controllo se l'utente ha issue assegnate
     SELECT COUNT(*) INTO v_count FROM issue WHERE assegnatarioUsername = p_nomeUtente;
     IF v_count > 0 THEN
         RETURN QUERY SELECT false::BOOLEAN, 'Impossibile eliminare: l''utente ha delle issue assegnate.'::VARCHAR;
         RETURN;
     END IF;
 
+    -- Controllo ultimo amministratore
     SELECT ruolo INTO v_ruolo FROM account WHERE nomeUtente = p_nomeUtente;
     IF v_ruolo = 'AMMINISTRATORE' THEN
         SELECT COUNT(*) INTO v_count FROM account WHERE ruolo = 'AMMINISTRATORE';
@@ -621,6 +624,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- TRIGGER PER LIMITE NOTIFICHE
 CREATE OR REPLACE FUNCTION mantieni_limite_notifiche()
 RETURNS TRIGGER AS $$
 BEGIN

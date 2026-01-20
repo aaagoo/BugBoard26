@@ -23,14 +23,14 @@ public class AccountService {
 
         Boolean successo = (Boolean) result.get("successo");
 
-        if (!successo) {
+        if (!Boolean.TRUE.equals(successo)) {
             return null;
         }
 
         Map<String, Object> accountData = jdbcTemplate.queryForMap(
                 "SELECT nomeUtente, password, nome, cognome, email, ruolo, avatar, issueassegnate " +
-                        "FROM account WHERE nomeUtente = ?",
-                username
+                        "FROM account WHERE nomeUtente = ? OR email = ?",
+                username, username
         );
 
         return new Account(
