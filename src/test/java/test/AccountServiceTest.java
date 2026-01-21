@@ -27,7 +27,7 @@ class AccountServiceTest {
 
     @Test
     void testLoginSuccesso() {
-        //Preparazione dei dati e del comportamento simulato del DB.
+        //Preparazione dei dati e del comportamento simulato del DB
         String username = "admin";
         String password = "password";
 
