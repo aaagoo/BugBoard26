@@ -27,7 +27,7 @@ class IssueServiceTest {
 
     @Test
     void testCreaIssueSuccesso() {
-        // Arrange
+        // Arrange.
         String titolo = "Bug Login";
         String descrizione = "Errore 500";
         Priorita priorita = Priorita.HIGH;
