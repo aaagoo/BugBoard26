@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.swing.VisualizzaIssue">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="1029" height="776"/>
+    </constraints>
+    <properties>
+      <background color="-7144784"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <grid id="739e1" binding="botPanel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="700" height="80"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-3474724"/>
+        </properties>
+        <border type="line">
+          <color color="-5524801"/>
+        </border>
+        <children>
+          <component id="ffeef" class="javax.swing.JButton" binding="indietroButton" default-binding="true">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="300" height="45"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-13194090"/>
+              <font name="Inter" size="15" style="1"/>
+              <foreground color="-855068"/>
+              <horizontalTextPosition value="0"/>
+              <text value="Indietro"/>
+            </properties>
+          </component>
+          <component id="6244c" class="javax.swing.JButton" binding="modificaButton">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="300" height="45"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-13194090"/>
+              <font name="Inter" size="15" style="1"/>
+              <foreground color="-855068"/>
+              <horizontalTextPosition value="0"/>
+              <text value="Modifica Stato Issue"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="55276" binding="midPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="1100" height="520"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-3474724"/>
+        </properties>
+        <border type="line">
+          <color color="-5524801"/>
+        </border>
+        <children>
+          <grid id="56389" binding="infoPanel" layout-manager="GridLayoutManager" row-count="2" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+            <margin top="5" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="2" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="1080" height="290"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-855068"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <grid id="4f4a9" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="160" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-855068"/>
+                  <font name="Inter" size="16" style="1"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="a0f95" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Inter" size="16" style="1"/>
+                      <text value="Titolo"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="620f9" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="160" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-855068"/>
+                </properties>
+                <border type="none"/>
+                <children/>
+              </grid>
+              <scrollpane id="ef4c" binding="descrizioneScrollPane">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="700" height="210"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-3474724"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="f58d9" class="javax.swing.JTextArea" binding="descrizioneArea">
+                    <constraints/>
+                    <properties>
+                      <background color="-3474724"/>
+                      <editable value="false"/>
+                      <enabled value="true"/>
+                      <font name="Inter" size="14" style="0"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
+              <grid id="435f7" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="160" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-855068"/>
+                  <font name="Inter" size="16" style="1"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="788e3" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Inter" size="16" style="1"/>
+                      <text value="Descrizione"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="93061" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="160" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-855068"/>
+                </properties>
+                <border type="none"/>
+                <children/>
+              </grid>
+              <component id="a51de" class="javax.swing.JTextField" binding="titoloField">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="700" height="40"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-3474724"/>
+                  <editable value="false"/>
+                  <enabled value="true"/>
+                  <font name="Inter" size="14" style="0"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="525d4" binding="info2Panel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="1100" height="210"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-3474724"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <grid id="8c077" binding="checkPanel" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="640" height="200"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-855068"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <grid id="fcb6c" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="310" height="200"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <background color="-855068"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <component id="a6838" class="javax.swing.JLabel" binding="tipoLabel">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Inter" size="14" style="1"/>
+                          <text value="Tipo di Issue"/>
+                        </properties>
+                      </component>
+                      <component id="c0c41" class="javax.swing.JLabel" binding="idLabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Inter" size="14" style="1"/>
+                          <text value="ID"/>
+                        </properties>
+                      </component>
+                      <component id="3e44c" class="javax.swing.JLabel" binding="creatoreLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Inter" size="14" style="1"/>
+                          <text value="Creatore"/>
+                        </properties>
+                      </component>
+                      <component id="f84c6" class="javax.swing.JLabel" binding="prioritaLabel">
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Inter" size="14" style="1"/>
+                          <text value="Priorità"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="b2c34" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="310" height="200"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <background color="-855068"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <component id="e1296" class="javax.swing.JLabel" binding="dataRisoluzioneLabel">
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Inter" size="14" style="1"/>
+                          <text value="Data Risoluzione"/>
+                        </properties>
+                      </component>
+                      <component id="33b82" class="javax.swing.JLabel" binding="assegnataALabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Inter" size="14" style="1"/>
+                          <text value="Assegnata a"/>
+                        </properties>
+                      </component>
+                      <component id="44579" class="javax.swing.JLabel" binding="dataCreazioneLabel">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Inter" size="14" style="1"/>
+                          <text value="Data Creazione"/>
+                        </properties>
+                      </component>
+                      <component id="cd5ac" class="javax.swing.JLabel" binding="risoltoLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <font name="Inter" size="14" style="1"/>
+                          <text value="Risolto"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                </children>
+              </grid>
+              <grid id="98e1c" binding="imagePanel" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="430" height="200"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-855068"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="197d8" class="javax.swing.JButton" binding="immagineButton">
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="250" height="40"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <background color="-13194090"/>
+                      <font name="Inter" size="12" style="1"/>
+                      <foreground color="-855068"/>
+                      <horizontalTextPosition value="0"/>
+                      <text value="Visualizza Immagine"/>
+                    </properties>
+                  </component>
+                  <component id="86e38" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Inter" size="14" style="1"/>
+                      <text value="Immagine"/>
+                    </properties>
+                  </component>
+                  <component id="14a61" class="javax.swing.JButton" binding="salvaImmagineButton">
+                    <constraints>
+                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                        <preferred-size width="250" height="40"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <background color="-13194090"/>
+                      <font name="Inter" size="12" style="1"/>
+                      <foreground color="-855068"/>
+                      <horizontalTextPosition value="0"/>
+                      <text value="Salva Immagine"/>
+                    </properties>
+                  </component>
+                  <component id="97185" class="javax.swing.JLabel" binding="statoImmagineLabel">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <font name="Inter" size="14" style="0"/>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="7141b" binding="topPanel" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="1200" height="120"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-7144784"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="73af2" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="0" column="1" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <background color="-7144784"/>
+              <enabled value="true"/>
+              <font name="Inter" size="20" style="1"/>
+              <foreground color="-14144460"/>
+              <text value="Visualizza un Issue"/>
+            </properties>
+          </component>
+          <grid id="283d9" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="250" height="80"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-7144784"/>
+            </properties>
+            <border type="none">
+              <color color="-5524801"/>
+            </border>
+            <children/>
+          </grid>
+          <grid id="e7326" binding="infoutentePanel" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="2" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
+                <preferred-size width="250" height="100"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-3474724"/>
+            </properties>
+            <border type="line">
+              <color color="-5524801"/>
+            </border>
+            <children>
+              <component id="b3e7e" class="javax.swing.JLabel" binding="ruoloLabel">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Inter" size="14" style="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="df726" class="javax.swing.JLabel" binding="benvenutoLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Inter" size="14" style="0"/>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="100b9" class="javax.swing.JLabel" binding="userpngLabel">
+                <constraints>
+                  <grid row="0" column="1" row-span="3" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="80" height="80"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

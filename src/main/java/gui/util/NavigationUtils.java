@@ -1,7 +1,7 @@
 package gui.util;
 
-import gui.HomeAmm;
-import gui.HomeUtente;
+import gui.swing.HomeAmm;
+import gui.swing.HomeUtente;
 import modello.Account;
 import modello.Ruolo;
 

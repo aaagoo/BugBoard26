@@ -59,15 +59,4 @@ public class Notifica {
     public void setDataCreazione(LocalDateTime dataCreazione) {
         this.dataCreazione = dataCreazione;
     }
-
-    @Override
-    public String toString() {
-        return "Notifica{" +
-                "id=" + id +
-                ", destinatario='" + destinatarioUsername + '\'' +
-                ", messaggio='" + messaggio + '\'' +
-                ", letta=" + letta +
-                ", data=" + dataCreazione +
-                '}';
-    }
 }

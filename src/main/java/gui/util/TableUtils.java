@@ -3,7 +3,6 @@ package gui.util;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import java.awt.*;
 import java.util.List;
 import java.util.Map;
 

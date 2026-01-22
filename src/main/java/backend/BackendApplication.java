@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.event.EventListener;
-import gui.Login;
+import gui.swing.Login;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
