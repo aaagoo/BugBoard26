@@ -20,6 +20,8 @@ import java.util.Arrays;
 
 @Service
 public class IssueService {
+    
+    private static final String KEY_MESSAGGIO = "messaggio";
 
     @Value("${supabase.url}")
     private String supabaseUrl;
@@ -57,7 +59,7 @@ public class IssueService {
                 creatoreUsername, assegnatarioFinale, immagineUrl
         );
 
-        return result.get("messaggio") + " e assegnata a " + assegnatarioFinale;
+        return result.get(KEY_MESSAGGIO) + " e assegnata a " + assegnatarioFinale;
     }
 
     @Transactional
@@ -70,7 +72,7 @@ public class IssueService {
                 assegnatario, immagineUrl, richiedente
         );
 
-        return (String) result.get("messaggio");
+        return (String) result.get(KEY_MESSAGGIO);
     }
 
     public String uploadImmagine(MultipartFile file) {
@@ -158,7 +160,7 @@ public class IssueService {
                 issueId,
                 nomeUtente
         );
-        return (String) result.get("messaggio");
+        return (String) result.get(KEY_MESSAGGIO);
     }
 
     @Transactional
@@ -167,6 +169,6 @@ public class IssueService {
                 "SELECT * FROM risolvi_issue(?)",
                 issueId
         );
-        return (String) result.get("messaggio");
+        return (String) result.get(KEY_MESSAGGIO);
     }
 }

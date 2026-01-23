@@ -11,6 +11,8 @@ import java.util.*;
 
 @Service
 public class AccountService {
+    
+    private static final String KEY_MESSAGGIO = "messaggio";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -57,7 +59,7 @@ public class AccountService {
                 nomeUtente, password, nome, cognome, email, ruolo.name(), avatar
         );
 
-        return (String) result.get("messaggio");
+        return (String) result.get(KEY_MESSAGGIO);
     }
 
     public List<Map<String, Object>> getAllAccounts() {
@@ -101,7 +103,7 @@ public class AccountService {
                 avatar != null ? avatar : ""
         );
 
-        return (String) result.get("messaggio");
+        return (String) result.get(KEY_MESSAGGIO);
     }
 
     @Transactional
@@ -111,6 +113,6 @@ public class AccountService {
                 nomeUtente
         );
 
-        return (String) result.get("messaggio");
+        return (String) result.get(KEY_MESSAGGIO);
     }
 }

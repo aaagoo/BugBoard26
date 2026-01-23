@@ -24,7 +24,7 @@ public class NotificaRestController {
     }
 
     @PutMapping("/{id}/letta")
-    public ResponseEntity<?> segnaComeLetta(@PathVariable Long id) {
+    public ResponseEntity<Object> segnaComeLetta(@PathVariable Long id) {
         notificaService.segnaComeLetta(id);
         return ResponseEntity.ok().build();
     }

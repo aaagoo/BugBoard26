@@ -15,6 +15,10 @@ import java.util.List;
 @RequestMapping("/api/issues")
 @CrossOrigin(origins = "*")
 public class IssueRestController {
+    
+    private static final String KEY_MESSAGGIO = "messaggio";
+    private static final String KEY_SUCCESSO = "successo";
+    
     private final IssueService issueService;
 
     public IssueRestController(IssueService issueService) {
@@ -22,12 +26,12 @@ public class IssueRestController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadImmagine(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Object> uploadImmagine(@RequestParam("file") MultipartFile file) {
         try {
             String url = issueService.uploadImmagine(file);
             return ResponseEntity.ok(Map.of("url", url));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(Map.of("messaggio", "Errore upload: " + e.getMessage()));
+            return ResponseEntity.status(500).body(Map.of(KEY_MESSAGGIO, "Errore upload: " + e.getMessage()));
         }
     }
 
@@ -52,7 +56,7 @@ public class IssueRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> creaIssue(@RequestBody Map<String, String> body) {
+    public ResponseEntity<Object> creaIssue(@RequestBody Map<String, String> body) {
         try {
             Priorita priorita = Priorita.valueOf(body.get("priorita").toUpperCase());
             Tipo tipo = Tipo.valueOf(body.get("tipo").toUpperCase());
@@ -66,16 +70,16 @@ public class IssueRestController {
                     body.getOrDefault("assegnatarioUsername", null),
                     body.getOrDefault("immagineUrl", null)
             );
-            return ResponseEntity.ok(Map.of("messaggio", messaggio));
+            return ResponseEntity.ok(Map.of(KEY_MESSAGGIO, messaggio));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("messaggio", "Errore: Priorità o tipo non validi"));
+            return ResponseEntity.badRequest().body(Map.of(KEY_MESSAGGIO, "Errore: Priorità o tipo non validi"));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(Map.of("messaggio", "Errore nella creazione dell'issue: " + e.getMessage()));
+            return ResponseEntity.status(500).body(Map.of(KEY_MESSAGGIO, "Errore nella creazione dell'issue: " + e.getMessage()));
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> modificaIssue(@PathVariable Long id, @RequestBody Map<String, String> body) {
+    public ResponseEntity<Object> modificaIssue(@PathVariable Long id, @RequestBody Map<String, String> body) {
         try {
             Priorita priorita = Priorita.valueOf(body.get("priorita").toUpperCase());
             Tipo tipo = Tipo.valueOf(body.get("tipo").toUpperCase());
@@ -91,15 +95,15 @@ public class IssueRestController {
                     body.get("richiedente")
             );
             
-            if (messaggio.contains("successo")) {
-                return ResponseEntity.ok(Map.of("messaggio", messaggio));
+            if (messaggio.contains(KEY_SUCCESSO)) {
+                return ResponseEntity.ok(Map.of(KEY_MESSAGGIO, messaggio));
             } else {
-                return ResponseEntity.status(403).body(Map.of("messaggio", messaggio));
+                return ResponseEntity.status(403).body(Map.of(KEY_MESSAGGIO, messaggio));
             }
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("messaggio", "Errore: Priorità o tipo non validi"));
+            return ResponseEntity.badRequest().body(Map.of(KEY_MESSAGGIO, "Errore: Priorità o tipo non validi"));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(Map.of("messaggio", "Errore nella modifica dell'issue: " + e.getMessage()));
+            return ResponseEntity.status(500).body(Map.of(KEY_MESSAGGIO, "Errore nella modifica dell'issue: " + e.getMessage()));
         }
     }
 
@@ -129,35 +133,35 @@ public class IssueRestController {
             Map<String, Object> issue = issueService.getIssueById(id);
             return ResponseEntity.ok(issue);
         } catch (Exception e) {
-            return ResponseEntity.status(404).body(Map.of("messaggio", "Issue non trovata"));
+            return ResponseEntity.status(404).body(Map.of(KEY_MESSAGGIO, "Issue non trovata"));
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminaIssue(@PathVariable Long id, @RequestParam String nomeUtente) {
+    public ResponseEntity<Object> eliminaIssue(@PathVariable Long id, @RequestParam String nomeUtente) {
         try {
             String messaggio = issueService.eliminaIssue(id, nomeUtente);
-            if (messaggio.contains("successo")) {
-                return ResponseEntity.ok(Map.of("messaggio", messaggio));
+            if (messaggio.contains(KEY_SUCCESSO)) {
+                return ResponseEntity.ok(Map.of(KEY_MESSAGGIO, messaggio));
             } else {
-                return ResponseEntity.status(403).body(Map.of("messaggio", messaggio));
+                return ResponseEntity.status(403).body(Map.of(KEY_MESSAGGIO, messaggio));
             }
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(Map.of("messaggio", "Errore: " + e.getMessage()));
+            return ResponseEntity.status(500).body(Map.of(KEY_MESSAGGIO, "Errore: " + e.getMessage()));
         }
     }
 
     @PutMapping("/{id}/risolvi")
-    public ResponseEntity<?> risolviIssue(@PathVariable Long id) {
+    public ResponseEntity<Object> risolviIssue(@PathVariable Long id) {
         try {
             String messaggio = issueService.risolviIssue(id);
-            if (messaggio.contains("successo")) {
-                return ResponseEntity.ok(Map.of("messaggio", messaggio));
+            if (messaggio.contains(KEY_SUCCESSO)) {
+                return ResponseEntity.ok(Map.of(KEY_MESSAGGIO, messaggio));
             } else {
-                return ResponseEntity.badRequest().body(Map.of("messaggio", messaggio));
+                return ResponseEntity.badRequest().body(Map.of(KEY_MESSAGGIO, messaggio));
             }
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(Map.of("messaggio", "Errore: " + e.getMessage()));
+            return ResponseEntity.status(500).body(Map.of(KEY_MESSAGGIO, "Errore: " + e.getMessage()));
         }
     }
 

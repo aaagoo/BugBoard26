@@ -18,7 +18,7 @@ public class AuthRestController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
+    public ResponseEntity<Object> login(@RequestBody Map<String, String> body) {
         String username = body.get("username");
         String password = body.get("password");
         Account utente = accountService.login(username, password);
