@@ -16,6 +16,12 @@ Il database utilizzato è PostgreSQL, ospitato su Supabase.
 Per eseguire BugBoard26, assicurati di avere i seguenti requisiti:
 - **Java Runtime Environment (JRE):** Versione 21 o superiore;
 - **Connessione Internet:** Necessaria per accedere al database.
+### Attenzione:
+Il sistema è preimpostato con un account Amministratore già esistente con dati:
+- username: admin
+- password: admin  
+
+Una volta eseguito l'accesso al sistema, è possibile creare nuove utenze tramite questo account (o altri account Amministratore).
 ## Avvio dell'Applicazione
 L'applicazione è un singolo file eseguibile JAR, che include sia il frontend Swing che il backend Spring Boot.
 1. Scarica il file "BugBoard26.jar" dalla cartella "out/artifacts/BugBoard26_jar";
