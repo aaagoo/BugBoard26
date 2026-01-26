@@ -1,0 +1,10 @@
+backend
+backend.rest
+backend.service
+controller
+gui.swing
+gui.util
+main
+modello
+remote.client
+sessione
