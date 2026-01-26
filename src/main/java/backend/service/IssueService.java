@@ -22,6 +22,7 @@ import java.util.Arrays;
 public class IssueService {
     
     private static final String KEY_MESSAGGIO = "messaggio";
+    private static final String KEY_SUCCESSO = "successo";
 
     @Value("${supabase.url}")
     private String supabaseUrl;
@@ -155,12 +156,27 @@ public class IssueService {
 
     @Transactional
     public String eliminaIssue(Long issueId, String nomeUtente) {
+        String immagineUrl = null;
+        try {
+            Map<String, Object> issue = getIssueById(issueId);
+            immagineUrl = (String) issue.get("immagineurl");
+        } catch (Exception e) {
+            // Ignora se non trova l'issue, lascia che il DB gestisca l'errore
+        }
+
         Map<String, Object> result = jdbcTemplate.queryForMap(
                 "SELECT * FROM elimina_issue(?, ?)",
                 issueId,
                 nomeUtente
         );
-        return (String) result.get(KEY_MESSAGGIO);
+        
+        String messaggio = (String) result.get(KEY_MESSAGGIO);
+
+        if (messaggio != null && messaggio.contains(KEY_SUCCESSO) && immagineUrl != null && !immagineUrl.isEmpty()) {
+            eliminaImmagineDaSupabase(immagineUrl);
+        }
+
+        return messaggio;
     }
 
     @Transactional
@@ -170,5 +186,26 @@ public class IssueService {
                 issueId
         );
         return (String) result.get(KEY_MESSAGGIO);
+    }
+
+    private void eliminaImmagineDaSupabase(String immagineUrl) {
+        try {
+            String nomeFile = immagineUrl.substring(immagineUrl.lastIndexOf("/") + 1);
+            String urlCancellazione = supabaseUrl + "/storage/v1/object/" + bucketName + "/" + nomeFile;
+
+            URL url = new URL(urlCancellazione);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("DELETE");
+            conn.setRequestProperty("Authorization", "Bearer " + supabaseKey);
+
+            int responseCode = conn.getResponseCode();
+            if (responseCode == 200 || responseCode == 204) {
+                System.out.println("Immagine eliminata da Supabase: " + nomeFile);
+            } else {
+                System.err.println("Errore eliminazione immagine Supabase. Codice: " + responseCode);
+            }
+        } catch (Exception e) {
+            System.err.println("Eccezione durante eliminazione immagine: " + e.getMessage());
+        }
     }
 }
