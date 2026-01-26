@@ -12,7 +12,7 @@ Questo progetto nasce come esercitazione universitaria per il corso di Ingegneri
 ## Descrizione del Progetto
 BugBoard26 è un sistema per la gestione di issue, implementato con un'architettura Client-Server. Il frontend è sviluppato in Java Swing, con un'interfaccia utente desktop nativa, mentre il backend è basato su Spring Boot, che fornisce un'API RESTful per la gestione della logica di business e persistenza di dati.
 Il database utilizzato è PostgreSQL, ospitato su Supabase.
-## Installazione e Avvio
+## Installazione
 Per eseguire BugBoard26, assicurati di avere i seguenti requisiti:
 - **Java Runtime Environment (JRE):** Versione 21 o superiore;
 - **Connessione Internet:** Necessaria per accedere al database.
