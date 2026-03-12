@@ -1,5 +1,6 @@
 package gui.util;
 
+import main.Main;
 import javax.swing.*;
 import java.awt.Image;
 
@@ -45,6 +46,12 @@ public abstract class BaseFrame extends JFrame {
 
         if (conferma == JOptionPane.YES_OPTION) {
             System.out.println("Chiusura applicazione completa...");
+            
+            // Chiudiamo Spring Boot
+            if (Main.context != null) {
+                Main.context.close();
+            }
+
             System.exit(0);
         }
     }

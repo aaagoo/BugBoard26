@@ -26,7 +26,7 @@ public class BackendApplication {
                 System.out.println("Splash Screen chiusa.");
             }
 
-            Timer delayTimer = new Timer(500, e -> {
+            Timer delayTimer = new Timer(100, e -> {
                 Login login = new Login();
                 login.toFront();
                 login.requestFocus();
